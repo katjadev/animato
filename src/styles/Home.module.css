@@ -1,0 +1,112 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5rem;
+  min-height: 100vh;
+  position: relative;
+  color: var(--text-inverted);
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  max-height: 100vh;
+  top: 0;
+  right: 0;
+  background-image: url(/background-image.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImage {
+  display: inline-block;
+  margin-right: 0.3rem;
+}
+
+.description {
+  display: flex;
+  width: 100%;
+  z-index: 2;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 0;
+}
+
+.descriptionContent {
+  max-width: 32rem;
+}
+
+.description h1 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+.description p {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 100;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (prefers-reduced-motion) {
+  
+}
+
+/* Smaller Mobile */
+@media (max-width: 445px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .main {
+    padding: 2rem 3rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+}
+
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  
+}

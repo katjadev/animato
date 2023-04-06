@@ -1,0 +1,49 @@
+:root {
+  --text-default: #333333;
+  --text-inverted: #ffffff;
+
+  --foreground-rgb: 255, 255, 255;
+  --background-start: #380656;
+  --background-middle: #140030;
+  --background-end: #30054B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(159.66deg, 
+    var(--background-start) 4.94%, 
+    var(--background-middle) 31.11%, 
+    var(--background-middle) 55.33%, 
+    var(--background-end) 82.96%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
