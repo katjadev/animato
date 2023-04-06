@@ -49,7 +49,7 @@ export default function Home() {
               Animato empowers you to easily create and animate
               scalable vector graphics, breathing life into your designs 
               and enhancing your web presence with eye-catching visuals
-              that capture your audience's attention.
+              that capture your audience&apos;s attention.
             </p>
             <div className={styles.buttons}>
               <Button 

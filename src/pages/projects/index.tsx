@@ -10,7 +10,7 @@ export default function Projects() {
     if (!loading && !authUser) {
       router.push('/')
     }
-  }, [authUser, loading])
+  }, [authUser, loading, router])
 
   return(
     <h1>Projects</h1>
