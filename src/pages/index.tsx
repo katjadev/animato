@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { getAuth, signOut } from 'firebase/auth'
 import { useAuth } from '@animato/context/authUserContext'
+import Logo from '@animato/components/logo/Logo'
 import Button from '@animato/components/button/Button'
 import SignupDialog from '@animato/components/signup-dialog/SignupDialog'
 import LoginDialog from '@animato/components/login-dialog/LoginDialog'
@@ -31,40 +31,32 @@ export default function Home() {
     <>
       <Head>
         <title>Animato</title>
-        <meta name="description" content="Bring your designs to life with animated SVGs" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name='description' content='Bring your designs to life with animated SVGs' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <header className={styles.header}>
-          <Link 
-            className={styles.logo} 
-            href="/"
-          >
-            <Image
-              src="/logo.svg"
-              alt="Animato Logo"
-              className={styles.logoImage}
-              width={44}
-              height={44}
-              priority
-            />
-            <span>Animato</span>
-          </Link>
+          <div className={styles.logo}>
+            <Logo variant='inverted' />
+          </div>
           
           {authUserContext?.email && (
-            <Button 
-              variant="secondary-inverted" 
-              size="medium"
-              onClick={logOut}
-            >
-              Log out
-            </Button>
+            <>
+              <Link href='/projects'>Projects</Link>
+              <Button 
+                variant='secondary-inverted' 
+                size='medium'
+                onClick={logOut}
+              >
+                Log out
+              </Button>
+            </>
           )}
           {!authUserContext?.email && (
             <Button 
-              variant="secondary-inverted" 
-              size="medium"
+              variant='secondary-inverted'
+              size='medium'
               onClick={() => setIsLoginDialogOpen(true)}
             >
               Log in
@@ -85,16 +77,16 @@ export default function Home() {
             <div className={styles.buttons}>
               {!authUserContext?.email && (
                 <Button 
-                  variant="primary"
-                  size="large"
+                  variant='primary'
+                  size='large'
                   onClick={() => setIsSignupDialogOpen(true)}
                 >
                   Get Started
                 </Button>
               )}
               <Button 
-                variant="secondary-inverted"
-                size="large"
+                variant='secondary-inverted'
+                size='large'
                 onClick={() => {}}
               >
                 Explore a demo project

@@ -38,7 +38,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      ariaLabel="Log in"
+      ariaLabel='Log in'
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -56,27 +56,27 @@ const LoginDialog: FC<LoginDialogProps> = ({
         <form>
           <div className={styles.field}>
             <Input
-              type="text"
-              id="login-dialog-email"
-              name="email"
-              label="Email"
+              type='text'
+              id='login-dialog-email'
+              name='email'
+              label='Email'
               value={email}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setEmail(event.target.value) }}
             />
           </div>
           <div className={styles.field}>
             <Input
-              type="password"
-              id="login-dialog-password"
-              name="password"
-              label="Password"
+              type='password'
+              id='login-dialog-password'
+              name='password'
+              label='Password'
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value) }}
             />
           </div>
           <Button 
-            variant="primary" 
-            size="medium"
+            variant='primary'
+            size='medium'
             onClick={handleSubmit}
           >
             Log in

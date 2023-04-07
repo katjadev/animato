@@ -7,6 +7,11 @@
   min-height: 100vh;
   position: relative;
   color: var(--text-inverted);
+  background: linear-gradient(159.66deg, 
+    var(--background-start) 4.94%, 
+    var(--background-middle) 31.11%, 
+    var(--background-middle) 55.33%, 
+    var(--background-end) 82.96%);
 }
 
 .main::before {
@@ -30,19 +35,12 @@
   align-items: center;
   justify-content: space-between;
   z-index: 2;
+  gap: 2rem;
 }
 
 .logo {
-  font-weight: 900;
-  font-size: 2rem;
+  flex: 1 1 auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logoImage {
-  display: inline-block;
-  margin-right: 0.3rem;
 }
 
 .description {

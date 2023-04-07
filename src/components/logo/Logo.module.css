@@ -1,0 +1,20 @@
+.logo {
+  font-weight: 900;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.logo.standard {
+  color: var(--text-default);
+}
+
+.logo.inverted {
+  color: var(--text-inverted);
+}
+
+.logoImage {
+  display: inline-block;
+  margin-right: 0.3rem;
+}

@@ -1,6 +1,7 @@
 import { FC, MouseEventHandler, ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import Modal from 'react-modal'
+import IconButton from '@animato/components/icon-button/IconButton'
 import styles from './ModalDialog.module.css'
 
 const customStyles = {
@@ -46,11 +47,12 @@ const ModalDialog: FC<ModalDialogProps> = ({
       style={customStyles}
       contentLabel={ariaLabel}
     >
-      <button 
-        className={`${styles.closeButton} icon-cross`} 
-        onClick={onClose}
-        aria-label="Close"
-      ></button>
+      <IconButton 
+        className={styles.closeButton} 
+        icon='icon-cross' 
+        ariaLabel='Close' 
+        onClick={onClose} 
+      />
       <div className={`${inter.className} ${styles.content}`}>
         {children}
       </div>

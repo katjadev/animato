@@ -8,13 +8,6 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  transition: all 200ms ease-in;
-  cursor: pointer;
 }
 
 /* Enable hover only on non-touch devices */

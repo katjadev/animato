@@ -38,7 +38,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      ariaLabel="Create an account"
+      ariaLabel='Create an account'
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -56,27 +56,27 @@ const SignupDialog: FC<SignupDialogProps> = ({
         <form>
           <div className={styles.field}>
             <Input
-              type="text"
-              id="signup-dialog-email"
-              name="email"
-              label="Email"
+              type='text'
+              id='signup-dialog-email'
+              name='email'
+              label='Email'
               value={email}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setEmail(event.target.value) }}
             />
           </div>
           <div className={styles.field}>
             <Input
-              type="password"
-              id="signup-dialog-password"
-              name="password"
-              label="Password"
+              type='password'
+              id='signup-dialog-password'
+              name='password'
+              label='Password'
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value) }}
             />
           </div>
           <Button 
-            variant="primary" 
-            size="medium"
+            variant='primary'
+            size='medium'
             onClick={handleSubmit}
           >
             Create an account

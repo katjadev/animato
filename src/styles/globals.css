@@ -33,17 +33,13 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(159.66deg, 
-    var(--background-start) 4.94%, 
-    var(--background-middle) 31.11%, 
-    var(--background-middle) 55.33%, 
-    var(--background-end) 82.96%);
+body.project-list {
+  background: var(--background-base);
 }
 
 a {
   color: inherit;
+  font-family: inherit;
   text-decoration: none;
 }
 
