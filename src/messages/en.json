@@ -1,0 +1,25 @@
+{
+  "projects": "Projects",
+  "logout": "Log out",
+  "login": "Log in",
+  "home-title": "Bring your designs to life with animated SVGs",
+  "home-description": "Animato empowers you to easily create and animate scalable vector graphics, breathing life into your designs and enhancing your web presence with eye-catching visuals that capture your audience's attention.",
+  "get-started": "Get Started",
+  "explore-demo-project": "Explore a demo project",
+  "signup-dialog": {
+    "create-account": "Create an account",
+    "email": "Email",
+    "password": "Password"
+  },
+  "login-dialog": {
+    "log-in": "Log in",
+    "email": "Email",
+    "password": "Password"
+  },
+  "project-list": {
+    "projects": "Projects",
+    "profile": "Profile",
+    "new-project": "New project",
+    "empty-message": "You don't have any projects yet."
+  }
+}

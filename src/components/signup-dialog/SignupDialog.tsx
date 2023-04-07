@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, MouseEventHandler, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
 import Button from '@animato/components/button/Button'
@@ -16,6 +17,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const t = useTranslations('signup-dialog')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -38,7 +40,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      ariaLabel='Create an account'
+      ariaLabel={t('create-account')}
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -52,14 +54,14 @@ const SignupDialog: FC<SignupDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>Create an account</h2>
+        <h2 className={styles.dialogHeader}>{t('create-account')}</h2>
         <form>
           <div className={styles.field}>
             <Input
               type='text'
               id='signup-dialog-email'
               name='email'
-              label='Email'
+              label={t('email')}
               value={email}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setEmail(event.target.value) }}
             />
@@ -69,7 +71,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
               type='password'
               id='signup-dialog-password'
               name='password'
-              label='Password'
+              label={t('password')}
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value) }}
             />
@@ -79,7 +81,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
             size='medium'
             onClick={handleSubmit}
           >
-            Create an account
+            {t('create-account')}
           </Button>
         </form>
       </div>

@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, MouseEventHandler, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
 import Button from '@animato/components/button/Button'
@@ -16,6 +17,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const t = useTranslations('login-dialog')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -38,7 +40,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      ariaLabel='Log in'
+      ariaLabel={t('log-in')}
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -52,14 +54,14 @@ const LoginDialog: FC<LoginDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>Log in</h2>
+        <h2 className={styles.dialogHeader}>{t('log-in')}</h2>
         <form>
           <div className={styles.field}>
             <Input
               type='text'
               id='login-dialog-email'
               name='email'
-              label='Email'
+              label={t('email')}
               value={email}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setEmail(event.target.value) }}
             />
@@ -69,7 +71,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
               type='password'
               id='login-dialog-password'
               name='password'
-              label='Password'
+              label={t('password')}
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value) }}
             />
@@ -79,7 +81,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
             size='medium'
             onClick={handleSubmit}
           >
-            Log in
+            {t('log-in')}
           </Button>
         </form>
       </div>

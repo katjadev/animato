@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
+import { GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
+import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/authUserContext'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
@@ -9,7 +13,15 @@ import styles from '@animato/styles/ProjectList.module.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Projects() {
+  const t = useTranslations('project-list')
+  const router = useRouter()
   const authUserContext = useAuth()
+
+  useEffect(() => {
+    if (!authUserContext.currentUser) {
+      router.push('/')
+    }
+  }, [authUserContext])
 
   return(
     <>
@@ -24,24 +36,34 @@ export default function Projects() {
           <Logo variant='standard' />
           <IconButton 
             icon='icon-user' 
-            ariaLabel='Profile'
+            ariaLabel={t('profile')}
             onClick={() => {}}
           />
         </header>
-        <h1 className={styles.heading}>Projects</h1>
+        <h1 className={styles.heading}>{t('projects')}</h1>
         <div className={styles.toolbar}>
           <Button
             variant='primary'
             size='medium'
             onClick={() => {}}
           >
-            New project
+            {t('new-project')}
           </Button>
         </div>
         <div className={styles.list}>
-          You don&apos;t have any projects yet.
+          {t('empty-message')}
         </div>
       </main>
     </>
   );
+}
+
+export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
+  context
+) => {
+  return {
+    props: {
+      messages: (await import(`../../messages/${context.locale}.json`)).default
+    },
+  }
 }

@@ -3,16 +3,19 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { getAuth, signOut } from 'firebase/auth'
+import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/authUserContext'
 import Logo from '@animato/components/logo/Logo'
 import Button from '@animato/components/button/Button'
 import SignupDialog from '@animato/components/signup-dialog/SignupDialog'
 import LoginDialog from '@animato/components/login-dialog/LoginDialog'
 import styles from '@animato/styles/Home.module.css'
+import { GetStaticProps } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const t = useTranslations()
   const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false)
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
 
@@ -41,47 +44,42 @@ export default function Home() {
             <Logo variant='inverted' />
           </div>
           
-          {authUserContext?.email && (
+          {authUserContext.currentUser && (
             <>
-              <Link href='/projects'>Projects</Link>
+              <Link href='/projects'>{t('projects')}</Link>
               <Button 
                 variant='secondary-inverted' 
                 size='medium'
                 onClick={logOut}
               >
-                Log out
+                {t('logout')}
               </Button>
             </>
           )}
-          {!authUserContext?.email && (
+          {!authUserContext.currentUser && (
             <Button 
               variant='secondary-inverted'
               size='medium'
               onClick={() => setIsLoginDialogOpen(true)}
             >
-              Log in
+              {t('login')}
             </Button>
           )}
         </header>
         <div className={styles.description}>
           <div className={styles.descriptionContent}>
             <h1>
-              Bring your designs to life with animated SVGs
+            {t('home-title')}
             </h1>
-            <p>
-              Animato empowers you to easily create and animate
-              scalable vector graphics, breathing life into your designs 
-              and enhancing your web presence with eye-catching visuals
-              that capture your audience&apos;s attention.
-            </p>
+            <p>{t('home-description')}</p>
             <div className={styles.buttons}>
-              {!authUserContext?.email && (
+              {!authUserContext.currentUser && (
                 <Button 
                   variant='primary'
                   size='large'
                   onClick={() => setIsSignupDialogOpen(true)}
                 >
-                  Get Started
+                  {t('get-started')}
                 </Button>
               )}
               <Button 
@@ -89,7 +87,7 @@ export default function Home() {
                 size='large'
                 onClick={() => {}}
               >
-                Explore a demo project
+                {t('explore-demo-project')}
               </Button>
             </div>
           </div>
@@ -105,4 +103,14 @@ export default function Home() {
       />
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
+  context
+) => {
+  return {
+    props: {
+      messages: (await import(`../messages/${context.locale}.json`)).default
+    },
+  }
 }
