@@ -3,17 +3,29 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
+import { getAuth, signOut } from 'firebase/auth'
 import { useAuth } from '@animato/context/authUserContext'
 import Button from '@animato/components/button/Button'
-import SignupDialog from '@animato/pages/signup-dialog/SignupDialog'
+import SignupDialog from '@animato/components/signup-dialog/SignupDialog'
+import LoginDialog from '@animato/components/login-dialog/LoginDialog'
 import styles from '@animato/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false)
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
 
   const authUserContext = useAuth()
+
+  const logOut = () => {
+    const auth = getAuth()
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
 
   return (
     <>
@@ -44,7 +56,7 @@ export default function Home() {
             <Button 
               variant="secondary-inverted" 
               size="medium"
-              onClick={() => {}}
+              onClick={logOut}
             >
               Log out
             </Button>
@@ -53,7 +65,7 @@ export default function Home() {
             <Button 
               variant="secondary-inverted" 
               size="medium"
-              onClick={() => {}}
+              onClick={() => setIsLoginDialogOpen(true)}
             >
               Log in
             </Button>
@@ -94,6 +106,10 @@ export default function Home() {
       <SignupDialog
         isOpen={isSignupDialogOpen} 
         onClose={() => setIsSignupDialogOpen(false)} 
+      />
+      <LoginDialog
+        isOpen={isLoginDialogOpen} 
+        onClose={() => setIsLoginDialogOpen(false)} 
       />
     </>
   )

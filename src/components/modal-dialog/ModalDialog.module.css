@@ -1,0 +1,25 @@
+.content {
+  display: flex;
+  max-width: 40rem;
+  width: 100%;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  transition: all 200ms ease-in;
+  cursor: pointer;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .closeButton:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}

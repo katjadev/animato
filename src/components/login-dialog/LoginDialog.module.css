@@ -1,9 +1,3 @@
-.content {
-  display: flex;
-  max-width: 40rem;
-  width: 100%;
-}
-
 .left {
   background: linear-gradient(146.71deg, #510BC4 0%, #90088A 50.64%, #C8074E 99.21%);
   flex: 1;
@@ -37,28 +31,8 @@
   margin-bottom: 1rem;
 }
 
-.closeButton {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  transition: all 200ms ease-in;
-  cursor: pointer;
-}
-
 .dialogHeader {
   color: var(--text-default);
   margin-bottom: 1rem;
   font-weight: 900;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .closeButton:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
 }
