@@ -1,11 +1,16 @@
+@import url("/icomoon/style.css");
+
 :root {
   --text-default: #333333;
   --text-inverted: #ffffff;
 
   --foreground-rgb: 255, 255, 255;
+  --background-base: #ffffff;
   --background-start: #380656;
   --background-middle: #140030;
   --background-end: #30054B;
+
+  --border-base: #cccccc;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,0 +1,15 @@
+.label {
+  font-weight: 700;
+  color: var(--text-default);
+  font-size: 0.7rem;
+}
+
+.input {
+  background: var(--background-base);
+  border: 1px solid var(--border-base);
+  border-radius: 5px;
+  width: 100%;
+  height: 2.2rem;
+  padding: 0.5rem;
+  font-family: inherit;
+}

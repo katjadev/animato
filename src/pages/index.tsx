@@ -1,13 +1,20 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
+import { useAuth } from '@animato/context/authUserContext'
 import Button from '@animato/components/button/Button'
+import SignupDialog from '@animato/pages/signup-dialog/SignupDialog'
 import styles from '@animato/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false)
+
+  const authUserContext = useAuth()
+
   return (
     <>
       <Head>
@@ -32,13 +39,25 @@ export default function Home() {
             />
             <span>Animato</span>
           </Link>
-          <Button 
-            variant="secondary-inverted" 
-            size="medium"
-            onClick={() => {}}
-          >
-            Log in
-          </Button>
+          
+          {authUserContext?.email && (
+            <Button 
+              variant="secondary-inverted" 
+              size="medium"
+              onClick={() => {}}
+            >
+              Log out
+            </Button>
+          )}
+          {!authUserContext?.email && (
+            <Button 
+              variant="secondary-inverted" 
+              size="medium"
+              onClick={() => {}}
+            >
+              Log in
+            </Button>
+          )}
         </header>
         <div className={styles.description}>
           <div className={styles.descriptionContent}>
@@ -52,13 +71,15 @@ export default function Home() {
               that capture your audience&apos;s attention.
             </p>
             <div className={styles.buttons}>
-              <Button 
-                variant="primary"
-                size="large"
-                onClick={() => {}}
-              >
-                Get Started
-              </Button>
+              {!authUserContext?.email && (
+                <Button 
+                  variant="primary"
+                  size="large"
+                  onClick={() => setIsSignupDialogOpen(true)}
+                >
+                  Get Started
+                </Button>
+              )}
               <Button 
                 variant="secondary-inverted"
                 size="large"
@@ -70,6 +91,10 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <SignupDialog
+        isOpen={isSignupDialogOpen} 
+        onClose={() => setIsSignupDialogOpen(false)} 
+      />
     </>
   )
 }
