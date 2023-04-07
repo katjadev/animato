@@ -15,7 +15,7 @@ export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
     auth.onAuthStateChanged(() => {
       setCurrentUser(auth.currentUser)
     })
-  }, [])
+  }, [auth])
 
   return (
     <AuthUserContext.Provider value={currentUser}>{children}</AuthUserContext.Provider>
