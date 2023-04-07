@@ -6,6 +6,7 @@
 
 .quote {
   background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-inverted);
   padding: 2rem;
 }
 
