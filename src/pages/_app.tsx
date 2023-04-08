@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthUserContext.Consumer>
           {({ loading }) => (
             <>
-              {loading && (<>Loading...</>)}
+              {loading && (<></>)}
               {!loading && <Component {...pageProps} />}
             </>
           )}
