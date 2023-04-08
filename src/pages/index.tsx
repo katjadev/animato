@@ -85,7 +85,7 @@ export default function Home() {
               <Button 
                 variant='secondary-inverted'
                 size='large'
-                onClick={() => {}}
+                href='/projects/demo-project'
               >
                 {t('explore-demo-project')}
               </Button>

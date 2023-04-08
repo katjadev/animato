@@ -1,4 +1,5 @@
 import { FC, MouseEventHandler } from 'react'
+import Link from 'next/link'
 import styles from './Button.module.css'
 
 interface ButtonProps {
@@ -6,6 +7,7 @@ interface ButtonProps {
   size: 'large' | 'medium' | 'small';
   className?: string;
   children?: React.ReactNode;
+  href?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -14,11 +16,23 @@ const Button: FC<ButtonProps> = ({
   size,
   className,
   children,
+  href,
   onClick,
 }) => {
+  if (href) {
+    return (
+      <Link 
+        className={`${styles.button} ${styles[variant]} ${styles[size]} ${className || ''}`}
+        href={href}
+      >
+        {children}
+      </Link> 
+    )
+  }
+
   return (
     <button 
-      className={`${styles.button} ${styles[variant]} ${styles[size]} ${className}`}
+      className={`${styles.button} ${styles[variant]} ${styles[size]} ${className || ''}`}
       onClick={onClick}
     >
       {children}

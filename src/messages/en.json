@@ -20,6 +20,14 @@
     "projects": "Projects",
     "profile": "Profile",
     "new-project": "New project",
-    "empty-message": "You don't have any projects yet."
+    "empty-message": "You don't have any projects yet.",
+    "title": "Title",
+    "last-modified": "Last modified",
+    "actions": "Actions",
+    "open": "Open",
+    "delete-project": "Delete project"
+  },
+  "project": {
+    "profile": "Profile"
   }
 }

@@ -14,8 +14,8 @@
 
 .button.secondary {
   background: none;
-  border: 1px solid var(--text-default);
-  color: var(--text-default);
+  border: 1px solid var(--border-base);
+  color: var(--text-base);
 }
 
 .button.secondary-inverted {
@@ -36,6 +36,12 @@
   font-size: 1rem;
 }
 
+.button.small {
+  border-radius: 4px;
+  padding: 0.3rem 1.4rem;
+  font-size: 0.8rem;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .button:after {
@@ -51,9 +57,13 @@
     width: 50px;
     z-index: 2;
   }
-  
+
   .button:hover:after {
     left: 120%;
     transition: left 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .button.secondary:after {
+    display: none;
   }
 }
