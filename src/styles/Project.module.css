@@ -63,6 +63,8 @@
 
 .preview svg {
   background-color: white;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .timeline {
