@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
-import { getDatabase, ref, set, onValue, remove } from 'firebase/database'
 import { Project } from '@animato/types'
 import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
+import ElementTree from '@animato/components/element-tree/ElementTree'
 import styles from '@animato/styles/Project.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -60,7 +60,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
             </header>
             <div className={styles.content}>
               <div className={styles.elements}>
-                <h2 className={styles.elementsTitle}>{t('elements')}</h2>
+                <ElementTree content={project.data} />
               </div>
               <div 
                 className={styles.preview}

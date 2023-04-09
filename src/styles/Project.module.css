@@ -46,12 +46,6 @@
   width: 15rem;
   border-right: 1px solid var(--border-base);
   flex: 0 0 auto;
-  padding: 1rem;
-  overflow: auto;
-}
-
-.elementsTitle {
-  font-size: 0.8rem;
 }
 
 .preview {
@@ -59,12 +53,14 @@
   background-color: var(--background-secondary);
   padding: 1rem;
   overflow: auto;
+  display: flex;
+  align-items: center;
 }
 
 .preview svg {
+  flex-shrink: 0;
   background-color: white;
-  min-width: 100%;
-  min-height: 100%;
+  margin: 0 auto;
 }
 
 .timeline {

@@ -1,0 +1,34 @@
+.elements {
+  padding: 1rem;
+  overflow: auto;
+}
+
+.title {
+  font-size: 0.8rem;
+  padding-bottom: 0.5rem;
+}
+
+.treeNode {
+  padding: 0.2rem 0 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 200;
+}
+
+.nodeTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nodeTitle.lastChild {
+  padding-left: 1.6rem;
+}
+
+.collapseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  width: 1rem;
+  font-size: 1rem;
+}
