@@ -60,7 +60,10 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
             </header>
             <div className={styles.content}>
               <div className={styles.elements}>
-                <ElementTree content={project.data} />
+                <ElementTree 
+                  projectId={project.id} 
+                  content={project.data}
+                />
               </div>
               <div 
                 className={styles.preview}
