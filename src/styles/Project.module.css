@@ -1,0 +1,73 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  color: var(--text-default);
+}
+
+.main > * {
+  flex: 0 0 auto;			
+  overflow: auto;		
+}
+
+.header {
+  display: flex;
+  padding: 0 1rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--border-base);
+  height: 3rem;
+  overflow: hidden;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.heading {
+  font-size: 0.8rem;
+  font-weight: 200;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+.elements {
+  width: 15rem;
+  border-right: 1px solid var(--border-base);
+  flex: 0 0 auto;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.elementsTitle {
+  font-size: 0.8rem;
+}
+
+.preview {
+  flex: 1 1 auto;
+  background-color: var(--background-secondary);
+  padding: 1rem;
+  overflow: auto;
+}
+
+.preview svg {
+  background-color: white;
+}
+
+.timeline {
+  width: 100%;
+  height: 15rem;
+  border-top: 1px solid var(--border-base);
+  flex: 0 0 auto;
+}

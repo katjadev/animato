@@ -28,6 +28,14 @@
     "delete-project": "Delete project"
   },
   "project": {
-    "profile": "Profile"
+    "profile": "Profile",
+    "undo": "Undo",
+    "redo": "Redo",
+    "elements": "Elements"
+  },
+  "main-menu": {
+    "import-svg": "Import SVG",
+    "export": "Export",
+    "back-to-projects": "Back to projects"
   }
 }

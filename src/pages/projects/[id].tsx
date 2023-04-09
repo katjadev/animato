@@ -10,7 +10,7 @@ import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
-import styles from '@animato/styles/ProjectList.module.css'
+import styles from '@animato/styles/Project.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,16 +43,33 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <header className={styles.header}>
-          <Logo variant='standard' />
-          <IconButton 
-            icon='icon-person' 
-            ariaLabel={t('profile')}
-            onClick={() => {}}
-          />
-        </header>
         {project !== null && (
-          <h1 className={styles.heading}>{project.title}</h1>
+          <>
+            <header className={styles.header}>
+              <div className={styles.left}>
+                <Logo variant='compact' />
+                <IconButton icon='icon-undo' ariaLabel={t('undo')} />
+                <IconButton icon='icon-redo' ariaLabel={t('redo')} />
+              </div>
+              <h1 className={styles.heading}>{project.title}</h1>
+              <IconButton 
+                icon='icon-person' 
+                ariaLabel={t('profile')}
+                onClick={() => {}}
+              />
+            </header>
+            <div className={styles.content}>
+              <div className={styles.elements}>
+                <h2 className={styles.elementsTitle}>{t('elements')}</h2>
+              </div>
+              <div 
+                className={styles.preview}
+                dangerouslySetInnerHTML={{ __html: project.data }}
+              />
+            </div>
+            <div className={styles.timeline}>
+            </div>
+          </>
         )}
       </main>
     </>

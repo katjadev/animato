@@ -1,0 +1,23 @@
+.menuItem {
+  padding: 0;
+  list-style-type: none;
+}
+
+.button {
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+  transition: background-color 200ms ease-in;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background-color: var(--background-hover);
+  }
+}

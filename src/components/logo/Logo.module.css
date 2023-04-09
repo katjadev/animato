@@ -4,6 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms ease-in;
 }
 
 .logo.standard {
@@ -14,7 +18,20 @@
   color: var(--text-inverted);
 }
 
+.logo.compact {
+  height: 3rem;
+  padding: 0 0.3rem;
+  font-size: 1rem;
+}
+
 .logoImage {
   display: inline-block;
   margin-right: 0.3rem;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .logo.compact:hover {
+    background-color: var(--background-hover);
+  }
 }
