@@ -10,6 +10,7 @@ import { subscribeToProject } from '@animato/pages/api/projects'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
 import ElementTree from '@animato/components/element-tree/ElementTree'
+import AnimationArea from '@animato/components/animation-area/AnimationArea'
 import styles from '@animato/styles/Project.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -70,7 +71,11 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
                 dangerouslySetInnerHTML={{ __html: project.data }}
               />
             </div>
-            <div className={styles.timeline}>
+            <div className={styles.animations}>
+              <AnimationArea
+                projectId={project.id} 
+                content={project.data}
+              />
             </div>
           </>
         )}
