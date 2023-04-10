@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { Project } from '@animato/types'
+import { ALLOWED_SVG_ELEMENTS } from '@animato/constants';
 import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
 import Logo from '@animato/components/logo/Logo'
@@ -23,8 +24,10 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
   const t = useTranslations('project')
   const router = useRouter()
   const authUserContext = useAuth()
+  const previewRef = useRef<HTMLDivElement>(null)
   
   const [project, setProject] = useState<Project | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     if (!authUserContext.currentUser && projectId !== 'demo-project') {
@@ -34,6 +37,22 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
 
     subscribeToProject(projectId, authUserContext.currentUser, setProject)
   }, [authUserContext, projectId])
+
+  const play = () => {
+    setIsPlaying(true)
+    if (previewRef.current) {
+      const nodes = previewRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
+      nodes.forEach((node) => node.dispatchEvent(new CompositionEvent('compositionstart')))
+    }
+  }
+
+  const pause = () => {
+    setIsPlaying(false)
+    if (previewRef.current) {
+      const nodes = previewRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
+      nodes.forEach((node) => node.dispatchEvent(new CompositionEvent('compositionend')))
+    }
+  }
 
   return(
     <>
@@ -68,6 +87,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
               </div>
               <div 
                 className={styles.preview}
+                ref={previewRef}
                 dangerouslySetInnerHTML={{ __html: project.data }}
               />
             </div>
@@ -75,6 +95,9 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
               <AnimationArea
                 projectId={project.id} 
                 content={project.data}
+                isPlaying={isPlaying}
+                onPlay={play}
+                onPause={pause}
               />
             </div>
           </>

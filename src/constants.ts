@@ -1,0 +1,1 @@
+export const ALLOWED_SVG_ELEMENTS = ['g', 'path', 'rect', 'circle', 'use']

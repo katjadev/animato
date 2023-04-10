@@ -68,4 +68,5 @@
   height: 15rem;
   border-top: 1px solid var(--border-base);
   flex: 0 0 auto;
+  position: relative;
 }

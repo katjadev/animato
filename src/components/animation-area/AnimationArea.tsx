@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon';
 import styles from './AnimationArea.module.css'
@@ -6,14 +6,18 @@ import styles from './AnimationArea.module.css'
 interface AnimationAreaProps {
   projectId: string;
   content: string;
+  isPlaying: boolean;
+  onPlay: () => void;
+  onPause: () => void;
 }
 
 const AnimationArea: FC<AnimationAreaProps> = ({
   projectId,
   content,
+  isPlaying,
+  onPlay,
+  onPause,
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -26,12 +30,14 @@ const AnimationArea: FC<AnimationAreaProps> = ({
             <IconButton
               icon='icon-play_arrow'
               ariaLabel='Play'
+              onClick={onPlay}
             />
           )}
           {isPlaying && (
             <IconButton
               icon='icon-pause'
-              ariaLabel='Play'
+              ariaLabel='Pause'
+              onClick={onPause}
             />
           )}
           <div className={styles.timer}>
@@ -98,6 +104,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
           <div className={styles.animation} />
         </div>
       </div>
+      <div className={styles.scrollbar}></div>
     </div>
   )
 }

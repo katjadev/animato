@@ -1,6 +1,7 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
+import { ALLOWED_SVG_ELEMENTS } from '@animato/constants';
 import Icon from '@animato/components/icon/Icon';
 import styles from './ElementTree.module.css'
 
@@ -10,8 +11,6 @@ type ElementTreeNode = {
   element: Element,
   children: ElementTreeNode[],
 }
-
-const ALLOWED_NODES = ['g', 'path', 'rect', 'circle']
 
 interface ElementTreeProps {
   projectId: string;
@@ -32,7 +31,7 @@ const ElementTree: FC<ElementTreeProps> = ({
     
     const makeTree = (currentElement: Element): ElementTreeNode[] => {
       const children = Array.from(currentElement.children)
-        .filter((element) => ALLOWED_NODES.includes(element.nodeName))
+        .filter((element) => ALLOWED_SVG_ELEMENTS.includes(element.nodeName))
 
       return children.map((element) => ({
         id: element.getAttribute('id') || uuidv4(),
