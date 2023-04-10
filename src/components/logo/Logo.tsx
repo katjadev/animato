@@ -60,10 +60,10 @@ const Logo: FC<LogoProps> = ({ variant, className }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>{t('import-svg')}</MenuItem>
-        <MenuItem onClick={handleClose}>{t('export')}</MenuItem>
+        <MenuItem icon='icon-file_upload' onClick={handleClose}>{t('import-svg')}</MenuItem>
+        <MenuItem icon='icon-file_download' onClick={handleClose}>{t('export')}</MenuItem>
         <MenuItemDivider />
-        <MenuItem href='/projects'>{t('back-to-projects')}</MenuItem>
+        <MenuItem icon='icon-keyboard_backspace' href='/projects'>{t('back-to-projects')}</MenuItem>
       </Menu>
       </>
     )

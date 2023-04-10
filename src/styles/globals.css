@@ -13,6 +13,9 @@
   --background-end: #30054B;
 
   --border-base: #cccccc;
+  --highlight-1: #C8074E;
+  --highlight-2: #90088A;
+  --highlight-3: #510BC4;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -58,26 +58,28 @@ const ElementTree: FC<ElementTreeProps> = ({
     }
   }
 
-  const renderTree = (list: ElementTreeNode[]): ReactNode => (
+  const renderTree = (list: ElementTreeNode[], level: number): ReactNode => (
     <>
       {list.map((element: ElementTreeNode) => (
         <div 
           key={element.id} 
           className={styles.treeNode}
         >
-          <div className={`${styles.nodeTitle} ${!element.children.length ? styles.lastChild : ''}`}>
-            {element.children.length > 0 && (
-              <button
-                className={styles.collapseButton}
-                onClick={() => toggleNode(element.id)}
-              >
-                <Icon icon={collapsedNodes.includes(element.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />
-              </button>
-            )}
-            <div>{element.title}</div>
+          <div className={styles.nodeTitle}>
+            <div className={`${styles.nodeTitleIn} ${styles[`level${level}`]}`}>
+              {element.children.length > 0 && (
+                <button
+                  className={styles.collapseButton}
+                  onClick={() => toggleNode(element.id)}
+                >
+                  <Icon icon={collapsedNodes.includes(element.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />
+                </button>
+              )}
+              <div>{element.title}</div>
+            </div>
           </div>
           {element.children.length > 0 && !collapsedNodes.includes(element.id) && (
-            <>{renderTree(element.children)}</>
+            <>{renderTree(element.children, level + 1)}</>
           )}
         </div>
       ))}
@@ -87,7 +89,7 @@ const ElementTree: FC<ElementTreeProps> = ({
   return (
     <div className={styles.elements}>
       <h2 className={styles.title}>{t('elements')}</h2>
-      {renderTree(elements)}
+      {renderTree(elements, 0)}
     </div>
   )
 }

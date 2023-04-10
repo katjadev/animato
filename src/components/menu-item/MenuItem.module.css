@@ -4,7 +4,7 @@
 }
 
 .button {
-  display: block;
+  display: flex;
   background: none;
   border: 0;
   padding: 0.8rem 1rem;
@@ -12,7 +12,13 @@
   font-family: inherit;
   width: 100%;
   text-align: left;
+  align-items: center;
+  gap: 0.5rem;
   transition: background-color 200ms ease-in;
+}
+
+.icon {
+  font-size: 1rem;
 }
 
 /* Enable hover only on non-touch devices */
