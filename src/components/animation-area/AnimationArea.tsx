@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon';
+import Timeline from '@animato/components/timeline/Timeline';
 import styles from './AnimationArea.module.css'
 
 interface AnimationAreaProps {
@@ -18,6 +19,15 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   onPlay,
   onPause,
 }) => {
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const [timelineWidth, setTimelineWidth] = useState(0)
+
+  useEffect(() => {
+    if (timelineRef.current) {
+      setTimelineWidth(timelineRef.current.getBoundingClientRect().width)
+    }
+  }, [timelineRef.current])
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -91,17 +101,22 @@ const AnimationArea: FC<AnimationAreaProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <div className={styles.timeline}></div>
-        <div className={styles.elements}>
-          <div className={`${styles.element} ${styles.selected}`} />
-          <div className={styles.animation} />
-          <div className={styles.animation} />
-          <div className={styles.element} />
-          <div className={styles.animation} />
-          <div className={styles.element} />
-          <div className={styles.animation} />
-          <div className={styles.animation} />
-          <div className={styles.animation} />
+        <div 
+          ref={timelineRef} 
+          className={styles.timeline}
+        >
+          <Timeline />
+        </div>
+        <div className={styles.elements} style={{ width: `${timelineWidth}px` }}>
+          <div className={`${styles.keyframesEl} ${styles.selected}`} />
+          <div className={styles.keyframes} />
+          <div className={styles.keyframes} />
+          <div className={styles.keyframesEl} />
+          <div className={styles.keyframes} />
+          <div className={styles.keyframesEl} />
+          <div className={styles.keyframes} />
+          <div className={styles.keyframes} />
+          <div className={styles.keyframes} />
         </div>
       </div>
       <div className={styles.scrollbar}></div>
