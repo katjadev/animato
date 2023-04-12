@@ -36,7 +36,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
     }
 
     subscribeToProject(projectId, authUserContext.currentUser, setProject)
-  }, [authUserContext, projectId])
+  }, [authUserContext, projectId, router])
 
   const play = () => {
     setIsPlaying(true)

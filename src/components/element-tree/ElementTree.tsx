@@ -47,7 +47,7 @@ const ElementTree: FC<ElementTreeProps> = ({
   
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-elements`, JSON.stringify(collapsedNodes))
-  }, [collapsedNodes])
+  }, [collapsedNodes, projectId])
 
   const toggleNode = (elementId: string): void => {
     if (collapsedNodes.includes(elementId)) {

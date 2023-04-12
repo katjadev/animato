@@ -54,7 +54,7 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
     }
 
     onZoom && onZoom(zoom)
-  }, [zoom])
+  }, [zoom, currentBreakpoint, onZoom])
   
   const handleZoom = (event: React.WheelEvent) => {
     if (event.deltaY > 0 && zoom > MIN_ZOOM) { // zoom out
@@ -102,5 +102,7 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
     </>
   )
 })
+
+Timeline.displayName = 'Timeline'
 
 export default Timeline

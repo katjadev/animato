@@ -48,7 +48,7 @@ export default function useCustomScrollbar() {
     if (scrollbarRef.current) {
       scrollbarRef.current.style.marginLeft = `${scrollbarMargin}px`
     }
-  }, []);
+  }, [scrollbarMargin]);
 
   const handleThumbMouseDown = useCallback((event: MouseEvent) => {
     event.preventDefault()
@@ -64,7 +64,7 @@ export default function useCustomScrollbar() {
       setIsDragging(false)
       setScrollbarMargin(scrollbarRef.current.style.marginLeft ? parseInt(scrollbarRef.current.style.marginLeft) : 0)
     }
-  }, [isDragging])
+  }, [isDragging, scrollbarRef.current])
   
   const handleThumbMouseMove = useCallback((event: MouseEvent) => {
       event.preventDefault()
@@ -85,7 +85,7 @@ export default function useCustomScrollbar() {
         scrollbarRef.current.style.marginLeft = `${scrollbarMargin + (event.clientX - scrollStartPosition)}px`
       }
     },
-    [isDragging, scrollStartPosition, scrollbarWidth, scrollbarMargin]
+    [isDragging, scrollStartPosition, scrollbarWidth, scrollbarMargin, currentScroll]
   )
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function useCustomScrollbar() {
       document.removeEventListener('mouseleave', handleThumbMouseUp)
       scrollbarRef.current.removeEventListener('mousedown', handleThumbMouseDown)
     }
-  })
+  }, [scrollbarRef.current])
 
   return { 
     containerRef, 
