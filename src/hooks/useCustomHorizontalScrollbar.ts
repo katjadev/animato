@@ -67,26 +67,36 @@ export default function useCustomScrollbar() {
   }, [isDragging, scrollbarRef.current])
   
   const handleThumbMouseMove = useCallback((event: MouseEvent) => {
-      event.preventDefault()
-      event.stopPropagation()
-      if (!isDragging || !contentRef.current || !containerRef.current || !scrollbarRef.current) {
-        return
-      }
+    event.preventDefault()
+    event.stopPropagation()
+    
+    if (!isDragging || !contentRef.current || !containerRef.current || !scrollbarRef.current) {
+      return
+    }
+    
+    const containerWidth = containerRef.current.offsetWidth
+    const contentWidth = contentRef.current.offsetWidth
 
-      const containerWidth = containerRef.current.offsetWidth
-      const contentWidth = contentRef.current.offsetWidth
+    const deltaY = (event.clientX - scrollStartPosition) * (containerWidth / scrollbarWidth)
+    const scroll = currentScroll + deltaY
 
-      const deltaY = (event.clientX - scrollStartPosition) * (containerWidth / scrollbarWidth)
-      const scroll = currentScroll + deltaY
-
-      if (scroll >= 0 && scroll <= contentWidth - containerWidth) {
-        setCurrentScroll(scroll)
-        contentRef.current.style.marginLeft = `-${scroll}px`
-        scrollbarRef.current.style.marginLeft = `${scrollbarMargin + (event.clientX - scrollStartPosition)}px`
-      }
-    },
-    [isDragging, scrollStartPosition, scrollbarWidth, scrollbarMargin, currentScroll]
-  )
+    if (scroll >= 0 && scroll <= contentWidth - containerWidth) {
+      setCurrentScroll(scroll)
+      contentRef.current.style.marginLeft = `-${scroll}px`
+      scrollbarRef.current.style.marginLeft = `${scrollbarMargin + (event.clientX - scrollStartPosition)}px`
+    } else if (scroll < 0) {
+      contentRef.current.style.marginLeft = '0px'
+      scrollbarRef.current.style.marginLeft = '0px'
+    }
+  }, [
+    isDragging, 
+    scrollStartPosition, 
+    scrollbarWidth, 
+    scrollbarMargin,
+    contentRef.current,
+    containerRef.current,
+    scrollbarRef.current,
+  ])
 
   useEffect(() => {
     if (!scrollbarRef.current) {
@@ -108,7 +118,7 @@ export default function useCustomScrollbar() {
       document.removeEventListener('mouseleave', handleThumbMouseUp)
       scrollbarRef.current.removeEventListener('mousedown', handleThumbMouseDown)
     }
-  }, [scrollbarRef.current])
+  })
 
   return { 
     containerRef, 
