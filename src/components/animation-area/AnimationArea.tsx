@@ -28,6 +28,12 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     }
   }, [timelineRef.current])
 
+  const handleZoom = () => {
+    if (timelineRef.current) {
+      setTimelineWidth(timelineRef.current.getBoundingClientRect().width)
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -105,7 +111,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
           ref={timelineRef} 
           className={styles.timeline}
         >
-          <Timeline />
+          <Timeline onZoom={handleZoom} />
         </div>
         <div className={styles.elements} style={{ width: `${timelineWidth}px` }}>
           <div className={`${styles.keyframesEl} ${styles.selected}`} />
