@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, RefObject, forwardRef, useEffect, useState } from 'react'
 import { MAX_DURATION } from '@animato/constants'
 
-const PADDING = 0.5
+const PADDING = 1
 const MAX_ZOOM = 60
 const MIN_ZOOM = 10
 const MARK_SIZE_BASE = 1
@@ -13,10 +13,11 @@ type Mark = {
 }
 
 interface TimelineProps {
-  onZoom: () => void;
+  ref: any,
+  onZoom?: (level: number) => void;
 }
 
-const Timeline: FC<TimelineProps> = ({ onZoom }) => {
+const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ onZoom }, ref) => {
   const [zoom, setZoom] = useState(MAX_ZOOM)
   const [markSize, setMarkSize] = useState(MARK_SIZE_BASE)
   const [marks, setMarks] = useState<Mark[]>([])
@@ -50,7 +51,8 @@ const Timeline: FC<TimelineProps> = ({ onZoom }) => {
         height: index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2),
       })))
     }
-    onZoom()
+
+    onZoom && onZoom(zoom)
   }, [zoom])
   
   const handleZoom = (event: React.WheelEvent) => {
@@ -66,6 +68,7 @@ const Timeline: FC<TimelineProps> = ({ onZoom }) => {
     <svg 
       width={`${marks.length * markSize + PADDING * 2}rem`} 
       height='3rem'
+      ref={ref}
       onWheel={handleZoom}
     >
       {marks.map((mark, index) => {
@@ -94,6 +97,6 @@ const Timeline: FC<TimelineProps> = ({ onZoom }) => {
       })}
     </svg>
   )
-}
+})
 
 export default Timeline

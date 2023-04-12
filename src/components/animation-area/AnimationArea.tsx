@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react'
+import useCustomHorizontalScrollbar from '@animato/hooks/useCustomHorizontalScrollbar'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon';
 import Timeline from '@animato/components/timeline/Timeline';
@@ -19,20 +20,28 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   onPlay,
   onPause,
 }) => {
-  const timelineRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<SVGSVGElement>(null)
+  const observer = useRef<ResizeObserver | null>(null)
   const [timelineWidth, setTimelineWidth] = useState(0)
+
+  const { 
+    containerRef, 
+    contentRef, 
+    scrollbarRef,
+  } = useCustomHorizontalScrollbar()
 
   useEffect(() => {
     if (timelineRef.current) {
-      setTimelineWidth(timelineRef.current.getBoundingClientRect().width)
+      const ref = timelineRef.current;
+      observer.current = new ResizeObserver(() => {
+        setTimelineWidth(ref.getBoundingClientRect().width)
+      });
+      observer.current.observe(ref);
+      return () => {
+        observer.current?.unobserve(ref);
+      };
     }
-  }, [timelineRef.current])
-
-  const handleZoom = () => {
-    if (timelineRef.current) {
-      setTimelineWidth(timelineRef.current.getBoundingClientRect().width)
-    }
-  }
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -106,26 +115,35 @@ const AnimationArea: FC<AnimationAreaProps> = ({
           </div>
         </div>
       </div>
-      <div className={styles.right}>
-        <div 
-          ref={timelineRef} 
-          className={styles.timeline}
+      <div 
+        className={styles.right} 
+        ref={containerRef}
+      >
+        <div
+          className={styles.rightContent}
+          ref={contentRef}
+          style={{ width: `${timelineWidth}px` }}
         >
-          <Timeline onZoom={handleZoom} />
-        </div>
-        <div className={styles.elements} style={{ width: `${timelineWidth}px` }}>
-          <div className={`${styles.keyframesEl} ${styles.selected}`} />
-          <div className={styles.keyframes} />
-          <div className={styles.keyframes} />
-          <div className={styles.keyframesEl} />
-          <div className={styles.keyframes} />
-          <div className={styles.keyframesEl} />
-          <div className={styles.keyframes} />
-          <div className={styles.keyframes} />
-          <div className={styles.keyframes} />
+          <div className={styles.timeline} >
+            <Timeline ref={timelineRef} />
+          </div>
+          <div>
+            <div className={`${styles.keyframesEl} ${styles.selected}`} />
+            <div className={styles.keyframes} />
+            <div className={styles.keyframes} />
+            <div className={styles.keyframesEl} />
+            <div className={styles.keyframes} />
+            <div className={styles.keyframesEl} />
+            <div className={styles.keyframes} />
+            <div className={styles.keyframes} />
+            <div className={styles.keyframes} />
+          </div>
         </div>
       </div>
-      <div className={styles.scrollbar}></div>
+      <div 
+        className={styles.scrollbar}
+        ref={scrollbarRef}
+      />
     </div>
   )
 }
