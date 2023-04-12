@@ -1,5 +1,6 @@
-import { FC, RefObject, forwardRef, useEffect, useState } from 'react'
+import { FC, forwardRef, useEffect, useState } from 'react'
 import { MAX_DURATION } from '@animato/constants'
+import styles from './Timeline.module.css'
 
 const PADDING = 1
 const MAX_ZOOM = 60
@@ -65,37 +66,40 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
   }
 
   return (
-    <svg 
-      width={`${marks.length * markSize + PADDING * 2}rem`} 
-      height='3rem'
-      ref={ref}
-      onWheel={handleZoom}
-    >
-      {marks.map((mark, index) => {
-        const step = index * markSize + PADDING
-        
-        return (
-          <g key={index}>
-            <line 
-              x1={`${step}rem`} 
-              y1='3rem' 
-              x2={`${step}rem`} 
-              y2={`${mark.height}rem`} 
-              stroke='var(--border-darker)' 
-            />
-            <text 
-              x={`${step}rem`}
-              y="0.8rem"
-              fontSize="0.7rem"
-              textAnchor="middle"
-              color='var(--text-base)'
-            >
-              {mark.title}
-            </text>
-          </g>
-        )
-      })}
-    </svg>
+    <>
+      <svg 
+        width={`${marks.length * markSize + PADDING * 2}rem`} 
+        height='3rem'
+        ref={ref}
+        onWheel={handleZoom}
+      >
+        {marks.map((mark, index) => {
+          const step = index * markSize + PADDING
+          
+          return (
+            <g key={index}>
+              <line 
+                x1={`${step}rem`} 
+                y1='3rem' 
+                x2={`${step}rem`} 
+                y2={`${mark.height}rem`} 
+                stroke='var(--border-darker)' 
+              />
+              <text 
+                x={`${step}rem`}
+                y="0.8rem"
+                fontSize="0.7rem"
+                textAnchor="middle"
+                color='var(--text-base)'
+              >
+                {mark.title}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+      <div className={styles.pointer} />
+    </>
   )
 })
 
