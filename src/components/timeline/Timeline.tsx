@@ -11,6 +11,7 @@ const ZOOM_BREAKPOINTS = [60, 30, 15]
 type Mark = {
   title: string,
   height: number,
+  position: number,
 }
 
 interface TimelineProps {
@@ -40,16 +41,19 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
       setMarks(Array.from(Array(MAX_DURATION / 6 + 1).keys()).map((index) => ({
         title: index % 10 === 0 ? `${index / 10}m` : '',
         height: index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2),
+        position: index * markSize + PADDING,
       })))
     } else if (zoom <= 30) {
       setMarks(Array.from(Array(MAX_DURATION + 1).keys()).map((index) => ({
         title: index % 10 === 0 ? `${index}s` : '',
         height: index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2),
+        position: index * markSize + PADDING,
       })))
     } else {
       setMarks(Array.from(Array(MAX_DURATION * 10 + 1).keys()).map((index) => ({
         title: index % 10 === 0 ? `${index / 10}s` : '',
         height: index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2),
+        position: index * markSize + PADDING,
       })))
     }
 
@@ -73,30 +77,26 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
         ref={ref}
         onWheel={handleZoom}
       >
-        {marks.map((mark, index) => {
-          const step = index * markSize + PADDING
-          
-          return (
-            <g key={index}>
-              <line 
-                x1={`${step}rem`} 
-                y1='3rem' 
-                x2={`${step}rem`} 
-                y2={`${mark.height}rem`} 
-                stroke='var(--border-darker)' 
-              />
-              <text 
-                x={`${step}rem`}
-                y="0.8rem"
-                fontSize="0.7rem"
-                textAnchor="middle"
-                color='var(--text-base)'
-              >
-                {mark.title}
-              </text>
-            </g>
-          )
-        })}
+        {marks.map((mark, index) => (
+          <g key={index}>
+            <line 
+              x1={`${mark.position}rem`} 
+              y1='3rem' 
+              x2={`${mark.position}rem`} 
+              y2={`${mark.height}rem`} 
+              stroke='var(--border-darker)' 
+            />
+            <text 
+              x={`${mark.position}rem`}
+              y="0.8rem"
+              fontSize="0.7rem"
+              textAnchor="middle"
+              color='var(--text-base)'
+            >
+              {mark.title}
+            </text>
+          </g>
+        ))}
       </svg>
       <div className={styles.pointer} />
     </>
