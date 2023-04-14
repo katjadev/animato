@@ -5,20 +5,31 @@ interface IconButtonProps {
   icon: string;
   ariaLabel: string;
   className?: string;
+  disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const IconButton: FC<IconButtonProps> = ({ 
   icon, 
   ariaLabel,
-  className, 
+  className,
+  disabled,
   onClick,
-}) => (
-  <button 
-    className={`${icon} ${styles.iconButton} ${className}`} 
-    aria-label={ariaLabel}
-    onClick={onClick}
-  ></button>
-)
+}) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!disabled) {
+      onClick && onClick(event)
+    }
+  }
+
+  return (
+    <button 
+      className={`${icon} ${styles.iconButton} ${className || ''}`} 
+      aria-label={ariaLabel}
+      aria-disabled={disabled}
+      onClick={handleClick}
+    ></button>
+  )
+}
 
 export default IconButton

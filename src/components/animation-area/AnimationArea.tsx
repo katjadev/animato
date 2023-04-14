@@ -4,6 +4,7 @@ import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon';
 import Timeline from '@animato/components/timeline/Timeline';
 import styles from './AnimationArea.module.css'
+import moment from 'moment';
 
 interface AnimationAreaProps {
   projectId: string;
@@ -23,10 +24,15 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   const timelineRef = useRef<SVGSVGElement>(null)
   const observer = useRef<ResizeObserver | null>(null)
   const [timelineWidth, setTimelineWidth] = useState(0)
+  const [currentTimeMillis, setCurrentTimeMillis] = useState(0)
 
-  const { 
-    containerRef, 
-    contentRef, 
+  const [timeMinutes, setTimeMinutes] = useState('00')
+  const [timeSeconds, setTimeSeconds] = useState('00')
+  const [timeMilliseconds, setTimeMilliseconds] = useState('000')
+
+  const {
+    containerRef,
+    contentRef,
     scrollbarRef,
   } = useCustomHorizontalScrollbar()
 
@@ -43,13 +49,26 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    const momentObject = moment({
+      minutes: Math.floor(currentTimeMillis / (1000 * 60)),
+      seconds: Math.floor(currentTimeMillis / 1000) % 60,
+      milliseconds: currentTimeMillis % 1000,
+    })
+    setTimeMilliseconds(momentObject.format('SSS'))
+    setTimeSeconds(momentObject.format('ss'))
+    setTimeMinutes(momentObject.format('mm'))
+  }, [currentTimeMillis])
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.controls}>
           <IconButton
             icon='icon-skip_previous'
-            ariaLabel='Play'
+            ariaLabel='Restart'
+            disabled={currentTimeMillis === 0}
+            onClick={() => setCurrentTimeMillis(0)}
           />
           {!isPlaying && (
             <IconButton
@@ -66,7 +85,9 @@ const AnimationArea: FC<AnimationAreaProps> = ({
             />
           )}
           <div className={styles.timer}>
-            <span>0</span>:<span>00</span>.<span>00</span>
+            <span>{timeMinutes}</span>:
+            <span>{timeSeconds}</span>.
+            <span>{timeMilliseconds}</span>
           </div>
           <IconButton
             icon='icon-repeat'
@@ -125,7 +146,11 @@ const AnimationArea: FC<AnimationAreaProps> = ({
           style={{ width: `${timelineWidth}px` }}
         >
           <div className={styles.timeline} >
-            <Timeline ref={timelineRef} />
+            <Timeline 
+              ref={timelineRef}
+              currentTimeMillis={currentTimeMillis}
+              onChangeTime={setCurrentTimeMillis}
+            />
           </div>
           <div>
             <div className={`${styles.keyframesEl} ${styles.selected}`} />

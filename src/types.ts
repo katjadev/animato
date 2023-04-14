@@ -8,3 +8,9 @@ export interface RawProject {
 export interface Project extends RawProject {
   id: string;
 }
+
+export type TimelineMark = {
+  title: string,
+  height: number,
+  position: number,
+}

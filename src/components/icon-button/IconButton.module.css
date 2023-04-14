@@ -9,9 +9,17 @@
   font-size: 1.3rem;
 }
 
+.iconButton[aria-disabled=true] {
+  opacity: 0.4;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .iconButton:hover {
     background: rgba(0, 0, 0, 0.1);
+  }
+
+  .iconButton[aria-disabled=true]:hover {
+    background: none;
   }
 }

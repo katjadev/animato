@@ -1,5 +1,7 @@
-import { FC, forwardRef, useEffect, useState } from 'react'
+import { FC, RefObject, forwardRef, useEffect, useState } from 'react'
 import { MAX_DURATION } from '@animato/constants'
+import { TimelineMark } from '@animato/types'
+import TimelinePointer from '../timeline-pointer/TimelinePointer'
 import styles from './Timeline.module.css'
 
 const PADDING = 1
@@ -8,22 +10,23 @@ const MIN_ZOOM = 10
 const MARK_SIZE_BASE = 1
 const ZOOM_BREAKPOINTS = [60, 30, 15]
 
-type Mark = {
-  title: string,
-  height: number,
-  position: number,
-}
-
 interface TimelineProps {
   ref: any,
+  currentTimeMillis: number;
   onZoom?: (level: number) => void;
+  onChangeTime: (timeMillis: number) => void;
 }
 
-const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ onZoom }, ref) => {
+const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({
+  currentTimeMillis,
+  onZoom, 
+  onChangeTime, 
+}, ref) => {
   const [zoom, setZoom] = useState(MAX_ZOOM)
   const [markSize, setMarkSize] = useState(MARK_SIZE_BASE)
-  const [marks, setMarks] = useState<Mark[]>([])
+  const [marks, setMarks] = useState<TimelineMark[]>([])
   const [currentBreakpoint, setCurrentBreakpoint] = useState(MAX_ZOOM)
+  const [currentPointerPosition, setCurrentPointerPosition] = useState(0)
 
   useEffect(() => {
     if (ZOOM_BREAKPOINTS.includes(zoom)) {
@@ -59,7 +62,12 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
 
     onZoom && onZoom(zoom)
   }, [zoom, currentBreakpoint, onZoom])
-  
+
+  useEffect(() => {
+    const timelineWidth = (marks.length * markSize + PADDING * 2) * 16
+    setCurrentPointerPosition((timelineWidth * currentTimeMillis) / (MAX_DURATION * 1000))
+  }, [currentTimeMillis, marks, markSize])
+
   const handleZoom = (event: React.WheelEvent) => {
     if (event.deltaY > 0 && zoom > MIN_ZOOM) { // zoom out
       setZoom(zoom - 1)
@@ -69,6 +77,21 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
     }
   }
 
+  const handleChangePointerPosition = (position: number) => {
+    const timelineWidth = (marks.length * markSize + PADDING * 2) * 16
+    const newTime = Math.round((position * MAX_DURATION * 1000) / timelineWidth)
+    onChangeTime(newTime)
+  }
+
+  const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    if (!onChangeTime) {}
+    const timelineWidth = (marks.length * markSize + PADDING * 2) * 16
+    const timelineLeft = event.currentTarget.getBoundingClientRect().left
+    const position = event.clientX - timelineLeft - PADDING * 16
+    const newTime = Math.round((position * MAX_DURATION * 1000) / timelineWidth)
+    onChangeTime(newTime > 0 ? newTime : 0)
+  }
+
   return (
     <>
       <svg 
@@ -76,6 +99,7 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
         height='3rem'
         ref={ref}
         onWheel={handleZoom}
+        onClick={handleClick}
       >
         {marks.map((mark, index) => (
           <g key={index}>
@@ -98,7 +122,10 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({ 
           </g>
         ))}
       </svg>
-      <div className={styles.pointer} />
+      <TimelinePointer
+        currentPosition={currentPointerPosition}
+        onChangePosition={handleChangePointerPosition} 
+      />
     </>
   )
 })
