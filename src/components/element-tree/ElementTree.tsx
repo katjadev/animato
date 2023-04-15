@@ -15,11 +15,13 @@ type ElementTreeNode = {
 interface ElementTreeProps {
   projectId: string;
   content: string;
+  onSelectElement: (id: string | null) => void;
 }
 
 const ElementTree: FC<ElementTreeProps> = ({
   projectId,
   content,
+  onSelectElement,
 }) => {
   const t = useTranslations('project')
   const [elements, setElements] = useState<ElementTreeNode[]>([])
@@ -57,6 +59,10 @@ const ElementTree: FC<ElementTreeProps> = ({
     }
   }
 
+  const handleSelectElement = (id: string | null) => {
+    onSelectElement(id)
+  }
+
   const renderTree = (list: ElementTreeNode[], level: number): ReactNode => (
     <>
       {list.map((element: ElementTreeNode) => (
@@ -64,11 +70,19 @@ const ElementTree: FC<ElementTreeProps> = ({
           key={element.id} 
           className={styles.treeNode}
         >
-          <div className={styles.nodeTitle}>
+          <div 
+            className={styles.nodeTitle} 
+            tabIndex={0}
+            onMouseEnter={() => handleSelectElement(element.id)}
+            onMouseLeave={() => handleSelectElement(null)}
+            onFocus={() => handleSelectElement(element.id)}
+            onBlur={() => handleSelectElement(null)}
+          >
             <div className={`${styles.nodeTitleIn} ${styles[`level${level}`]}`}>
               {element.children.length > 0 && (
                 <button
                   className={styles.collapseButton}
+                  aria-label={collapsedNodes.includes(element.id) ? 'Expand' : 'Collapse'}
                   onClick={() => toggleNode(element.id)}
                 >
                   <Icon icon={collapsedNodes.includes(element.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />

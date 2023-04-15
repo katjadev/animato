@@ -28,6 +28,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
   
   const [project, setProject] = useState<Project | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!authUserContext.currentUser && projectId !== 'demo-project') {
@@ -52,6 +53,10 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
       const nodes = previewRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
       nodes.forEach((node) => node.dispatchEvent(new CompositionEvent('compositionend')))
     }
+  }
+
+  const selectElement = (id: string | null) => {
+    setSelectedElementId(id)
   }
 
   return(
@@ -83,6 +88,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
                 <ElementTree 
                   projectId={project.id} 
                   content={project.data}
+                  onSelectElement={selectElement}
                 />
               </div>
               <div 
@@ -96,6 +102,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
                 projectId={project.id} 
                 content={project.data}
                 isPlaying={isPlaying}
+                selectedElementId={selectedElementId}
                 onPlay={play}
                 onPause={pause}
               />

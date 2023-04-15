@@ -1,15 +1,18 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, Fragment, useEffect, useRef, useState } from 'react'
+import moment from 'moment'
+import { AnimationGroup } from '@animato/types'
+import { ALLOWED_ANIMATIONS } from '@animato/constants'
 import useCustomHorizontalScrollbar from '@animato/hooks/useCustomHorizontalScrollbar'
 import IconButton from '@animato/components/icon-button/IconButton'
-import Icon from '@animato/components/icon/Icon';
-import Timeline from '@animato/components/timeline/Timeline';
+import Icon from '@animato/components/icon/Icon'
+import Timeline from '@animato/components/timeline/Timeline'
 import styles from './AnimationArea.module.css'
-import moment from 'moment';
 
 interface AnimationAreaProps {
   projectId: string;
   content: string;
   isPlaying: boolean;
+  selectedElementId: string | null;
   onPlay: () => void;
   onPause: () => void;
 }
@@ -18,6 +21,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   projectId,
   content,
   isPlaying,
+  selectedElementId,
   onPlay,
   onPause,
 }) => {
@@ -29,6 +33,8 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   const [timeMinutes, setTimeMinutes] = useState('00')
   const [timeSeconds, setTimeSeconds] = useState('00')
   const [timeMilliseconds, setTimeMilliseconds] = useState('000')
+
+  const [animations, setAnimations] = useState<AnimationGroup[]>([])
 
   const {
     containerRef,
@@ -59,6 +65,41 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     setTimeSeconds(momentObject.format('ss'))
     setTimeMinutes(momentObject.format('mm'))
   }, [currentTimeMillis])
+
+  useEffect(() => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(content, 'application/xml')
+
+    const list: { [key: string]: AnimationGroup } = {}
+    const children = doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', '))
+    children.forEach((animationElement) => {
+      const id = animationElement.getAttribute('xlink:href')?.toString()
+      if (!id) {
+        return
+      }
+
+      const animatedElement = doc.querySelector(id)
+      const duration = animationElement.getAttribute('dur')
+      const animation = {
+        id: animationElement.getAttribute('id') || '',
+        title: animationElement.getAttribute('data-title') || '',
+        values: animationElement.getAttribute('values')?.split('; ') || [],
+        keyTimes: animationElement.getAttribute('keyTimes')?.split('; ') || [],
+        duration: duration ? parseInt(duration) : 0,
+      }
+
+      if (!list[id]) {
+        list[id] = {
+          id: id.replace('#', ''),
+          title: animatedElement?.getAttribute('data-title') || animatedElement?.tagName || '',
+          animations: [animation]
+        }
+      } else {
+        list[id].animations.push(animation)
+      }
+    })
+    setAnimations(Object.values(list))
+  }, [content])
 
   return (
     <div className={styles.container}>
@@ -95,45 +136,29 @@ const AnimationArea: FC<AnimationAreaProps> = ({
           />
         </div>
         <div className={styles.elements}>
-          <div className={`${styles.element} ${styles.selected}`}>
-            <div>circle</div>
-            <button
-              className={styles.collapseButton}
-              onClick={() => {}}
-            >
-              <Icon icon='icon-arrow_drop_down' />
-            </button>
-          </div>
-          <div className={styles.animationList}>
-            <div className={styles.animation}>Position</div>
-            <div className={styles.animation}>Color</div>
-          </div>
-          <div className={styles.element}>
-            <div>rect</div>
-            <button
-              className={styles.collapseButton}
-              onClick={() => {}}
-            >
-              <Icon icon='icon-arrow_drop_down' />
-            </button>
-          </div>
-          <div className={styles.animationList}>
-            <div className={styles.animation}>Color</div>
-          </div>
-          <div className={styles.element}>
-            <div>rect</div>
-            <button
-              className={styles.collapseButton}
-              onClick={() => {}}
-            >
-              <Icon icon='icon-arrow_drop_down' />
-            </button>
-          </div>
-          <div className={styles.animationList}>
-            <div className={styles.animation}>Color</div>
-            <div className={styles.animation}>Position</div>
-            <div className={styles.animation}>Opacity</div>
-          </div>
+          {animations.map((animatedElement) => (
+            <Fragment key={animatedElement.id}>
+              <div className={`${styles.element} ${animatedElement.id === selectedElementId ? styles.selected : ''}`}>
+                <div>{animatedElement.title}</div>
+                <button
+                  className={styles.collapseButton}
+                  onClick={() => {}}
+                >
+                  <Icon icon='icon-arrow_drop_down' />
+                </button>
+              </div>
+              <div className={styles.animationList}>
+                {animatedElement.animations.map((animation) => (
+                  <div 
+                    key={animation.id} 
+                    className={styles.animation}
+                  >
+                    {animation.title}
+                  </div>
+                ))}
+              </div>
+            </Fragment>
+          ))}
         </div>
       </div>
       <div 
@@ -153,15 +178,21 @@ const AnimationArea: FC<AnimationAreaProps> = ({
             />
           </div>
           <div>
-            <div className={`${styles.keyframesEl} ${styles.selected}`} />
-            <div className={styles.keyframes} />
-            <div className={styles.keyframes} />
-            <div className={styles.keyframesEl} />
-            <div className={styles.keyframes} />
-            <div className={styles.keyframesEl} />
-            <div className={styles.keyframes} />
-            <div className={styles.keyframes} />
-            <div className={styles.keyframes} />
+            {animations.map((animatedElement) => (
+              <Fragment key={animatedElement.id}>
+                <div
+                  className={`${styles.keyframesEl} ${animatedElement.id === selectedElementId ? styles.selected : ''}`}
+                />
+                {animatedElement.animations.map((animation) => (
+                  <div 
+                    key={animation.id} 
+                    className={styles.keyframes}
+                  >
+                    
+                  </div>
+                ))}
+              </Fragment>
+            ))}
           </div>
         </div>
       </div>

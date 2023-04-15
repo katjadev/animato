@@ -14,3 +14,17 @@ export type TimelineMark = {
   height: number,
   position: number,
 }
+
+export type Animation = {
+  id: string,
+  title: string,
+  values: string[],
+  keyTimes: string[],
+  duration: number,
+}
+
+export type AnimationGroup = {
+  id: string,
+  title: string,
+  animations: Animation[],
+}
