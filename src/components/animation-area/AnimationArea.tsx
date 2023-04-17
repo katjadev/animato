@@ -153,6 +153,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                 <div>{animatedElement.title}</div>
                 <button
                   className={styles.collapseButton}
+                  aria-label='Collapse'
                   onClick={() => {}}
                 >
                   <Icon icon='icon-arrow_drop_down' />
@@ -201,11 +202,11 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                   >
                     {animation.keyframes.map((keyframe, index) => (
                       <Fragment key={index}>
-                        <div 
+                        <button 
                           className={styles.keyframe}
-                          tabIndex={0}
                           aria-label={`Keyframe: ${keyframe.time} milliseconds ${index}`}
                           style={{ left: `${keyframe.position}px` }}
+                          onClick={() => setCurrentTimeMillis(keyframe.time)}
                         />
                         {index > 0 && (
                           <div 

@@ -140,12 +140,15 @@
   background-color: var(--highlight-3);
   transform: rotate(45deg);
   margin-left: -0.3rem;
+  border: none;
+  cursor: pointer;
 }
 
 .keyframeLine {
   position: absolute;
   height: 2px;
   background-color: var(--highlight-3);
+  pointer-events: none;
 }
 
 .scrollbar {
