@@ -14,7 +14,6 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
 }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [initialDragStartPosition, setInitialDragStartPosition] = useState(0)
-  // const [position, setPosition] = useState(0)
 
   const handleMouseDown = (event: React.MouseEvent) => {
     setIsDragging(true)

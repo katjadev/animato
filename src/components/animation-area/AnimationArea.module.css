@@ -121,6 +121,7 @@
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  position: relative;
 }
 
 .keyframesEl {
@@ -130,6 +131,21 @@
 .keyframesEl.selected {
   background-color: var(--highlight-2);
   color: var(--text-inverted);
+}
+
+.keyframe {
+  position: absolute;
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: var(--highlight-3);
+  transform: rotate(45deg);
+  margin-left: -0.3rem;
+}
+
+.keyframeLine {
+  position: absolute;
+  height: 2px;
+  background-color: var(--highlight-3);
 }
 
 .scrollbar {

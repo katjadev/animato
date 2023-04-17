@@ -15,11 +15,16 @@ export type TimelineMark = {
   position: number,
 }
 
+export type AnimationKeyframe = {
+  time: number,
+  position: number,
+}
+
 export type Animation = {
   id: string,
   title: string,
   values: string[],
-  keyTimes: string[],
+  keyframes: AnimationKeyframe[],
   duration: number,
 }
 

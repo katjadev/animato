@@ -1,7 +1,7 @@
 import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import moment from 'moment'
-import { AnimationGroup } from '@animato/types'
-import { ALLOWED_ANIMATIONS } from '@animato/constants'
+import { AnimationGroup, AnimationKeyframe } from '@animato/types'
+import { ALLOWED_ANIMATIONS, MAX_DURATION, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants'
 import useCustomHorizontalScrollbar from '@animato/hooks/useCustomHorizontalScrollbar'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon'
@@ -70,6 +70,15 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     const parser = new DOMParser()
     const doc = parser.parseFromString(content, 'application/xml')
 
+    const translateKeyTimesToTimelinePoints = (keyTimes: string[], duration: number): AnimationKeyframe[] => keyTimes
+    .map((keyTime) => {
+      const time = duration * 1000 * parseFloat(keyTime)
+      return {
+        time,
+        position: Math.round((timelineWidth * time) / (MAX_DURATION * 1000)) + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT,
+      }
+    })
+    
     const list: { [key: string]: AnimationGroup } = {}
     const children = doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', '))
     children.forEach((animationElement) => {
@@ -79,13 +88,15 @@ const AnimationArea: FC<AnimationAreaProps> = ({
       }
 
       const animatedElement = doc.querySelector(id)
-      const duration = animationElement.getAttribute('dur')
+      const duration = parseInt(animationElement.getAttribute('dur') || '0')
+      const keyTimes = (animationElement.getAttribute('keyTimes') || '').split('; ').filter(keyTime => !!keyTime)
+      const keyframes = translateKeyTimesToTimelinePoints(keyTimes, duration)
       const animation = {
         id: animationElement.getAttribute('id') || '',
         title: animationElement.getAttribute('data-title') || '',
         values: animationElement.getAttribute('values')?.split('; ') || [],
-        keyTimes: animationElement.getAttribute('keyTimes')?.split('; ') || [],
-        duration: duration ? parseInt(duration) : 0,
+        keyframes,
+        duration,
       }
 
       if (!list[id]) {
@@ -99,7 +110,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
       }
     })
     setAnimations(Object.values(list))
-  }, [content])
+  }, [content, timelineWidth])
 
   return (
     <div className={styles.container}>
@@ -188,7 +199,25 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                     key={animation.id} 
                     className={styles.keyframes}
                   >
-                    
+                    {animation.keyframes.map((keyframe, index) => (
+                      <Fragment key={index}>
+                        <div 
+                          className={styles.keyframe}
+                          tabIndex={0}
+                          aria-label={`Keyframe: ${keyframe.time} milliseconds ${index}`}
+                          style={{ left: `${keyframe.position}px` }}
+                        />
+                        {index > 0 && (
+                          <div 
+                            className={styles.keyframeLine}
+                            style={{
+                              left: `${animation.keyframes[index - 1].position}px`,
+                              width: `${keyframe.position - animation.keyframes[index - 1].position}px`,
+                            }}
+                          />
+                        )}
+                      </Fragment>
+                    ))}
                   </div>
                 ))}
               </Fragment>
