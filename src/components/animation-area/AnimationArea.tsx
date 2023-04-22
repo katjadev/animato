@@ -1,7 +1,12 @@
 import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { AnimationGroup, AnimationKeyframe } from '@animato/types'
-import { ALLOWED_ANIMATIONS, MAX_DURATION, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants'
+import { 
+  ALLOWED_ANIMATIONS, 
+  MAX_DURATION, 
+  REM_TO_PX_COEFFICIENT, 
+  TIMELINE_PADDING,
+} from '@animato/constants'
 import useCustomHorizontalScrollbar from '@animato/hooks/useCustomHorizontalScrollbar'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon'
@@ -35,6 +40,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   const [timeMilliseconds, setTimeMilliseconds] = useState('000')
 
   const [animations, setAnimations] = useState<AnimationGroup[]>([])
+  const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
 
   const {
     containerRef,
@@ -112,6 +118,18 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     setAnimations(Object.values(list))
   }, [content, timelineWidth])
 
+  useEffect(() => {
+    localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))
+  }, [collapsedAnimations, projectId])
+
+  const toggleAnimation = (elementId: string): void => {
+    if (collapsedAnimations.includes(elementId)) {
+      setCollapsedAnimations(collapsedAnimations.filter((id) => id !== elementId))
+    } else {
+      setCollapsedAnimations([...collapsedAnimations, elementId])
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -153,22 +171,24 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                 <div>{animatedElement.title}</div>
                 <button
                   className={styles.collapseButton}
-                  aria-label='Collapse'
-                  onClick={() => {}}
+                  aria-label={collapsedAnimations.includes(animatedElement.id) ? 'Expand' : 'Collapse'}
+                  onClick={() => toggleAnimation(animatedElement.id)}
                 >
-                  <Icon icon='icon-arrow_drop_down' />
+                  <Icon icon={collapsedAnimations.includes(animatedElement.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />
                 </button>
               </div>
-              <div className={styles.animationList}>
-                {animatedElement.animations.map((animation) => (
-                  <div 
-                    key={animation.id} 
-                    className={styles.animation}
-                  >
-                    {animation.title}
-                  </div>
-                ))}
-              </div>
+              {!collapsedAnimations.includes(animatedElement.id) && (
+                <div className={styles.animationList}>
+                  {animatedElement.animations.map((animation) => (
+                    <div 
+                      key={animation.id} 
+                      className={styles.animation}
+                    >
+                      {animation.title}
+                    </div>
+                  ))}
+                </div>
+              )}
             </Fragment>
           ))}
         </div>
@@ -195,32 +215,36 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                 <div
                   className={`${styles.keyframesEl} ${animatedElement.id === selectedElementId ? styles.selected : ''}`}
                 />
-                {animatedElement.animations.map((animation) => (
-                  <div 
-                    key={animation.id} 
-                    className={styles.keyframes}
-                  >
-                    {animation.keyframes.map((keyframe, index) => (
-                      <Fragment key={index}>
-                        <button 
-                          className={styles.keyframe}
-                          aria-label={`Keyframe: ${keyframe.time} milliseconds ${index}`}
-                          style={{ left: `${keyframe.position}px` }}
-                          onClick={() => setCurrentTimeMillis(keyframe.time)}
-                        />
-                        {index > 0 && (
-                          <div 
-                            className={styles.keyframeLine}
-                            style={{
-                              left: `${animation.keyframes[index - 1].position}px`,
-                              width: `${keyframe.position - animation.keyframes[index - 1].position}px`,
-                            }}
-                          />
-                        )}
-                      </Fragment>
+                {!collapsedAnimations.includes(animatedElement.id) && (
+                  <>
+                    {animatedElement.animations.map((animation) => (
+                      <div 
+                        key={animation.id} 
+                        className={styles.keyframes}
+                      >
+                        {animation.keyframes.map((keyframe, index) => (
+                          <Fragment key={index}>
+                            <button 
+                              className={styles.keyframe}
+                              aria-label={`Keyframe: ${keyframe.time} milliseconds ${index}`}
+                              style={{ left: `${keyframe.position}px` }}
+                              onClick={() => setCurrentTimeMillis(keyframe.time)}
+                            />
+                            {index > 0 && (
+                              <div 
+                                className={styles.keyframeLine}
+                                style={{
+                                  left: `${animation.keyframes[index - 1].position}px`,
+                                  width: `${keyframe.position - animation.keyframes[index - 1].position}px`,
+                                }}
+                              />
+                            )}
+                          </Fragment>
+                        ))}
+                      </div>
                     ))}
-                  </div>
-                ))}
+                  </>
+                )}
               </Fragment>
             ))}
           </div>
