@@ -1,13 +1,13 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { Project } from '@animato/types'
 import { ALLOWED_SVG_ELEMENTS } from '@animato/constants';
 import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
+import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
 import ElementTree from '@animato/components/element-tree/ElementTree'
@@ -61,12 +61,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
 
   return(
     <>
-      <Head>
-        <title>Animato</title>
-        <meta name='description' content='Bring your designs to life with animated SVGs' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <Head title={project?.title} />
       <main className={`${styles.main} ${inter.className}`}>
         {project !== null && (
           <>

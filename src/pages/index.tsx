@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import Head from 'next/head'
 import Link from 'next/link'
+import { GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
 import { getAuth, signOut } from 'firebase/auth'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/authUserContext'
+import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import Button from '@animato/components/button/Button'
 import SignupDialog from '@animato/components/signup-dialog/SignupDialog'
 import LoginDialog from '@animato/components/login-dialog/LoginDialog'
 import styles from '@animato/styles/Home.module.css'
-import { GetStaticProps } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,12 +32,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Animato</title>
-        <meta name='description' content='Bring your designs to life with animated SVGs' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <Head />
       <main className={`${styles.main} ${inter.className}`}>
         <header className={styles.header}>
           <div className={styles.logo}>

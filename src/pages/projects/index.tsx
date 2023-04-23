@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import moment from 'moment'
 import { useAuth } from '@animato/context/authUserContext'
 import { Project } from '@animato/types'
-import { createProject, deleteProject, subscribeToProjects } from '@animato/pages/api/projects'
+import { 
+  createProject, 
+  deleteProject, 
+  subscribeToProjects,
+} from '@animato/pages/api/projects'
+import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Button from '@animato/components/button/Button'
@@ -43,12 +47,7 @@ export default function Projects() {
 
   return(
     <>
-      <Head>
-        <title>Animato</title>
-        <meta name='description' content='Bring your designs to life with animated SVGs' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <Head title='Projects' />
       <main className={`${styles.main} ${inter.className}`}>
         <header className={styles.header}>
           <Logo variant='standard' />
