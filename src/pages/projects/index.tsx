@@ -13,6 +13,7 @@ import {
 } from '@animato/pages/api/projects'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
+import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Button from '@animato/components/button/Button'
 import styles from '@animato/styles/ProjectList.module.css'
@@ -33,7 +34,7 @@ export default function Projects() {
     }
 
     subscribeToProjects(authUserContext.currentUser, setProjects)
-  }, [authUserContext])
+  }, [authUserContext, router])
 
   const handleCreateProject = async () => {
     const projectId = await createProject(authUserContext.currentUser)
@@ -52,10 +53,11 @@ export default function Projects() {
         <header className={styles.header}>
           <Logo variant='standard' />
           <IconButton 
-            icon='icon-person' 
             ariaLabel={t('profile')}
             onClick={() => {}}
-          />
+          >
+            <Icon icon='profile-circle' />
+          </IconButton>
         </header>
         <h1 className={styles.heading}>{t('projects')}</h1>
         <div className={styles.toolbar}>
@@ -102,10 +104,11 @@ export default function Projects() {
                           {t('open')}
                         </Button>
                         <IconButton 
-                          icon='icon-delete' 
                           ariaLabel={t('delete-project')}
                           onClick={() => handleDeleteProject(project.id)}
-                        />
+                        >
+                          <Icon icon='trash' />
+                        </IconButton>
                       </div>
                     </td>
                   </tr>

@@ -38,7 +38,12 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     if (newPosition > 0) {
       onChangePosition(newPosition)
     }
-  }, [isDragging])
+  }, [
+    isDragging, 
+    currentPosition, 
+    initialDragStartPosition, 
+    onChangePosition,
+  ])
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove)

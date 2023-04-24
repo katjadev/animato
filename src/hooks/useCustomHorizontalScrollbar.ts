@@ -64,7 +64,7 @@ export default function useCustomScrollbar() {
       setIsDragging(false)
       setScrollbarMargin(scrollbarRef.current.style.marginLeft ? parseInt(scrollbarRef.current.style.marginLeft) : 0)
     }
-  }, [isDragging, scrollbarRef.current])
+  }, [isDragging])
   
   const handleThumbMouseMove = useCallback((event: MouseEvent) => {
     event.preventDefault()
@@ -93,9 +93,7 @@ export default function useCustomScrollbar() {
     scrollStartPosition, 
     scrollbarWidth, 
     scrollbarMargin,
-    contentRef.current,
-    containerRef.current,
-    scrollbarRef.current,
+    currentScroll,
   ])
 
   useEffect(() => {
@@ -103,20 +101,17 @@ export default function useCustomScrollbar() {
       return
     }
 
+    const scrollbarElement = scrollbarRef.current
     document.addEventListener('mousemove', handleThumbMouseMove)
     document.addEventListener('mouseup', handleThumbMouseUp)
     document.addEventListener('mouseleave', handleThumbMouseUp)
-    scrollbarRef.current.addEventListener('mousedown', handleThumbMouseDown)
+    scrollbarElement.addEventListener('mousedown', handleThumbMouseDown)
 
     return () => {
-      if (!scrollbarRef.current) {
-        return
-      }
-
       document.removeEventListener('mousemove', handleThumbMouseMove)
       document.removeEventListener('mouseup', handleThumbMouseUp)
       document.removeEventListener('mouseleave', handleThumbMouseUp)
-      scrollbarRef.current.removeEventListener('mousedown', handleThumbMouseDown)
+      scrollbarElement?.removeEventListener('mousedown', handleThumbMouseDown)
     }
   })
 

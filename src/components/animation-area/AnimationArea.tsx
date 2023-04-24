@@ -8,8 +8,8 @@ import {
   TIMELINE_PADDING,
 } from '@animato/constants'
 import useCustomHorizontalScrollbar from '@animato/hooks/useCustomHorizontalScrollbar'
-import IconButton from '@animato/components/icon-button/IconButton'
 import Icon from '@animato/components/icon/Icon'
+import IconButton from '@animato/components/icon-button/IconButton'
 import Timeline from '@animato/components/timeline/Timeline'
 import styles from './AnimationArea.module.css'
 
@@ -135,34 +135,36 @@ const AnimationArea: FC<AnimationAreaProps> = ({
       <div className={styles.left}>
         <div className={styles.controls}>
           <IconButton
-            icon='icon-skip_previous'
             ariaLabel='Restart'
             disabled={currentTimeMillis === 0}
             onClick={() => setCurrentTimeMillis(0)}
-          />
+          >
+            <Icon icon='skip-prev' />
+          </IconButton>
           {!isPlaying && (
             <IconButton
-              icon='icon-play_arrow'
               ariaLabel='Play'
               onClick={onPlay}
-            />
+            >
+              <Icon icon='play' />
+            </IconButton>
           )}
           {isPlaying && (
             <IconButton
-              icon='icon-pause'
               ariaLabel='Pause'
               onClick={onPause}
-            />
+            >
+              <Icon icon='pause' />
+            </IconButton>
           )}
           <div className={styles.timer}>
             <span>{timeMinutes}</span>:
             <span>{timeSeconds}</span>.
             <span>{timeMilliseconds}</span>
           </div>
-          <IconButton
-            icon='icon-repeat'
-            ariaLabel='Play'
-          />
+          <IconButton ariaLabel='Repeat'>
+            <Icon icon='repeat' />
+          </IconButton>
         </div>
         <div className={styles.elements}>
           {animations.map((animatedElement) => (
@@ -174,7 +176,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                   aria-label={collapsedAnimations.includes(animatedElement.id) ? 'Expand' : 'Collapse'}
                   onClick={() => toggleAnimation(animatedElement.id)}
                 >
-                  <Icon icon={collapsedAnimations.includes(animatedElement.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />
+                  {collapsedAnimations.includes(animatedElement.id) ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
                 </button>
               </div>
               {!collapsedAnimations.includes(animatedElement.id) && (

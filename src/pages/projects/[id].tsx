@@ -9,6 +9,7 @@ import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
+import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import ElementTree from '@animato/components/element-tree/ElementTree'
 import AnimationArea from '@animato/components/animation-area/AnimationArea'
@@ -17,7 +18,7 @@ import styles from '@animato/styles/Project.module.css'
 const inter = Inter({ subsets: ['latin'] })
 
 interface ProjectProps {
-  projectId: string;
+  projectId?: string;
 }
 
 const Project: FC<ProjectProps> = ({ projectId }) => {
@@ -36,7 +37,9 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
       return
     }
 
-    subscribeToProject(projectId, authUserContext.currentUser, setProject)
+    if (projectId) {
+      subscribeToProject(projectId, authUserContext.currentUser, setProject)
+    }
   }, [authUserContext, projectId, router])
 
   const play = () => {
@@ -61,22 +64,23 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
 
   return(
     <>
-      <Head title={project?.title} />
+      <Head title={project?.title || 'Animato'} />
       <main className={`${styles.main} ${inter.className}`}>
         {project !== null && (
           <>
             <header className={styles.header}>
               <div className={styles.left}>
                 <Logo variant='compact' />
-                <IconButton icon='icon-undo' ariaLabel={t('undo')} />
-                <IconButton icon='icon-redo' ariaLabel={t('redo')} />
+                <IconButton ariaLabel={t('undo')}><Icon icon='undo' /></IconButton>
+                <IconButton ariaLabel={t('redo')}><Icon icon='redo' /></IconButton>
               </div>
               <h1 className={styles.heading}>{project.title}</h1>
               <IconButton 
-                icon='icon-person' 
                 ariaLabel={t('profile')}
                 onClick={() => {}}
-              />
+              >
+                <Icon icon='profile-circle' />
+              </IconButton>
             </header>
             <div className={styles.content}>
               <div className={styles.elements}>
@@ -115,13 +119,11 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
   context
-) => {
-  return {
-    props: {
-      messages: (await import(`../../messages/${context.locale}.json`)).default,
-      projectId: context.params?.id,
-    },
-  }
-}
+) => ({
+  props: {
+    messages: (await import(`../../messages/${context.locale}.json`)).default,
+    projectId: context.params?.id,
+  },
+})
 
 export default Project

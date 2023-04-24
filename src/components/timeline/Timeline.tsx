@@ -60,7 +60,7 @@ const Timeline: FC<TimelineProps> = forwardRef<SVGSVGElement, TimelineProps>(({
     }
 
     onZoom && onZoom(zoom)
-  }, [zoom, currentBreakpoint, onZoom])
+  }, [zoom, currentBreakpoint, markSize, onZoom])
 
   useEffect(() => {
     const timelineWidth = (marks.length * markSize + TIMELINE_PADDING * 2) * REM_TO_PX_COEFFICIENT

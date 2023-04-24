@@ -1,6 +1,7 @@
 import { FC, MouseEventHandler, ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import Modal from 'react-modal'
+import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import styles from './ModalDialog.module.css'
 
@@ -49,10 +50,11 @@ const ModalDialog: FC<ModalDialogProps> = ({
     >
       <IconButton 
         className={styles.closeButton} 
-        icon='icon-clear' 
         ariaLabel='Close' 
         onClick={onClose} 
-      />
+      >
+        <Icon icon='cancel' />
+      </IconButton>
       <div className={`${inter.className} ${styles.content}`}>
         {children}
       </div>

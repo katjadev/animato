@@ -36,7 +36,7 @@ const Menu: FC<MenuProps> = ({
         (element as HTMLElement).focus()
       }
     }
-  }, [currentItemIndex, menuElement.current])
+  }, [currentItemIndex])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {

@@ -91,6 +91,9 @@
   cursor: pointer;
   font-size: 1rem;
   color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .animation {

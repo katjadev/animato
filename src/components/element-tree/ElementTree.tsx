@@ -85,7 +85,7 @@ const ElementTree: FC<ElementTreeProps> = ({
                   aria-label={collapsedNodes.includes(element.id) ? 'Expand' : 'Collapse'}
                   onClick={() => toggleNode(element.id)}
                 >
-                  <Icon icon={collapsedNodes.includes(element.id) ? 'icon-arrow_right' : 'icon-arrow_drop_down'} />
+                  {collapsedNodes.includes(element.id) ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
                 </button>
               )}
               <div>{element.title}</div>

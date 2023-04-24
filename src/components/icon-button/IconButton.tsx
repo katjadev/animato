@@ -2,7 +2,7 @@ import { FC, MouseEventHandler } from 'react'
 import styles from './IconButton.module.css'
 
 interface IconButtonProps {
-  icon: string;
+  children?: React.ReactNode;
   ariaLabel: string;
   className?: string;
   disabled?: boolean;
@@ -10,7 +10,7 @@ interface IconButtonProps {
 }
 
 const IconButton: FC<IconButtonProps> = ({ 
-  icon, 
+  children, 
   ariaLabel,
   className,
   disabled,
@@ -24,11 +24,13 @@ const IconButton: FC<IconButtonProps> = ({
 
   return (
     <button 
-      className={`${icon} ${styles.iconButton} ${className || ''}`} 
+      className={`${styles.iconButton} ${className || ''}`} 
       aria-label={ariaLabel}
       aria-disabled={disabled}
       onClick={handleClick}
-    ></button>
+    >
+      {children}
+    </button>
   )
 }
 

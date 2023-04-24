@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react'
 
 interface IconProps {
   icon: string;
@@ -6,7 +6,7 @@ interface IconProps {
 }
 
 const Icon: FC<IconProps> = ({ icon, className }) => (
-  <span className={`${icon} ${className || ''}`}></span>
+  <i className={`iconoir-${icon} ${className || ''}`}></i>
 )
 
 export default Icon

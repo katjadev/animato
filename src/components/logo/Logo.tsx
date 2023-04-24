@@ -2,6 +2,12 @@ import { FC, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+// import { 
+//   SvgFormat, 
+//   NavArrowDown, 
+//   Download, 
+//   ArrowLeft,
+// } from 'iconoir-react'
 import Icon from '@animato/components/icon/Icon'
 import Menu from '@animato/components/menu/Menu'
 import MenuItem from '@animato/components/menu-item/MenuItem'
@@ -52,7 +58,7 @@ const Logo: FC<LogoProps> = ({ variant, className }) => {
           height={size}
           priority
         />
-        <Icon icon="icon-keyboard_arrow_down" />
+        <Icon icon='nav-arrow-down' />
       </button>
       <Menu
         id='main-menu'
@@ -60,10 +66,19 @@ const Logo: FC<LogoProps> = ({ variant, className }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem icon='icon-file_upload' onClick={handleClose}>{t('import-svg')}</MenuItem>
-        <MenuItem icon='icon-file_download' onClick={handleClose}>{t('export')}</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Icon icon='svg-format' />
+          {t('import-svg')}
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Icon icon='download' />
+          {t('export')}
+        </MenuItem>
         <MenuItemDivider />
-        <MenuItem icon='icon-keyboard_backspace' href='/projects'>{t('back-to-projects')}</MenuItem>
+        <MenuItem href='/projects'>
+          <Icon icon='arrow-left' />
+          {t('back-to-projects')}
+        </MenuItem>
       </Menu>
       </>
     )
