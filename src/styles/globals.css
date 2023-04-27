@@ -18,6 +18,12 @@
   --highlight-1: #C8074E;
   --highlight-2: #90088A;
   --highlight-3: #510BC4;
+
+  --x-small: 576px;
+  --small: 768px;
+  --medium: 992px;
+  --large: 1200px;
+  --x-large: 1400px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -62,7 +68,7 @@ a {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  /* html {
     color-scheme: dark;
-  }
+  } */
 }
