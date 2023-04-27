@@ -1,24 +1,26 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import { TimelineMark } from '@animato/types'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { ScrollPosition } from '@animato/types'
+import { REM_TO_PX_COEFFICIENT } from '@animato/constants';
 import styles from './TimelinePointer.module.css'
-import { MAX_DURATION } from '@animato/constants';
 
 interface TimelinePointerProps {
   currentPosition: number;
+  scrollPosition: ScrollPosition;
   onChangePosition: (position: number) => void;
 }
 
 const TimelinePointer: FC<TimelinePointerProps> = ({ 
-  currentPosition, 
+  currentPosition,
+  scrollPosition,
   onChangePosition, 
 }) => {
+  const pointerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const [initialDragStartPosition, setInitialDragStartPosition] = useState(0)
+  const [initialPosition, setInitialPosition] = useState(0)
 
-  const handleMouseDown = (event: React.MouseEvent) => {
+  const handleMouseDown = useCallback(() => {
     setIsDragging(true)
-    setInitialDragStartPosition(event.clientX)
-  }
+  }, [])
 
   const handleMouseUp = useCallback(() => {
     if (isDragging) {
@@ -33,15 +35,12 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     if (!isDragging) {
       return
     }
-    
-    const newPosition = currentPosition + (event.clientX - initialDragStartPosition)
-    if (newPosition > 0) {
-      onChangePosition(newPosition)
-    }
+
+    const newPosition = Math.max(event.pageX - initialPosition, 0)
+    onChangePosition(newPosition)
   }, [
     isDragging, 
-    currentPosition, 
-    initialDragStartPosition, 
+    initialPosition, 
     onChangePosition,
   ])
 
@@ -55,13 +54,27 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
       document.removeEventListener('mouseup', handleMouseUp)
       document.removeEventListener('mouseleave', handleMouseUp)
     }
-  })
+  }, [
+    isDragging, 
+    handleMouseMove, 
+    handleMouseUp,
+  ])
+
+  useEffect(() => {
+    if (pointerRef.current) {
+      setInitialPosition(pointerRef.current.getBoundingClientRect().x)
+    }
+  }, [])
 
   return (
     <div 
       className={styles.pointer}
+      ref={pointerRef}
       onMouseDown={handleMouseDown}
-      style={{ left: `${currentPosition}px` }}
+      style={{ 
+        left: `${currentPosition + 0.5 * REM_TO_PX_COEFFICIENT}px`,
+        marginLeft: `-${scrollPosition.left}px`,
+      }}
     />
   )
 }

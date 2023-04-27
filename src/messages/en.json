@@ -27,10 +27,18 @@
     "open": "Open",
     "delete-project": "Delete project"
   },
-  "project": {
+  "project-header": {
     "profile": "Profile",
     "undo": "Undo",
-    "redo": "Redo",
+    "redo": "Redo"
+  },
+  "project-controls": {
+    "restart": "Restart",
+    "play": "Play",
+    "pause": "Pause",
+    "repeat": "Repeat"
+  },
+  "project": {
     "elements": "Elements"
   },
   "main-menu": {

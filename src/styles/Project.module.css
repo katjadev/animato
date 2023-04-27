@@ -1,72 +1,60 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  display: grid;
+  grid-template-columns: [left-column-collapsed] 2rem [left-column] 13rem [main] minmax(0, 1fr) [right-column-collapsed] 2rem [end];
+  grid-template-rows: [header] 3rem [main] auto [sub-footer] 3rem [footer] 8rem [end];
+  width: 100vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
   color: var(--text-default);
 }
 
-.main > * {
-  flex: 0 0 auto;			
-  overflow: auto;		
-}
-
 .header {
-  display: flex;
-  padding: 0 1rem;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  border-bottom: 1px solid var(--border-base);
-  height: 3rem;
-  overflow: hidden;
-}
-
-.left {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.heading {
-  font-size: 0.8rem;
-  font-weight: 200;
-}
-
-.content {
-  display: flex;
-  width: 100%;
-  flex: 1 1 auto;
+  grid-column-start: left-column-collapsed;
+  grid-column-end: end;
+  grid-row-start: header;
+  grid-row-end: header;
 }
 
 .elements {
-  width: 15rem;
+  grid-column-start: left-column-collapsed;
+  grid-column-end: main;
+  grid-row-start: main;
+  grid-row-end: main;
   border-right: 1px solid var(--border-base);
-  flex: 0 0 auto;
 }
 
-.preview {
-  flex: 1 1 auto;
-  background-color: var(--background-secondary);
-  padding: 1rem;
-  overflow: auto;
-  display: flex;
-  align-items: center;
+.player {
+  grid-column-start: main;
+  grid-column-end: end;
+  grid-row-start: main;
+  grid-row-end: main;
 }
 
-.preview svg {
-  flex-shrink: 0;
-  background-color: white;
-  margin: 0 auto;
+.controls {
+  grid-column-start: left-column-collapsed;
+  grid-column-end: main;
+  grid-row-start: sub-footer;
+  grid-row-end: sub-footer;
+  border: 1px solid var(--border-base);
+  border-width: 1px 1px 0 0;
+  background-color: var(--background-base);
+  z-index: 2;
+}
+
+.timeline {
+  grid-column-start: main;
+  grid-column-end: end;
+  grid-row-start: sub-footer;
+  grid-row-end: sub-footer;
+  z-index: 1;
+  border-top: 1px solid var(--border-base);
 }
 
 .animations {
-  width: 100%;
-  height: 15rem;
+  grid-column-start: left-column-collapsed;
+  grid-column-end: end;
+  grid-row-start: footer;
+  grid-row-end: end;
   border-top: 1px solid var(--border-base);
-  flex: 0 0 auto;
-  position: relative;
 }

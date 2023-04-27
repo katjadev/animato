@@ -15,12 +15,14 @@ type ElementTreeNode = {
 interface ElementTreeProps {
   projectId: string;
   content: string;
+  className?: string;
   onSelectElement: (id: string | null) => void;
 }
 
 const ElementTree: FC<ElementTreeProps> = ({
   projectId,
   content,
+  className,
   onSelectElement,
 }) => {
   const t = useTranslations('project')
@@ -100,7 +102,7 @@ const ElementTree: FC<ElementTreeProps> = ({
   )
 
   return (
-    <div className={styles.elements}>
+    <div className={`${className} ${styles.elements}`}>
       <h2 className={styles.title}>{t('elements')}</h2>
       {renderTree(elements, 0)}
     </div>

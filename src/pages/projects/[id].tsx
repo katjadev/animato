@@ -3,16 +3,16 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
-import { Project } from '@animato/types'
-import { ALLOWED_SVG_ELEMENTS } from '@animato/constants';
+import { Project, ScrollPosition } from '@animato/types'
 import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
 import Head from '@animato/components/head/Head'
-import Logo from '@animato/components/logo/Logo'
-import Icon from '@animato/components/icon/Icon'
-import IconButton from '@animato/components/icon-button/IconButton'
+import Header from '@animato/components/header/Header'
 import ElementTree from '@animato/components/element-tree/ElementTree'
 import AnimationArea from '@animato/components/animation-area/AnimationArea'
+import Player from '@animato/components/player/Player'
+import Controls from '@animato/components/controls/Controls'
+import Timeline from '@animato/components/timeline/Timeline'
 import styles from '@animato/styles/Project.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -25,11 +25,13 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
   const t = useTranslations('project')
   const router = useRouter()
   const authUserContext = useAuth()
-  const previewRef = useRef<HTMLDivElement>(null)
   
   const [project, setProject] = useState<Project | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [timelineWidth, setTimelineWidth] = useState(0)
+  const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({ left: 0, top: 0 })
 
   useEffect(() => {
     if (!authUserContext.currentUser && projectId !== 'demo-project') {
@@ -42,72 +44,53 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
     }
   }, [authUserContext, projectId, router])
 
-  const play = () => {
-    setIsPlaying(true)
-    if (previewRef.current) {
-      const nodes = previewRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
-      nodes.forEach((node) => node.dispatchEvent(new CompositionEvent('compositionstart')))
-    }
-  }
-
-  const pause = () => {
-    setIsPlaying(false)
-    if (previewRef.current) {
-      const nodes = previewRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
-      nodes.forEach((node) => node.dispatchEvent(new CompositionEvent('compositionend')))
-    }
-  }
-
   const selectElement = (id: string | null) => {
     setSelectedElementId(id)
   }
 
+  if (project === null) {
+    return null
+  }
+
   return(
     <>
-      <Head title={project?.title || 'Animato'} />
+      <Head title={project.title} />
       <main className={`${styles.main} ${inter.className}`}>
-        {project !== null && (
-          <>
-            <header className={styles.header}>
-              <div className={styles.left}>
-                <Logo variant='compact' />
-                <IconButton ariaLabel={t('undo')}><Icon icon='undo' /></IconButton>
-                <IconButton ariaLabel={t('redo')}><Icon icon='redo' /></IconButton>
-              </div>
-              <h1 className={styles.heading}>{project.title}</h1>
-              <IconButton 
-                ariaLabel={t('profile')}
-                onClick={() => {}}
-              >
-                <Icon icon='profile-circle' />
-              </IconButton>
-            </header>
-            <div className={styles.content}>
-              <div className={styles.elements}>
-                <ElementTree 
-                  projectId={project.id} 
-                  content={project.data}
-                  onSelectElement={selectElement}
-                />
-              </div>
-              <div 
-                className={styles.preview}
-                ref={previewRef}
-                dangerouslySetInnerHTML={{ __html: project.data }}
-              />
-            </div>
-            <div className={styles.animations}>
-              <AnimationArea
-                projectId={project.id} 
-                content={project.data}
-                isPlaying={isPlaying}
-                selectedElementId={selectedElementId}
-                onPlay={play}
-                onPause={pause}
-              />
-            </div>
-          </>
-        )}
+        <Header title={project.title} className={styles.header} />
+          <ElementTree 
+            className={styles.elements}
+            projectId={project.id} 
+            content={project.data}
+            onSelectElement={selectElement}
+          />
+          <Player 
+            className={styles.player}
+            isPlaying={isPlaying}
+            content={project.data}
+          />
+          <Controls
+            className={styles.controls}
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            onChangeTime={setCurrentTime}
+            onTogglePlaying={setIsPlaying}            
+          />
+          <Timeline
+            className={styles.timeline}
+            currentTime={currentTime}
+            scrollPosition={scrollPosition}
+            onChangeTime={setCurrentTime}
+            onChangeWidth={setTimelineWidth}
+          />
+          <AnimationArea
+            className={styles.animations}
+            projectId={project.id}
+            content={project.data}
+            selectedElementId={selectedElementId}
+            timelineWidth={timelineWidth}
+            onChangeTime={setCurrentTime}
+            onScroll={setScrollPosition}
+          />
       </main>
     </>
   );

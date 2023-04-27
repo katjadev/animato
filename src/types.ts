@@ -33,3 +33,8 @@ export type AnimationGroup = {
   title: string,
   animations: Animation[],
 }
+
+export type ScrollPosition = {
+  top: number,
+  left: number,
+}
