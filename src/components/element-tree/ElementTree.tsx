@@ -1,16 +1,9 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { v4 as uuidv4 } from 'uuid'
-import { ALLOWED_SVG_ELEMENTS } from '@animato/constants';
-import Icon from '@animato/components/icon/Icon';
+import { ElementTreeNode } from '@animato/types'
+import useElementTree from '@animato/hooks/useElementTree'
+import Icon from '@animato/components/icon/Icon'
 import styles from './ElementTree.module.css'
-
-type ElementTreeNode = {
-  id: string,
-  title: string,
-  element: Element,
-  children: ElementTreeNode[],
-}
 
 interface ElementTreeProps {
   projectId: string;
@@ -26,28 +19,8 @@ const ElementTree: FC<ElementTreeProps> = ({
   onSelectElement,
 }) => {
   const t = useTranslations('project')
-  const [elements, setElements] = useState<ElementTreeNode[]>([])
+  const { elements } = useElementTree(content)
   const [collapsedNodes, setCollapsedNodes] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-elements`) || '[]'))
-
-  useEffect(() => {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, 'application/xml')
-    
-    const makeTree = (currentElement: Element): ElementTreeNode[] => {
-      const children = Array.from(currentElement.children)
-        .filter((element) => ALLOWED_SVG_ELEMENTS.includes(element.nodeName))
-
-      return children.map((element) => ({
-        id: element.getAttribute('id') || uuidv4(),
-        element,
-        title: element.getAttribute('data-title') || element.nodeName,
-        children: makeTree(element),
-      }))
-    }
-
-    const tree = makeTree(doc.documentElement)
-    setElements(tree)
-  }, [content])
   
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-elements`, JSON.stringify(collapsedNodes))

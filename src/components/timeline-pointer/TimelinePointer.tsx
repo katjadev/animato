@@ -64,7 +64,7 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     if (pointerRef.current) {
       setInitialPosition(pointerRef.current.getBoundingClientRect().x)
     }
-  }, [])
+  }, [scrollPosition])
 
   return (
     <div 

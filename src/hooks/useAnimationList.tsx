@@ -7,9 +7,10 @@ import {
 import { AnimationGroup, AnimationKeyframe } from '@animato/types'
 import { useEffect, useState } from 'react'
 
-export default function useSVGContent(content: string, timelineWidth: number) {
-  const [animations, setAnimations ] = useState<AnimationGroup[]>([])
-  
+export default function useAnimationList(content: string, timelineWidth: number) {
+  const [animations, setAnimations] = useState<AnimationGroup[]>([])
+  const [duration, setDuration] = useState(0)
+
   const translateKeyTimesToTimelinePoints = (keyTimes: string[], duration: number): AnimationKeyframe[] => keyTimes
       .map((keyTime) => {
         const time = duration * 1000 * parseFloat(keyTime)
@@ -23,23 +24,25 @@ export default function useSVGContent(content: string, timelineWidth: number) {
     const parser = new DOMParser()
     const doc = parser.parseFromString(content, 'application/xml')
     const list: { [key: string]: AnimationGroup } = {}
-    const children = doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', '))
-    Array.from(children)
-      .filter((animationElement) => !!animationElement.getAttribute('xlink:href'))
-      .forEach((animationElement) => {
-        const id = animationElement.getAttribute('xlink:href')!.toString()
+    let animationDuration = 0
+    const animationNodes = Array.from(doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', ')))
+
+    animationNodes
+      .filter((animationNode) => !!animationNode.getAttribute('xlink:href'))
+      .forEach((animationNode) => {
+        const id = animationNode.getAttribute('xlink:href')!.toString()
         const animatedElement = doc.querySelector(id)
-        const duration = parseInt(animationElement.getAttribute('dur') || '0')
-        const keyTimes = (animationElement.getAttribute('keyTimes') || '')
+        const currentDuration = parseInt(animationNode.getAttribute('dur') || '0')
+        const keyTimes = (animationNode.getAttribute('keyTimes') || '')
           .split('; ')
           .filter(keyTime => !!keyTime)
-        const keyframes = translateKeyTimesToTimelinePoints(keyTimes, duration)
+        const keyframes = translateKeyTimesToTimelinePoints(keyTimes, currentDuration)
         const animation = {
-          id: animationElement.getAttribute('id') || '',
-          title: animationElement.getAttribute('data-title') || '',
-          values: animationElement.getAttribute('values')?.split('; ') || [],
+          id: animationNode.getAttribute('id') || '',
+          title: animationNode.getAttribute('data-title') || '',
+          values: animationNode.getAttribute('values')?.split('; ') || [],
           keyframes,
-          duration,
+          duration: currentDuration,
         }
 
         if (!list[id]) {
@@ -51,12 +54,15 @@ export default function useSVGContent(content: string, timelineWidth: number) {
         } else {
           list[id].animations.push(animation)
         }
+
+        if (currentDuration > animationDuration) {
+          animationDuration = currentDuration
+        }
       })
 
     setAnimations(Object.values(list))
+    setDuration(animationDuration * 1000)
   }, [content, timelineWidth])
 
-  return {
-    animations,
-  }
+  return { animations, duration }
 }

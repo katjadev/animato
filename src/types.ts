@@ -38,3 +38,10 @@ export type ScrollPosition = {
   top: number,
   left: number,
 }
+
+export type ElementTreeNode = {
+  id: string,
+  title: string,
+  element: Element,
+  children: ElementTreeNode[],
+}

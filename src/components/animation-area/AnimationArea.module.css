@@ -85,8 +85,13 @@
   justify-content: space-between;
 }
 
-.rightContent {
-  position: relative;
+.durationMark {
+  position: absolute;
+  width: 1px;
+  height: 0;
+  background-color: var(--highlight-4);
+  top: 0;
+  z-index: 1;
 }
 
 .keyframes,
@@ -121,6 +126,7 @@
   margin-left: -0.3rem;
   border: none;
   cursor: pointer;
+  z-index: 2;
 }
 
 .keyframeLine {

@@ -1,9 +1,10 @@
 import { FC, Fragment, useEffect, useState } from 'react'
 import { ScrollPosition } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
+import useAnimationList from '@animato/hooks/useAnimationList'
 import Icon from '@animato/components/icon/Icon'
 import styles from './AnimationArea.module.css'
-import useSVGContent from '@animato/hooks/useSVGContent'
+import { MAX_DURATION, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants'
 
 interface AnimationAreaProps {
   projectId: string;
@@ -24,10 +25,14 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   onChangeTime,
   onScroll,
 }) => {
+  const { 
+    animations,
+    duration,
+  } = useAnimationList(content, timelineWidth)
+  const { rootRef, scrollPosition } = useScrollObserver()
+
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
   const [animationListHeight, setAnimationListHeight] = useState(0)
-  const { animations } = useSVGContent(content, timelineWidth)
-  const { rootRef, scrollPosition } = useScrollObserver()
 
   useEffect(() => {
     onScroll(scrollPosition)
@@ -53,7 +58,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
     <div className={`${styles.animationArea} ${className}`}>
       <div className={styles.elements}>
         <div className={styles.elementsScrollable}>
-          <div 
+          <div
             style={{
               marginTop: `-${scrollPosition.top}px`,
               height: `${animationListHeight}rem`,
@@ -137,6 +142,13 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                 )}
               </Fragment>
             ))}
+            <div 
+              className={styles.durationMark}
+              style={{
+                height: `${animationListHeight}rem`,
+                left: `${Math.round((timelineWidth * duration) / (MAX_DURATION * 1000)) + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT}px`,
+              }}
+            />
           </div>
         </div>
       </div>
