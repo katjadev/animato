@@ -1,27 +1,52 @@
 import { FC, useEffect, useRef } from 'react'
-import { ALLOWED_SVG_ELEMENTS } from '@animato/constants'
 import styles from './Player.module.css'
 
 interface PlayerProps {
   isPlaying: boolean;
   content: string;
+  currentTime: number;
   className?: string;
+  onChangeTime: (time: number) => void;
 }
 
 const Player: FC<PlayerProps> = ({ 
   isPlaying, 
   content, 
+  currentTime,
   className,
+  onChangeTime,
 }) => {
   const playerRef = useRef<HTMLDivElement>(null)
+  const intervalref = useRef<number | null>(null)
+  
+  useEffect(() => {
+    if (!playerRef.current) return
+
+    const svg = playerRef.current.querySelector('svg')
+    svg?.setCurrentTime(currentTime / 1000)
+  }, [currentTime])
 
   useEffect(() => {
-    if (playerRef.current) {
-      const nodes = playerRef.current.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
-      const event = isPlaying ? 'compositionstart' : 'compositionend'
-      nodes.forEach((node) => node.dispatchEvent(new CompositionEvent(event)))
+    if (!playerRef.current) return
+    
+    const svg = playerRef.current.querySelector('svg')
+    if (isPlaying) {
+      svg?.unpauseAnimations()
+      intervalref.current = window.setInterval(() => onChangeTime(currentTime + 100), 100)
+    } else {
+      svg?.pauseAnimations()
+      if (intervalref.current) {
+        window.clearInterval(intervalref.current)
+        intervalref.current = null
+      }
     }
-  }, [isPlaying])
+
+    return () => {
+      if (intervalref.current !== null) {
+        window.clearInterval(intervalref.current)
+      }
+    }
+  }, [isPlaying, currentTime])
 
   return (
     <div 

@@ -1,14 +1,9 @@
 import { FC, Fragment, useEffect, useState } from 'react'
-import { AnimationGroup, AnimationKeyframe, ScrollPosition } from '@animato/types'
-import { 
-  ALLOWED_ANIMATIONS, 
-  MAX_DURATION, 
-  REM_TO_PX_COEFFICIENT, 
-  TIMELINE_PADDING,
-} from '@animato/constants'
+import { ScrollPosition } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
 import Icon from '@animato/components/icon/Icon'
 import styles from './AnimationArea.module.css'
+import useSVGContent from '@animato/hooks/useSVGContent'
 
 interface AnimationAreaProps {
   projectId: string;
@@ -29,9 +24,9 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   onChangeTime,
   onScroll,
 }) => {
-  const [animations, setAnimations ] = useState<AnimationGroup[]>([])
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
   const [animationListHeight, setAnimationListHeight] = useState(0)
+  const { animations } = useSVGContent(content, timelineWidth)
   const { rootRef, scrollPosition } = useScrollObserver()
 
   useEffect(() => {
@@ -39,53 +34,8 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   }, [scrollPosition, onScroll])
 
   useEffect(() => {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, 'application/xml')
-
-    const translateKeyTimesToTimelinePoints = (keyTimes: string[], duration: number): AnimationKeyframe[] => keyTimes
-      .map((keyTime) => {
-        const time = duration * 1000 * parseFloat(keyTime)
-        return {
-          time,
-          position: Math.round((timelineWidth * time) / (MAX_DURATION * 1000)) + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT,
-        }
-      })
-    
-    const list: { [key: string]: AnimationGroup } = {}
-    const children = doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', '))
-    Array.from(children)
-      .filter((animationElement) => !!animationElement.getAttribute('xlink:href'))
-      .forEach((animationElement) => {
-        const id = animationElement.getAttribute('xlink:href')!.toString()
-        const animatedElement = doc.querySelector(id)
-        const duration = parseInt(animationElement.getAttribute('dur') || '0')
-        const keyTimes = (animationElement.getAttribute('keyTimes') || '')
-          .split('; ')
-          .filter(keyTime => !!keyTime)
-        const keyframes = translateKeyTimesToTimelinePoints(keyTimes, duration)
-        const animation = {
-          id: animationElement.getAttribute('id') || '',
-          title: animationElement.getAttribute('data-title') || '',
-          values: animationElement.getAttribute('values')?.split('; ') || [],
-          keyframes,
-          duration,
-        }
-
-        if (!list[id]) {
-          list[id] = {
-            id: id.replace('#', ''),
-            title: animatedElement?.getAttribute('data-title') || animatedElement?.tagName || '',
-            animations: [animation]
-          }
-        } else {
-          list[id].animations.push(animation)
-        }
-      })
-
-    const animationsList = Object.values(list)
-    setAnimationListHeight(animationsList.reduce((prev, element) => prev + element.animations.length + 1, 0))
-    setAnimations(Object.values(list))
-  }, [content, timelineWidth])
+    setAnimationListHeight(animations.reduce((prev, element) => prev + element.animations.length + 1, 0))
+  }, [animations])
 
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))

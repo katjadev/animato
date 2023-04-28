@@ -67,6 +67,8 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
             className={styles.player}
             isPlaying={isPlaying}
             content={project.data}
+            currentTime={currentTime}
+            onChangeTime={setCurrentTime}
           />
           <Controls
             className={styles.controls}
