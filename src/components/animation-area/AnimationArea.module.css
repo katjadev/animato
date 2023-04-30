@@ -15,9 +15,6 @@
 }
 
 .elementsScrollable {
-  height: calc(8rem - 14px);
-  overflow: hidden;
-  border-bottom: 1px solid #eeeeee;
   position: relative;
 }
 
