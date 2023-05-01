@@ -39,7 +39,11 @@
     "repeat": "Repeat"
   },
   "project": {
-    "elements": "Elements"
+    "elements": "Elements",
+    "timeline": {
+      "pointer-aria-label": "Current time",
+      "pointer-aria-valuetext": "{time} milliseconds"
+    }
   },
   "main-menu": {
     "import-svg": "Import SVG",

@@ -21,6 +21,7 @@ export default function useElementTree(content: string) {
   useEffect(() => {
     const parser = new DOMParser()
     const doc = parser.parseFromString(content, 'application/xml')
+    // TODO: useMemo
     const elementTree = buildElementTree(doc.documentElement)
     setElements(elementTree)
   }, [content])

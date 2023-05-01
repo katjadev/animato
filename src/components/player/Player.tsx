@@ -17,7 +17,7 @@ const Player: FC<PlayerProps> = ({
   onChangeTime,
 }) => {
   const playerRef = useRef<HTMLDivElement>(null)
-  const intervalref = useRef<number | null>(null)
+  const intervalRef = useRef<number | null>(null)
   
   useEffect(() => {
     if (!playerRef.current) return
@@ -32,18 +32,18 @@ const Player: FC<PlayerProps> = ({
     const svg = playerRef.current.querySelector('svg')
     if (isPlaying) {
       svg?.unpauseAnimations()
-      intervalref.current = window.setInterval(() => onChangeTime(currentTime + 100), 100)
+      intervalRef.current = window.setInterval(() => onChangeTime(currentTime + 100), 100)
     } else {
       svg?.pauseAnimations()
-      if (intervalref.current) {
-        window.clearInterval(intervalref.current)
-        intervalref.current = null
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+        intervalRef.current = null
       }
     }
 
     return () => {
-      if (intervalref.current !== null) {
-        window.clearInterval(intervalref.current)
+      if (intervalRef.current !== null) {
+        window.clearInterval(intervalRef.current)
       }
     }
   }, [isPlaying, currentTime])

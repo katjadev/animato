@@ -1,26 +1,33 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { ScrollPosition } from '@animato/types'
-import { REM_TO_PX_COEFFICIENT } from '@animato/constants';
+import { MAX_DURATION, REM_TO_PX_COEFFICIENT } from '@animato/constants';
 import styles from './TimelinePointer.module.css'
 
 interface TimelinePointerProps {
+  currentTime: number;
   currentPosition: number;
   scrollPosition: ScrollPosition;
+  markSize: number;
+  timelineWidth: number;
   onChangePosition: (position: number) => void;
 }
 
-const TimelinePointer: FC<TimelinePointerProps> = ({ 
+const TimelinePointer: FC<TimelinePointerProps> = ({
+  currentTime,
   currentPosition,
   scrollPosition,
+  markSize,
+  timelineWidth,
   onChangePosition, 
 }) => {
+  const t = useTranslations('project.timeline')
   const pointerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const [initialPosition, setInitialPosition] = useState(0)
 
-  const handleMouseDown = useCallback(() => {
-    setIsDragging(true)
-  }, [])
+  const initialPosition = useMemo(() => pointerRef.current?.getBoundingClientRect().x || 0, [pointerRef.current])
+
+  const handleMouseDown = () => setIsDragging(true)
 
   const handleMouseUp = useCallback(() => {
     if (isDragging) {
@@ -36,13 +43,29 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
       return
     }
 
-    const newPosition = Math.max(event.pageX - initialPosition, 0)
+    const newPosition = Math.max(event.clientX - initialPosition + scrollPosition.left, 0)
     onChangePosition(newPosition)
   }, [
     isDragging, 
-    initialPosition, 
+    initialPosition,
+    scrollPosition.left,
     onChangePosition,
   ])
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+      const newPosition = Math.min(currentPosition + markSize, timelineWidth)
+      onChangePosition(newPosition)
+    }
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
+      const newPosition = Math.max(currentPosition - markSize, 0)
+      onChangePosition(newPosition)
+    }
+  }
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove)
@@ -60,21 +83,23 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     handleMouseUp,
   ])
 
-  useEffect(() => {
-    if (pointerRef.current) {
-      setInitialPosition(pointerRef.current.getBoundingClientRect().x)
-    }
-  }, [scrollPosition])
-
   return (
     <div 
       className={styles.pointer}
+      role="slider"
+      aria-label={t('pointer-aria-label')}
+      aria-valuemin={0}
+      aria-valuemax={MAX_DURATION}
+      aria-valuenow={currentTime}
+      aria-valuetext={t('pointer-aria-valuetext', { time: currentTime })}
+      tabIndex={0}
       ref={pointerRef}
-      onMouseDown={handleMouseDown}
       style={{ 
         left: `${currentPosition + 0.5 * REM_TO_PX_COEFFICIENT}px`,
         marginLeft: `-${scrollPosition.left}px`,
       }}
+      onMouseDown={handleMouseDown}
+      onKeyDown={handleKeyDown}
     />
   )
 }

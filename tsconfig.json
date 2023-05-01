@@ -18,6 +18,6 @@
       "@animato/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/Firebase.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/Firebase.js", "__tests__/components/timeline-pointer/TimelinePointer.snapshot.js"],
   "exclude": ["node_modules"]
 }

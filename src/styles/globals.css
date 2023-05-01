@@ -19,6 +19,7 @@
   --highlight-2: #90088A;
   --highlight-3: #510BC4;
   --highlight-4: #FFD700;
+  --focus: #2fa6ff;
 
   --x-small: 576px;
   --small: 768px;
@@ -39,6 +40,12 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+*:focus-visible {
+  outline-color: var(--focus);
+  outline-offset: 2px;
+  transition: outline-offset 200ms ease-in;
 }
 
 html,
@@ -72,4 +79,10 @@ a {
   /* html {
     color-scheme: dark;
   } */
+}
+
+@media (prefers-reduced-motion) {
+  * {
+    transition: none !important;
+  }
 }

@@ -16,7 +16,7 @@ export default function useAnimationList(content: string, timelineWidth: number)
         const time = duration * 1000 * parseFloat(keyTime)
         return {
           time,
-          position: Math.round((timelineWidth * time) / (MAX_DURATION * 1000)) + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT,
+          position: Math.round((timelineWidth * time) / MAX_DURATION) + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT,
         }
       })
 
@@ -26,7 +26,8 @@ export default function useAnimationList(content: string, timelineWidth: number)
     const list: { [key: string]: AnimationGroup } = {}
     let animationDuration = 0
     const animationNodes = Array.from(doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', ')))
-
+    
+    // TODO: useMemo
     animationNodes
       .filter((animationNode) => !!animationNode.getAttribute('xlink:href'))
       .forEach((animationNode) => {

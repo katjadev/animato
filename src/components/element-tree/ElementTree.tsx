@@ -58,7 +58,7 @@ const ElementTree: FC<ElementTreeProps> = ({
                 <button
                   className={styles.collapseButton}
                   aria-label={collapsedNodes.includes(element.id) ? 'Expand' : 'Collapse'}
-                  onClick={() => toggleNode(element.id)}
+                  onClick={() => toggleNode(element.id)} // TODO: extract into a component
                 >
                   {collapsedNodes.includes(element.id) ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
                 </button>

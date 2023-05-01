@@ -44,7 +44,7 @@ const Timeline: FC<TimelineProps> = ({
   const timelinePaddingPx = TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
 
   useEffect(() => {
-    setCurrentPointerPosition((timelineWidth * currentTime) / (MAX_DURATION * 1000))
+    setCurrentPointerPosition((timelineWidth * currentTime) / MAX_DURATION)
   }, [currentTime, marks, markSize])
 
 
@@ -74,7 +74,7 @@ const Timeline: FC<TimelineProps> = ({
 
   const handleChangePointerPosition = (position: number) => {
     const closestMark = findClosestMark(marks, position)
-    const newTime = Math.round(((closestMark.position * MAX_DURATION * 1000) / (timelineWidth * 100))) * 100
+    const newTime = Math.round(((closestMark.position * MAX_DURATION) / (timelineWidth * 100))) * 100
     onChangeTime(newTime)
   }
 
@@ -82,7 +82,7 @@ const Timeline: FC<TimelineProps> = ({
     const timelineLeft = event.currentTarget.getBoundingClientRect().left
     const position = event.clientX - timelineLeft - timelinePaddingPx
     const closestMark = findClosestMark(marks, position)
-    const newTime = Math.round((closestMark.position * MAX_DURATION * 1000) / timelineWidth)
+    const newTime = Math.round((closestMark.position * MAX_DURATION) / timelineWidth)
     onChangeTime(newTime > 0 ? newTime : 0)
   }
 
@@ -118,8 +118,11 @@ const Timeline: FC<TimelineProps> = ({
         ))}
       </svg>
       <TimelinePointer
+        currentTime={currentTime}
         currentPosition={currentPointerPosition}
         scrollPosition={scrollPosition}
+        markSize={markSize}
+        timelineWidth={timelineWidth}
         onChangePosition={handleChangePointerPosition} 
       />
     </div>

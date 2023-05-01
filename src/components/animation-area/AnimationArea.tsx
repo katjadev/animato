@@ -67,7 +67,7 @@ const AnimationArea: FC<AnimationAreaProps> = ({
                   <button
                     className={styles.collapseButton}
                     aria-label={collapsedAnimations.includes(animatedElement.id) ? 'Expand' : 'Collapse'}
-                    onClick={() => toggleAnimation(animatedElement.id)}
+                    onClick={() => toggleAnimation(animatedElement.id)}  // TODO: extract into a component
                   >
                     {collapsedAnimations.includes(animatedElement.id) ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
                   </button>
