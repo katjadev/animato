@@ -28,6 +28,58 @@ describe('TimelinePointer', () => {
     expect(pointer).toBeInTheDocument()
   })
 
+  it('does not calls onChangePosition when moved with mouse but isDragging = false', () => {
+    const onChangePositionMock = jest.fn()
+    render(
+      <NextIntlProvider messages={messages} locale={locale}>
+        <TimelinePointer
+          currentTime={0}
+          currentPosition={0}
+          scrollPosition={{ left: 0, top: 0 }}
+          onChangePosition={onChangePositionMock}
+        />
+      </NextIntlProvider>
+    )
+
+    const pointer = screen.getByRole('slider')
+    fireEvent(
+      pointer,
+      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
+    )
+
+    expect(onChangePositionMock).toBeCalledTimes(0)
+  })
+
+  it('does not call onChangePosition when moved with mouse but mouse button is not pressed', () => {
+    const onChangePositionMock = jest.fn()
+    render(
+      <NextIntlProvider messages={messages} locale={locale}>
+        <TimelinePointer
+          currentTime={0}
+          currentPosition={0}
+          scrollPosition={{ left: 0, top: 0 }}
+          onChangePosition={onChangePositionMock}
+        />
+      </NextIntlProvider>
+    )
+
+    const pointer = screen.getByRole('slider')
+    fireEvent(
+      pointer,
+      new MouseEvent('mousedown', { bubbles: true }),
+    )
+    fireEvent(
+      pointer,
+      new MouseEvent('mouseup', { bubbles: true }),
+    )
+    fireEvent(
+      pointer,
+      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
+    )
+
+    expect(onChangePositionMock).toBeCalledTimes(0)
+  })
+
   it('calls onChangePosition when moved with mouse', () => {
     const onChangePositionMock = jest.fn()
     render(
@@ -52,7 +104,7 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(1)
-    expect(onChangePositionMock).toBeCalledWith(200)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(200)
   })
 
   it('calls onChangePosition when moved with mouse with scroll position', () => {
@@ -79,7 +131,7 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(1)
-    expect(onChangePositionMock).toBeCalledWith(400)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(400)
   })
 
   it('calls onChangePosition when moved with keyboard', () => {
@@ -90,7 +142,7 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={100}
           scrollPosition={{ left: 0, top: 0 }}
-          markSize={20}
+          markSize={1}
           timelineWidth={1000}
           onChangePosition={onChangePositionMock}
         />
@@ -104,7 +156,7 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(1)
-    expect(onChangePositionMock).toHaveBeenLastCalledWith(120)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(116)
 
     fireEvent(
       pointer,
@@ -112,7 +164,7 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(2)
-    expect(onChangePositionMock).toHaveBeenLastCalledWith(120)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(116)
 
     fireEvent(
       pointer,
@@ -120,7 +172,7 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(3)
-    expect(onChangePositionMock).toHaveBeenLastCalledWith(80)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(84)
 
     fireEvent(
       pointer,
@@ -128,6 +180,6 @@ describe('TimelinePointer', () => {
     )
 
     expect(onChangePositionMock).toBeCalledTimes(4)
-    expect(onChangePositionMock).toHaveBeenLastCalledWith(80)
+    expect(onChangePositionMock).toHaveBeenLastCalledWith(84)
   })
 })

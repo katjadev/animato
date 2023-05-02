@@ -57,12 +57,12 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     event.stopPropagation()
 
     if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
-      const newPosition = Math.min(currentPosition + markSize, timelineWidth)
+      const newPosition = Math.min(currentPosition + markSize * REM_TO_PX_COEFFICIENT, timelineWidth)
       onChangePosition(newPosition)
     }
 
     if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
-      const newPosition = Math.max(currentPosition - markSize, 0)
+      const newPosition = Math.max(currentPosition - markSize * REM_TO_PX_COEFFICIENT, 0)
       onChangePosition(newPosition)
     }
   }
