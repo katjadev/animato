@@ -1,17 +1,50 @@
+import { useMemo } from 'react'
 import { 
   ALLOWED_ANIMATIONS, 
+  ALLOWED_SVG_ELEMENTS, 
   MAX_DURATION, 
   REM_TO_PX_COEFFICIENT, 
   TIMELINE_PADDING,
 } from '@animato/constants'
-import { AnimationGroup, AnimationKeyframe } from '@animato/types'
-import { useEffect, useState } from 'react'
+import { 
+  AnimationGroup, 
+  Animation, 
+  AnimationKeyframe,
+} from '@animato/types'
 
 export default function useAnimationList(content: string, timelineWidth: number) {
-  const [animations, setAnimations] = useState<AnimationGroup[]>([])
-  const [duration, setDuration] = useState(0)
+  const parser = new DOMParser()
+  
+  const [animations, duration] = useMemo(() => {
+    const doc = parser.parseFromString(content, 'application/xml')
+    const elements = Array.from(doc.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', ')))
 
-  const translateKeyTimesToTimelinePoints = (keyTimes: string[], duration: number): AnimationKeyframe[] => keyTimes
+    return elements.reduce((result: [Array<AnimationGroup>, number], current: Element) => {
+      const id = current.getAttribute('id')?.toString()
+      if (!id) {
+        return result
+      }
+      
+      const title = current?.getAttribute('data-title') || current?.tagName || ''
+      const [animationList, currentDuration] = getAnimationsForElement(id, doc, timelineWidth)
+
+      if (animationList.length > 0) {
+        result[0] = [...result[0], {
+          id,
+          title,
+          animations: animationList,
+        }]
+        result[1] = Math.max(result[1], currentDuration)
+      }
+
+      return result
+    }, [[], 0])
+  }, [content, timelineWidth])
+
+  return { animations, duration }
+}
+
+const translateKeyTimesToTimelinePoints = (keyTimes: string[], duration: number, timelineWidth: number): AnimationKeyframe[] => keyTimes
       .map((keyTime) => {
         const time = duration * 1000 * parseFloat(keyTime)
         return {
@@ -20,50 +53,33 @@ export default function useAnimationList(content: string, timelineWidth: number)
         }
       })
 
-  useEffect(() => {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, 'application/xml')
-    const list: { [key: string]: AnimationGroup } = {}
-    let animationDuration = 0
-    const animationNodes = Array.from(doc.querySelectorAll(ALLOWED_ANIMATIONS.join(', ')))
-    
-    // TODO: useMemo
-    animationNodes
-      .filter((animationNode) => !!animationNode.getAttribute('xlink:href'))
-      .forEach((animationNode) => {
-        const id = animationNode.getAttribute('xlink:href')!.toString()
-        const animatedElement = doc.querySelector(id)
-        const currentDuration = parseInt(animationNode.getAttribute('dur') || '0')
-        const keyTimes = (animationNode.getAttribute('keyTimes') || '')
-          .split('; ')
-          .filter(keyTime => !!keyTime)
-        const keyframes = translateKeyTimesToTimelinePoints(keyTimes, currentDuration)
-        const animation = {
-          id: animationNode.getAttribute('id') || '',
-          title: animationNode.getAttribute('data-title') || '',
-          values: animationNode.getAttribute('values')?.split('; ') || [],
-          keyframes,
-          duration: currentDuration,
-        }
+const parseAnimationNode = (node: Element, timelineWidth: number): Animation => {
+  const animationDuration = parseInt(node.getAttribute('dur') || '0')
+  const keyTimes = (node.getAttribute('keyTimes') || '')
+    .split('; ')
+    .filter(keyTime => !!keyTime)
+  const keyframes = translateKeyTimesToTimelinePoints(keyTimes, animationDuration, timelineWidth)
+  
+  return {
+    id: node.getAttribute('id') || '',
+    title: node.getAttribute('data-title') || '',
+    values: node.getAttribute('values')?.split('; ') || [],
+    keyframes,
+    duration: animationDuration,
+  }
+}
 
-        if (!list[id]) {
-          list[id] = {
-            id: id.replace('#', ''),
-            title: animatedElement?.getAttribute('data-title') || animatedElement?.tagName || '',
-            animations: [animation]
-          }
-        } else {
-          list[id].animations.push(animation)
-        }
+const getAnimationsForElement = (id: string, document: Document, timelineWidth: number): [Animation[], number] => {
+  let currentDuration = 0
+  const selector = ALLOWED_ANIMATIONS.map((element) => `${element}[*|href="#${id}"]`).join(', ')
+  const animations = Array.from(document.querySelectorAll(selector))
+    .map((animationNode) => {
+      const animation = parseAnimationNode(animationNode, timelineWidth)
+      if (currentDuration < animation.duration) {
+        currentDuration = animation.duration
+      }
+      return animation
+    })
 
-        if (currentDuration > animationDuration) {
-          animationDuration = currentDuration
-        }
-      })
-
-    setAnimations(Object.values(list))
-    setDuration(animationDuration * 1000)
-  }, [content, timelineWidth])
-
-  return { animations, duration }
+  return [animations, currentDuration]
 }

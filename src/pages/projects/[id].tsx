@@ -59,7 +59,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
         <Header title={project.title} className={styles.header} />
           <ElementTree 
             className={styles.elements}
-            projectId={project.id} 
+            projectId={projectId!} 
             content={project.data}
             onSelectElement={selectElement}
           />
@@ -86,7 +86,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
           />
           <AnimationArea
             className={styles.animations}
-            projectId={project.id}
+            projectId={projectId!}
             content={project.data}
             selectedElementId={selectedElementId}
             timelineWidth={timelineWidth}

@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useState } from 'react'
+import { FC, Fragment, memo, useEffect, useState } from 'react'
 import { ScrollPosition } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
 import useAnimationList from '@animato/hooks/useAnimationList'
@@ -15,7 +15,7 @@ interface AnimationAreaProps {
   onScroll: (scrollPosition: ScrollPosition) => void;
 }
 
-const AnimationArea: FC<AnimationAreaProps> = ({
+const AnimationArea: FC<AnimationAreaProps> = memo(({
   projectId,
   content,
   selectedElementId,
@@ -28,15 +28,11 @@ const AnimationArea: FC<AnimationAreaProps> = ({
   const { rootRef, scrollPosition } = useScrollObserver()
 
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
-  const [animationListHeight, setAnimationListHeight] = useState(0)
+  const animationListHeight = animations.reduce((prev, element) => prev + element.animations.length + 1, 0)
 
   useEffect(() => {
     onScroll(scrollPosition)
   }, [scrollPosition, onScroll])
-
-  useEffect(() => {
-    setAnimationListHeight(animations.reduce((prev, element) => prev + element.animations.length + 1, 0))
-  }, [animations])
 
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))
@@ -143,6 +139,6 @@ const AnimationArea: FC<AnimationAreaProps> = ({
       </div>
     </div>
   )
-}
+})
 
 export default AnimationArea

@@ -1,8 +1,7 @@
 .animationArea {
   height: 12rem;
   display: grid;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   grid-template-columns: [left] 15rem [right] minmax(0, 1fr) [end];
 }
 
