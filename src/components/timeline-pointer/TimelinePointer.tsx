@@ -95,7 +95,7 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
       tabIndex={0}
       ref={pointerRef}
       style={{ 
-        left: `${currentPosition + 0.5 * REM_TO_PX_COEFFICIENT}px`,
+        left: `${currentPosition}px`,
         marginLeft: `-${scrollPosition.left}px`,
       }}
       onMouseDown={handleMouseDown}

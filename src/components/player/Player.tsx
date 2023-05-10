@@ -1,8 +1,11 @@
 import { FC, useEffect, useRef } from 'react'
 import styles from './Player.module.css'
+import PlayerSVG from './PlayerSVG';
 
 interface PlayerProps {
   isPlaying: boolean;
+  isRepeatMode: boolean;
+  duration: number;
   content: string;
   currentTime: number;
   className?: string;
@@ -10,7 +13,9 @@ interface PlayerProps {
 }
 
 const Player: FC<PlayerProps> = ({ 
-  isPlaying, 
+  isPlaying,
+  isRepeatMode,
+  duration,
   content, 
   currentTime,
   className,
@@ -18,21 +23,36 @@ const Player: FC<PlayerProps> = ({
 }) => {
   const playerRef = useRef<HTMLDivElement>(null)
   const intervalRef = useRef<number | null>(null)
+  const currentTimeRef = useRef(currentTime)
   
   useEffect(() => {
     if (!playerRef.current) return
 
-    const svg = playerRef.current.querySelector('svg')
-    svg?.setCurrentTime(currentTime / 1000)
-  }, [currentTime])
+    if (!isPlaying) {
+      const svg = playerRef.current.querySelector('svg')
+      svg?.setCurrentTime(currentTime / 1000)
+    }
+
+    currentTimeRef.current = currentTime
+  }, [currentTime, isPlaying])
 
   useEffect(() => {
     if (!playerRef.current) return
     
     const svg = playerRef.current.querySelector('svg')
+    
     if (isPlaying) {
       svg?.unpauseAnimations()
-      intervalRef.current = window.setInterval(() => onChangeTime(currentTime + 100), 100)
+      intervalRef.current = window.setInterval(() => {
+        if (isRepeatMode && currentTimeRef.current === duration * 1000) {
+          currentTimeRef.current = 0
+          onChangeTime(0)
+          svg?.setCurrentTime(0)
+        } else {
+          currentTimeRef.current = currentTimeRef.current + 100
+          onChangeTime(currentTimeRef.current)
+        }
+      }, 100)
     } else {
       svg?.pauseAnimations()
       if (intervalRef.current) {
@@ -46,13 +66,13 @@ const Player: FC<PlayerProps> = ({
         window.clearInterval(intervalRef.current)
       }
     }
-  }, [isPlaying, currentTime])
+  }, [isPlaying, isRepeatMode, duration, onChangeTime])
 
   return (
-    <div 
-      className={`${styles.player} ${className}`}
+    <PlayerSVG 
+      className={className}
       ref={playerRef}
-      dangerouslySetInnerHTML={{ __html: content }}
+      content={content}
     />
   )
 }

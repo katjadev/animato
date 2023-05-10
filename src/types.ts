@@ -13,6 +13,7 @@ export type TimelineMark = {
   title: string;
   height: number;
   position: number;
+  time: number;
 }
 
 export type AnimationKeyframe = {

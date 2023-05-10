@@ -12,3 +12,9 @@
   flex: 1 1 auto;
   text-align: center;
 }
+
+.activeButton,
+.activeButton:hover {
+  color: var(--text-inverted);
+  background: var(--highlight-1);
+}

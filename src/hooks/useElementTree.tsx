@@ -6,18 +6,6 @@ import { useEffect, useState } from 'react'
 export default function useElementTree(content: string) {
   const [elements, setElements] = useState<ElementTreeNode[]>([])
   
-  const buildElementTree = (currentElement: Element): ElementTreeNode[] => {
-    const children = Array.from(currentElement.children)
-      .filter((element) => ALLOWED_SVG_ELEMENTS.includes(element.nodeName))
-
-    return children.map((element) => ({
-      id: element.getAttribute('id') || uuidv4(),
-      element,
-      title: element.getAttribute('data-title') || element.nodeName,
-      children: buildElementTree(element),
-    }))
-  }
-
   useEffect(() => {
     const parser = new DOMParser()
     const doc = parser.parseFromString(content, 'application/xml')
@@ -27,4 +15,16 @@ export default function useElementTree(content: string) {
   }, [content])
 
   return { elements }
+}
+
+const buildElementTree = (currentElement: Element): ElementTreeNode[] => {
+  const children = Array.from(currentElement.children)
+    .filter((element) => ALLOWED_SVG_ELEMENTS.includes(element.nodeName))
+
+  return children.map((element) => ({
+    id: element.getAttribute('id') || uuidv4(),
+    element,
+    title: element.getAttribute('data-title') || element.nodeName,
+    children: buildElementTree(element),
+  }))
 }

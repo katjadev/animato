@@ -2,3 +2,24 @@
   position: relative;
   overflow: visible;
 }
+
+.durationMark {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 0.5rem;
+  border-style: solid;
+  border-color: var(--highlight-4) transparent transparent;
+  bottom: -0.5rem;
+  margin-left: 0.5rem;
+}
+
+.durationMark.repeatMode:after {
+  content: "";
+  position: absolute;
+  width: 12000px;
+  height: 11rem;
+  left: 0;
+  top: -3rem;
+  background-color: rgba(0, 0, 0, 0.3);
+}

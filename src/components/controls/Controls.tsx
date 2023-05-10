@@ -7,18 +7,22 @@ import styles from './Controls.module.css'
 
 interface ControlsProps {
   isPlaying: boolean;
+  isRepeatMode: boolean;
   currentTime: number;
   className?: string;
   onChangeTime: (newTime: number) => void;
   onTogglePlaying: (isPlaying: boolean) => void;
+  onToggleRepeatMode: (isRepeatMode: boolean) => void;
 }
 
 const Controls: FC<ControlsProps> = ({
   isPlaying,
+  isRepeatMode,
   currentTime,
   className,
   onChangeTime,
   onTogglePlaying,
+  onToggleRepeatMode,
 }) => {
   const t = useTranslations('project-controls')
 
@@ -44,6 +48,7 @@ const Controls: FC<ControlsProps> = ({
   const handleRestart = useCallback(() => onChangeTime(0), [onChangeTime]);
   const handlePlay = useCallback(() => onTogglePlaying(true), [onTogglePlaying]);
   const handlePause = useCallback(() => onTogglePlaying(false), [onTogglePlaying]);
+  const handleRepeat = useCallback(() => onToggleRepeatMode(!isRepeatMode), [isRepeatMode, onToggleRepeatMode]);
 
   return (
     <div className={`${styles.controls} ${className}`}>
@@ -75,7 +80,11 @@ const Controls: FC<ControlsProps> = ({
         <span>{formattedTime.seconds}</span>.
         <span>{formattedTime.milliseconds}</span>
       </div>
-      <IconButton ariaLabel={t('repeat')}>
+      <IconButton
+        className={isRepeatMode ? styles.activeButton : ''}
+        ariaLabel={t('repeat')}
+        onClick={handleRepeat}
+      >
         <Icon icon='repeat' />
       </IconButton>
     </div>

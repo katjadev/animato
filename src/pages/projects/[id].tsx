@@ -6,6 +6,9 @@ import { useTranslations } from 'next-intl'
 import { Project, ScrollPosition } from '@animato/types'
 import { useAuth } from '@animato/context/authUserContext'
 import { subscribeToProject } from '@animato/pages/api/projects'
+import { MAX_ZOOM } from '@animato/constants'
+import useTimelineMarks from '@animato/hooks/useTimelineMarks'
+import useAnimationList from '@animato/hooks/useAnimationList'
 import Head from '@animato/components/head/Head'
 import Header from '@animato/components/header/Header'
 import ElementTree from '@animato/components/element-tree/ElementTree'
@@ -25,13 +28,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
   const t = useTranslations('project')
   const router = useRouter()
   const authUserContext = useAuth()
-  
   const [project, setProject] = useState<Project | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [timelineWidth, setTimelineWidth] = useState(0)
-  const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({ left: 0, top: 0 })
 
   useEffect(() => {
     if (!authUserContext.currentUser && projectId !== 'demo-project') {
@@ -43,6 +40,17 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
       subscribeToProject(projectId, authUserContext.currentUser, setProject)
     }
   }, [authUserContext, projectId, router])
+
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isRepeatMode, setIsRepeatMode] = useState(false)
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [timelineWidth, setTimelineWidth] = useState(0)
+  const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({ left: 0, top: 0 })
+
+  const [zoom, setZoom] = useState(MAX_ZOOM)
+  const { marks, markSize } = useTimelineMarks(zoom)
+  const { animations, duration } = useAnimationList(project?.data || '', timelineWidth, marks)
 
   const selectElement = (id: string | null) => {
     setSelectedElementId(id)
@@ -66,6 +74,8 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
           <Player 
             className={styles.player}
             isPlaying={isPlaying}
+            isRepeatMode={isRepeatMode}
+            duration={duration}
             content={project.data}
             currentTime={currentTime}
             onChangeTime={setCurrentTime}
@@ -73,21 +83,29 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
           <Controls
             className={styles.controls}
             isPlaying={isPlaying}
+            isRepeatMode={isRepeatMode}
             currentTime={currentTime}
             onChangeTime={setCurrentTime}
-            onTogglePlaying={setIsPlaying}            
+            onTogglePlaying={setIsPlaying}
+            onToggleRepeatMode={setIsRepeatMode}
           />
           <Timeline
             className={styles.timeline}
+            zoom={zoom}
+            marks={marks}
+            markSize={markSize}
+            duration={duration}
+            isRepeatMode={isRepeatMode}
             currentTime={currentTime}
             scrollPosition={scrollPosition}
             onChangeTime={setCurrentTime}
             onChangeWidth={setTimelineWidth}
+            onChangeZoom={setZoom}
           />
           <AnimationArea
             className={styles.animations}
             projectId={projectId!}
-            content={project.data}
+            animations={animations}
             selectedElementId={selectedElementId}
             timelineWidth={timelineWidth}
             onChangeTime={setCurrentTime}

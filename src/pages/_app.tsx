@@ -1,3 +1,4 @@
+import { StrictMode } from 'react'
 import type { AppProps } from 'next/app'
 import { NextIntlProvider } from 'next-intl'
 import Firebase from '@animato/lib/firebase/Firebase'
@@ -13,17 +14,19 @@ export default function App({ Component, pageProps }: AppProps) {
   const authUserContext = useAuth()
   
   return (
-    <NextIntlProvider messages={pageProps.messages}>
-      <AuthUserProvider>
-        <AuthUserContext.Consumer>
-          {({ loading }) => (
-            <>
-              {loading && (<></>)}
-              {!loading && <Component {...pageProps} />}
-            </>
-          )}
-        </AuthUserContext.Consumer>
-      </AuthUserProvider>
-    </NextIntlProvider>
+    <StrictMode>
+      <NextIntlProvider messages={pageProps.messages}>
+        <AuthUserProvider>
+          <AuthUserContext.Consumer>
+            {({ loading }) => (
+              <>
+                {loading && (<></>)}
+                {!loading && <Component {...pageProps} />}
+              </>
+            )}
+          </AuthUserContext.Consumer>
+        </AuthUserProvider>
+      </NextIntlProvider>
+    </StrictMode>
   )
 }

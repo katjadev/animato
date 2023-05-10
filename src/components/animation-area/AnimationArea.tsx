@@ -1,13 +1,12 @@
 import { FC, Fragment, memo, useEffect, useState } from 'react'
-import { ScrollPosition } from '@animato/types'
+import { AnimationGroup, ScrollPosition } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
-import useAnimationList from '@animato/hooks/useAnimationList'
 import Icon from '@animato/components/icon/Icon'
 import styles from './AnimationArea.module.css'
 
 interface AnimationAreaProps {
   projectId: string;
-  content: string;
+  animations: AnimationGroup[];
   selectedElementId: string | null;
   timelineWidth: number;
   className?: string;
@@ -17,14 +16,13 @@ interface AnimationAreaProps {
 
 const AnimationArea: FC<AnimationAreaProps> = memo(({
   projectId,
-  content,
+  animations,
   selectedElementId,
   timelineWidth,
   className,
   onChangeTime,
   onScroll,
 }) => {
-  const { animations } = useAnimationList(content, timelineWidth)
   const { rootRef, scrollPosition } = useScrollObserver()
 
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
@@ -140,5 +138,7 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
     </div>
   )
 })
+
+AnimationArea.displayName = "AnimationArea"
 
 export default AnimationArea
