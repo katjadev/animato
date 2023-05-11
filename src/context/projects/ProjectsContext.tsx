@@ -1,5 +1,5 @@
-import { Dispatch, FC, ReactNode, createContext, useReducer } from 'react'
-import { Action, Project } from '@animato/types'
+import { FC, ReactNode, createContext, useReducer } from 'react'
+import { Project } from '@animato/types'
 import { projectsReducer, projectsState } from './reducer'
 import { projectsActions } from './actions'
 
@@ -12,11 +12,9 @@ export type ProjectsState = {
 export const ProjectsContext = createContext<{
   state: ProjectsState,
   actions: {[key: string]: (payload?: any) => void},
-  dispatch: Dispatch<Action>,
 }>({
   state: projectsState,
   actions: {},
-  dispatch: () => null,
 })
 
 interface ProjectsProviderProps {
@@ -28,11 +26,7 @@ export const ProjectsProvider: FC<ProjectsProviderProps> = ({ children }) => {
   const actions = projectsActions(dispatch)
 
   return (
-    <ProjectsContext.Provider value={{
-      state,
-      actions,
-      dispatch,
-    }}>
+    <ProjectsContext.Provider value={{ state, actions }}>
       {children}
     </ProjectsContext.Provider>
   )

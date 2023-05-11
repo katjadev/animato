@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
 import { Project, ScrollPosition } from '@animato/types'
@@ -61,52 +61,52 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
       <Head title={project.title} />
       <main className={`${styles.main} ${inter.className}`}>
         <Header title={project.title} className={styles.header} />
-          <ElementTree 
-            className={styles.elements}
-            projectId={projectId!} 
-            content={project.data}
-            onSelectElement={selectElement}
-          />
-          <Player 
-            className={styles.player}
-            isPlaying={isPlaying}
-            isRepeatMode={isRepeatMode}
-            duration={duration}
-            content={project.data}
-            currentTime={currentTime}
-            onChangeTime={setCurrentTime}
-          />
-          <Controls
-            className={styles.controls}
-            isPlaying={isPlaying}
-            isRepeatMode={isRepeatMode}
-            currentTime={currentTime}
-            onChangeTime={setCurrentTime}
-            onTogglePlaying={setIsPlaying}
-            onToggleRepeatMode={setIsRepeatMode}
-          />
-          <Timeline
-            className={styles.timeline}
-            zoom={zoom}
-            marks={marks}
-            markSize={markSize}
-            duration={duration}
-            isRepeatMode={isRepeatMode}
-            currentTime={currentTime}
-            scrollPosition={scrollPosition}
-            onChangeTime={setCurrentTime}
-            onChangeWidth={setTimelineWidth}
-            onChangeZoom={setZoom}
-          />
-          <AnimationArea
-            className={styles.animations}
-            projectId={projectId!}
-            animations={animations}
-            selectedElementId={selectedElementId}
-            timelineWidth={timelineWidth}
-            onChangeTime={setCurrentTime}
-            onScroll={setScrollPosition}
-          />
+        <ElementTree 
+          className={styles.elements}
+          projectId={projectId!} 
+          content={project.data}
+          onSelectElement={selectElement}
+        />
+        <Player 
+          className={styles.player}
+          isPlaying={isPlaying}
+          isRepeatMode={isRepeatMode}
+          duration={duration}
+          content={project.data}
+          currentTime={currentTime}
+          onChangeTime={setCurrentTime}
+        />
+        <Controls
+          className={styles.controls}
+          isPlaying={isPlaying}
+          isRepeatMode={isRepeatMode}
+          currentTime={currentTime}
+          onChangeTime={setCurrentTime}
+          onTogglePlaying={setIsPlaying}
+          onToggleRepeatMode={setIsRepeatMode}
+        />
+        <Timeline
+          className={styles.timeline}
+          zoom={zoom}
+          marks={marks}
+          markSize={markSize}
+          duration={duration}
+          isRepeatMode={isRepeatMode}
+          currentTime={currentTime}
+          scrollPosition={scrollPosition}
+          onChangeTime={setCurrentTime}
+          onChangeWidth={setTimelineWidth}
+          onChangeZoom={setZoom}
+        />
+        <AnimationArea
+          className={styles.animations}
+          projectId={projectId!}
+          animations={animations}
+          selectedElementId={selectedElementId}
+          timelineWidth={timelineWidth}
+          onChangeTime={setCurrentTime}
+          onScroll={setScrollPosition}
+        />
       </main>
     </>
   );

@@ -1,0 +1,28 @@
+.list {
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: 200;
+  font-size: 0.9rem;
+}
+
+.table tr {
+  border-bottom: 1px solid var(--border-base);
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-base);
+}
+
+.table th:first-child, .table td:first-child {
+  padding-left: 0;
+}
+
+.table th.right, .table td.right {
+  text-align: right;
+}
