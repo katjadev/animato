@@ -9,6 +9,11 @@ export interface Project extends RawProject {
   id: string;
 }
 
+export type Action = {
+  type: string;
+  payload?: {[key: string]: any};
+}
+
 export type TimelineMark = {
   title: string;
   height: number;

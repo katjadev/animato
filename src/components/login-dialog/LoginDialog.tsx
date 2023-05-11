@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, MouseEventHandler, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
-import { useAuth } from '@animato/context/authUserContext'
+import { useAuth } from '@animato/context/AuthContext'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
 import Button from '@animato/components/button/Button'
 import Input from '@animato/components/input/Input'

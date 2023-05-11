@@ -1,11 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import { GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
-import { useTranslations } from 'next-intl'
 import { Project, ScrollPosition } from '@animato/types'
-import { useAuth } from '@animato/context/authUserContext'
-// import { subscribeToProject } from '@animato/pages/api/projects'
+import { useAuth } from '@animato/context/AuthContext'
 import { MAX_ZOOM } from '@animato/constants'
 import useTimelineMarks from '@animato/hooks/useTimelineMarks'
 import useAnimationList from '@animato/hooks/useAnimationList'
@@ -49,7 +46,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
 
   const [zoom, setZoom] = useState(MAX_ZOOM)
   const { marks, markSize } = useTimelineMarks(zoom)
-  const { animations, duration } = useAnimationList(project?.data || '', timelineWidth, marks)
+  const { animations, duration } = useAnimationList(project?.data || '', marks)
 
   const selectElement = (id: string | null) => {
     setSelectedElementId(id)

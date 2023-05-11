@@ -13,7 +13,7 @@ import {
   signOut,
 } from 'firebase/auth'
 
-export const AuthUserContext = createContext<{
+export const AuthContext = createContext<{
   currentUser: User | null,
   loading: boolean,
   logIn: (email: string, password: string) => Promise<void>,
@@ -102,7 +102,7 @@ export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
   }, [auth])
 
   return (
-    <AuthUserContext.Provider value={{ 
+    <AuthContext.Provider value={{ 
       currentUser, 
       loading,
       logIn,
@@ -110,8 +110,8 @@ export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
       logOut,
     }}>
       {children}
-    </AuthUserContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
-export const useAuth = () => useContext(AuthUserContext)
+export const useAuth = () => useContext(AuthContext)

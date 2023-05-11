@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import moment from 'moment'
-import { useAuth } from '@animato/context/authUserContext'
-import { Project } from '@animato/types'
-// import { 
-//   createProject, 
-//   deleteProject, 
-//   subscribeToProjects,
-// } from '@animato/pages/api/projects'
+import { useAuth } from '@animato/context/AuthContext'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import Button from '@animato/components/button/Button'
 import styles from '@animato/styles/ProjectList.module.css'
+import useProjects from '@animato/hooks/useProjects'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,33 +19,57 @@ export default function Projects() {
   const router = useRouter()
   const t = useTranslations('project-list')
   const { currentUser } = useAuth()
-  
-  const [projects, setProjects] = useState<Project[]>([])
+  const { state, actions } = useProjects()
+  const { projects, loading, error } = state
 
   useEffect(() => {
     const loadProjects = async () => {
-      const response = await fetch('/api/projects')
-      const data = await response.json()
-      setProjects(data)
+      try {
+        const response = await fetch('/api/projects')
+        if (!response.ok) {
+          throw Error();
+        }
+
+        const data = await response.json()
+        actions.loadProjectsSuccess(data)
+      } catch (_) {
+        actions.loadProjectsFailure()
+      }
     }
-    
-    if (currentUser) {
-      loadProjects()
-    }
+
+    loadProjects()
   }, [currentUser])
 
   const handleCreateProject = async () => {
-    const response = await fetch('/api/projects', { method: 'POST' })
-    const data = await response.json()
-    router.push(`/projects/${data.id}`)
+    try {
+      const response = await fetch('/api/projects', { method: 'POST' })
+      if (!response.ok) {
+        throw Error();
+      }
+
+      const data = await response.json()
+      router.push(`/projects/${data.id}`)
+    } catch(error) {
+      console.log(error)
+      // TODO: display error dialog
+    }
   }
 
   const handleDeleteProject = async (id: string) => {
-    await fetch('/api/projects', { 
-      method: 'DELETE',
-      body: JSON.stringify({ id }),
-    })
-    setProjects(projects.filter((project) => project.id !== id))
+    try {
+      const response = await fetch('/api/projects', { 
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      })
+      if (!response.ok) {
+        throw Error();
+      }
+      
+      actions.deleteProject(id)
+    } catch (error) {
+      console.log(error)
+      // TODO: display error dialog
+    }
   }
 
   return(
@@ -77,7 +96,13 @@ export default function Projects() {
           </Button>
         </div>
         <div className={styles.list}>
-          {projects.length == 0 && (
+          {loading && (
+            <>{t('loading')}</>
+          )}
+          {!loading && error && (
+            <>{t('error-message')}</>
+          )}
+          {!loading && !error && projects.length == 0 && (
             <>{t('empty-message')}</>
           )}
           {projects.length > 0 && (
