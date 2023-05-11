@@ -10,7 +10,7 @@ exports[`renders correctly 1`] = `
     aria-valuetext="0 milliseconds"
     class="pointer"
     role="slider"
-    style="left: 8px; margin-left: -0px;"
+    style="left: 0px; margin-left: -0px;"
     tabindex="0"
   />
 </div>

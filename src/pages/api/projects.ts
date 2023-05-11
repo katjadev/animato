@@ -1,63 +1,41 @@
-import { User } from 'firebase/auth'
-import { getDatabase, onValue, ref, remove, set } from 'firebase/database'
 import { v4 as uuidv4 } from 'uuid'
-import { Project, RawProject } from '@animato/types'
+import { sql } from '@vercel/postgres';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { firebaseAdminSDK } from '../../lib/firebase/FirebaseAdminSDK'
 
-export async function subscribeToProjects(currentUser: User | null, callback: (projects: Project[]) => void): Promise<void> {
-  if (!currentUser) { 
-    return Promise.reject()
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
+  if (request.method === 'GET' && request.query.id === 'demo-project') {
+    const { rows } = await sql`SELECT * FROM Projects WHERE id='demo-project';`
+    return response.status(200).json(rows[0])
   }
 
-  const db = getDatabase()
-  const projectsRef = ref(db, 'projects/' + currentUser.uid)
-  onValue(projectsRef, (snapshot) => {
-    const data = snapshot.val()
-    if (data) {
-      callback(Object.entries(data).map(([ id, project ]) => ({
-        id,
-        ...project as RawProject,
-      })))
+  if (!request.cookies.token) {
+    return response.status(403).json({ error: 'Permission denied' })
+  }
+
+  const token = await firebaseAdminSDK.auth().verifyIdToken(request.cookies.token!);
+  if (!token) {
+    return response.status(403).json({ error: 'Permission denied' })
+  }
+
+  if (request.method === 'POST') {
+    const id = uuidv4()
+    await sql`INSERT INTO Projects (id, title, data, user_id) VALUES (${id}, 'Untitled project', '', ${token.user_id});`
+    return response.status(200).json({ id })
+  } else if (request.method === 'DELETE') {
+    const { id } = JSON.parse(request.body)
+    await sql`DELETE FROM Projects WHERE user_id=${token.user_id} AND id=${id};`
+    return response.status(200).json({ id })
+  } else {
+    if (request.query.id) {
+      const { rows } = await sql`SELECT * FROM Projects WHERE user_id=${token.user_id} AND id=${request.query.id.toString()};`
+      return response.status(200).json(rows[0])
     }
-  })
-}
 
-export async function subscribeToProject(projectId: string, currentUser: User | null, callback: (project: Project) => void): Promise<void> {
-  if (!currentUser && projectId !== 'demo-project') { 
-    return Promise.reject()
+    const { rows } = await sql`SELECT * FROM Projects WHERE user_id=${token.user_id};`
+    return response.status(200).json(rows)
   }
-
-  const userId = projectId === 'demo-project' ? 'demo-user' : currentUser?.uid;
-  const db = getDatabase()
-  const projectsRef = ref(db, `projects/${userId}/${projectId}`)
-  onValue(projectsRef, (snapshot) => {
-    const data = snapshot.val()
-    if (data) {
-      callback(data)
-    }
-  })
-}
-
-export async function createProject(currentUser: User | null): Promise<string> {
-  if (!currentUser) { 
-    return Promise.reject()
-  }
-
-  const db = getDatabase()
-  const projectId = uuidv4()
-  return set(ref(db, `projects/${currentUser.uid}/${projectId}`), {
-    title: 'Untitled project',
-    createdAt: Date.now(),
-    modifiedAt: Date.now(),
-    data: '',
-  })
-    .then(() => projectId)
-}
-
-export async function deleteProject(projectId: string, currentUser: User | null): Promise<void> {
-  if (!currentUser) { 
-    return Promise.reject()
-  }
-
-  const db = getDatabase()
-  return remove(ref(db, `projects/${currentUser.uid}/${projectId}`))
 }

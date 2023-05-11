@@ -11,10 +11,11 @@ import '@animato/styles/globals.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   Firebase.initializeApp()
-  const authUserContext = useAuth()
-  
+  // const authUserContext = useAuth()
+
   return (
     <StrictMode>
+      
       <NextIntlProvider messages={pageProps.messages}>
         <AuthUserProvider>
           <AuthUserContext.Consumer>

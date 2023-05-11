@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, MouseEventHandler, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useAuth } from '@animato/context/authUserContext'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
 import Button from '@animato/components/button/Button'
 import Input from '@animato/components/input/Input'
@@ -21,20 +21,16 @@ const SignupDialog: FC<SignupDialogProps> = ({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const { signUp } = useAuth()
 
-    const auth = getAuth()
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        router.push('/projects')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log({ errorCode, errorMessage }) // TODO: handle error
-      })
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    try {
+      await signUp(email, password)
+    } catch(error) {
+      console.log(error)
+    }
+    router.push('/projects')
   }
 
   return (

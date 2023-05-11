@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { Project, ScrollPosition } from '@animato/types'
 import { useAuth } from '@animato/context/authUserContext'
-import { subscribeToProject } from '@animato/pages/api/projects'
+// import { subscribeToProject } from '@animato/pages/api/projects'
 import { MAX_ZOOM } from '@animato/constants'
 import useTimelineMarks from '@animato/hooks/useTimelineMarks'
 import useAnimationList from '@animato/hooks/useAnimationList'
@@ -25,21 +25,20 @@ interface ProjectProps {
 }
 
 const Project: FC<ProjectProps> = ({ projectId }) => {
-  const t = useTranslations('project')
-  const router = useRouter()
-  const authUserContext = useAuth()
+  const { currentUser } = useAuth()
   const [project, setProject] = useState<Project | null>(null)
 
   useEffect(() => {
-    if (!authUserContext.currentUser && projectId !== 'demo-project') {
-      router.push('/')
-      return
+    const loadProject = async (id: string) => {
+      const response = await fetch(`/api/projects?id=${id}`)
+      const data = await response.json()
+      setProject(data)
     }
 
     if (projectId) {
-      subscribeToProject(projectId, authUserContext.currentUser, setProject)
+      loadProject(projectId)
     }
-  }, [authUserContext, projectId, router])
+  }, [currentUser, projectId])
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [isRepeatMode, setIsRepeatMode] = useState(false)
@@ -122,11 +121,13 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
   context
-) => ({
-  props: {
-    messages: (await import(`../../messages/${context.locale}.json`)).default,
-    projectId: context.params?.id,
-  },
-})
+) => {
+  return {
+    props: {
+      messages: (await import(`../../messages/${context.locale}.json`)).default,
+      projectId: context.params?.id,
+    },
+  }
+}
 
 export default Project

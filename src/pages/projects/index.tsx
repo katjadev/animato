@@ -6,11 +6,11 @@ import { useTranslations } from 'next-intl'
 import moment from 'moment'
 import { useAuth } from '@animato/context/authUserContext'
 import { Project } from '@animato/types'
-import { 
-  createProject, 
-  deleteProject, 
-  subscribeToProjects,
-} from '@animato/pages/api/projects'
+// import { 
+//   createProject, 
+//   deleteProject, 
+//   subscribeToProjects,
+// } from '@animato/pages/api/projects'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import Icon from '@animato/components/icon/Icon'
@@ -21,29 +21,36 @@ import styles from '@animato/styles/ProjectList.module.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Projects() {
-  const t = useTranslations('project-list')
   const router = useRouter()
-  const authUserContext = useAuth()
+  const t = useTranslations('project-list')
+  const { currentUser } = useAuth()
   
   const [projects, setProjects] = useState<Project[]>([])
 
   useEffect(() => {
-    if (!authUserContext.currentUser) {
-      router.push('/')
-      return
+    const loadProjects = async () => {
+      const response = await fetch('/api/projects')
+      const data = await response.json()
+      setProjects(data)
     }
-
-    subscribeToProjects(authUserContext.currentUser, setProjects)
-  }, [authUserContext, router])
+    
+    if (currentUser) {
+      loadProjects()
+    }
+  }, [currentUser])
 
   const handleCreateProject = async () => {
-    const projectId = await createProject(authUserContext.currentUser)
-    router.push(`/projects/${projectId}`)
+    const response = await fetch('/api/projects', { method: 'POST' })
+    const data = await response.json()
+    router.push(`/projects/${data.id}`)
   }
 
-  const handleDeleteProject = async (projectId: string) => {
-    await deleteProject(projectId, authUserContext.currentUser)
-    setProjects(projects.filter((project) => project.id !== projectId))
+  const handleDeleteProject = async (id: string) => {
+    await fetch('/api/projects', { 
+      method: 'DELETE',
+      body: JSON.stringify({ id }),
+    })
+    setProjects(projects.filter((project) => project.id !== id))
   }
 
   return(

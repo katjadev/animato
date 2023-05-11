@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
-import { getAuth, signOut } from 'firebase/auth'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/authUserContext'
 import Head from '@animato/components/head/Head'
@@ -19,16 +18,7 @@ export default function Home() {
   const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false)
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
 
-  const authUserContext = useAuth()
-
-  const logOut = () => {
-    const auth = getAuth()
-    signOut(auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
-  }
+  const { currentUser, logOut } = useAuth()
 
   return (
     <>
@@ -39,7 +29,7 @@ export default function Home() {
             <Logo variant='inverted' />
           </div>
           
-          {authUserContext.currentUser && (
+          {currentUser && (
             <>
               <Link href='/projects'>{t('projects')}</Link>
               <Button 
@@ -51,7 +41,7 @@ export default function Home() {
               </Button>
             </>
           )}
-          {!authUserContext.currentUser && (
+          {!currentUser && (
             <Button 
               variant='secondary-inverted'
               size='medium'
@@ -68,7 +58,7 @@ export default function Home() {
             </h1>
             <p>{t('home-description')}</p>
             <div className={styles.buttons}>
-              {!authUserContext.currentUser && (
+              {!currentUser && (
                 <Button 
                   variant='primary'
                   size='large'
