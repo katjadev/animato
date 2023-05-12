@@ -8,6 +8,7 @@
   "explore-demo-project": "Explore a demo project",
   "close": "Close",
   "signup-dialog": {
+    "heading": "Create an Account",
     "create-account": "Create an account",
     "email": "Email",
     "password": "Password",
@@ -17,6 +18,7 @@
     "unknown-error": "Oops! Something went wrong. Please try again later or contact customer support for assistance."
   },
   "login-dialog": {
+    "heading": "Log In",
     "log-in": "Log in",
     "email": "Email",
     "password": "Password",

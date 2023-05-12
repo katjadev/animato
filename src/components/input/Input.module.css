@@ -2,6 +2,8 @@
   font-weight: 700;
   color: var(--text-default);
   font-size: 0.7rem;
+  margin-block-end: 0.2rem;
+  display: inline-block;
 }
 
 .input {

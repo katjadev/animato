@@ -5,6 +5,7 @@
   position: relative;
   cursor: pointer;
   font-family: inherit;
+  text-align: center;
 }
 
 .button.primary {

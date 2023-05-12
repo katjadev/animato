@@ -35,7 +35,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
       setEmail('')
       setPassword('')
     } catch (error) {
-      let message = 'Unknown Error'
+      let message = ''
       if (error instanceof Error) message = error.message
 
       if (message.includes('auth/invalid-email')) {
@@ -50,8 +50,6 @@ const LoginDialog: FC<LoginDialogProps> = ({
       } else if (message.includes('auth/wrong-password')) {
         setError({ password: t('wrong-password') })
         passwordRef.current?.focus()
-      } else {
-        setError({ unknown: t('unknown-error') })
       }
     }
   }
@@ -73,7 +71,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>{t('log-in')}</h2>
+        <h2 className={styles.dialogHeader}>{t('heading')}</h2>
         <form>
           <div className={styles.field}>
             <Input

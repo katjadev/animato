@@ -53,15 +53,16 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
   ])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-
     if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+      event.preventDefault()
+      event.stopPropagation()
       const newPosition = Math.min(currentPosition + markSize * REM_TO_PX_COEFFICIENT, timelineWidth)
       onChangePosition(newPosition)
     }
 
     if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
+      event.preventDefault()
+      event.stopPropagation()
       const newPosition = Math.max(currentPosition - markSize * REM_TO_PX_COEFFICIENT, 0)
       onChangePosition(newPosition)
     }

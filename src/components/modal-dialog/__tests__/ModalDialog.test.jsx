@@ -18,9 +18,9 @@ describe('ModalDialog', () => {
   }))
 
   it('should show modal when isOpen is true', () => {
-    HTMLDialogElement.prototype.show = jest.fn();
-    HTMLDialogElement.prototype.showModal = jest.fn();
-    HTMLDialogElement.prototype.close = jest.fn();
+    HTMLDialogElement.prototype.show = jest.fn()
+    HTMLDialogElement.prototype.showModal = jest.fn()
+    HTMLDialogElement.prototype.close = jest.fn()
 
     const { getByLabelText } = render(
       <NextIntlProvider messages={messages} locale={locale}>
@@ -36,9 +36,9 @@ describe('ModalDialog', () => {
   })
 
   it('should hide modal when isOpen is false', () => {
-    HTMLDialogElement.prototype.show = jest.fn();
-    HTMLDialogElement.prototype.showModal = jest.fn();
-    HTMLDialogElement.prototype.close = jest.fn();
+    HTMLDialogElement.prototype.show = jest.fn()
+    HTMLDialogElement.prototype.showModal = jest.fn()
+    HTMLDialogElement.prototype.close = jest.fn()
 
     const { getByLabelText } = render(
       <NextIntlProvider messages={messages} locale={locale}>

@@ -26,10 +26,9 @@
 
 .logoImage {
   display: inline-block;
-  margin-right: 0.3rem;
+  margin-inline-end: 0.4rem;
 }
 
-/* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .logo.compact:hover {
     background-color: var(--background-hover);

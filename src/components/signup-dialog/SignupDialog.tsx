@@ -36,7 +36,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
       setEmail('')
       setPassword('')
     } catch(error) {
-      let message = 'Unknown Error'
+      let message = ''
       if (error instanceof Error) message = error.message
 
       if (message.includes('auth/invalid-email')) {
@@ -48,8 +48,6 @@ const SignupDialog: FC<SignupDialogProps> = ({
       } else if (message.includes('auth/weak-password')) {
         setError({ password: t('weak-password') })
         passwordRef.current?.focus()
-      } else {
-        setError({ unknown: t('unknown-error') })
       }
     }
   }
@@ -71,7 +69,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>{t('create-account')}</h2>
+        <h2 className={styles.dialogHeader}>{t('heading')}</h2>
         <form>
           <div className={styles.field}>
             <Input

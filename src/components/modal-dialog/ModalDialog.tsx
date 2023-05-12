@@ -26,7 +26,6 @@ const ModalDialog: FC<ModalDialogProps> = ({
   useEffect(() => {
     const dialog = ref.current
     if (isOpen) {
-      console.log(dialog)
       dialog?.showModal()
     } else {
       dialog?.close()

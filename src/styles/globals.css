@@ -42,8 +42,11 @@
 
 *:focus-visible {
   outline-color: var(--focus);
-  outline-offset: 2px;
-  transition: outline-offset 200ms ease-in;
+  outline-offset: 3px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
 }
 
 html,
@@ -79,10 +82,4 @@ a {
   /* html {
     color-scheme: dark;
   } */
-}
-
-@media (prefers-reduced-motion) {
-  * {
-    transition: none !important;
-  }
 }
