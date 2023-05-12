@@ -13,3 +13,8 @@
   padding: 0.5rem;
   font-family: inherit;
 }
+
+.error {
+  font-size: 0.8rem;
+  color: var(--text-error);
+}

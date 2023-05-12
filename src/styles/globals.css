@@ -3,8 +3,6 @@
 :root {
   --text-base: #333333;
   --text-inverted: #ffffff;
-
-  --foreground-rgb: 255, 255, 255;
   --background-base: #ffffff;
   --background-secondary: #dddddd;
   --background-highlight: #eeeeee;
@@ -12,7 +10,6 @@
   --background-start: #380656;
   --background-middle: #140030;
   --background-end: #30054B;
-
   --border-base: #cccccc;
   --border-darker: #aaaaaa;
   --highlight-1: #C8074E;
@@ -20,6 +17,9 @@
   --highlight-3: #510BC4;
   --highlight-4: #FFD700;
   --focus: #2fa6ff;
+  --text-error: #e60043;
+  --text-warning: #f1b700;
+  --text-success: #00cc64;
 
   --x-small: 576px;
   --small: 768px;
@@ -38,8 +38,6 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 *:focus-visible {
@@ -52,6 +50,8 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 body.project-list {

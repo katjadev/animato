@@ -4,21 +4,18 @@ import { GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/AuthContext'
+import { useDialog } from '@animato/context/DialogContext'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import Button from '@animato/components/button/Button'
-import SignupDialog from '@animato/components/signup-dialog/SignupDialog'
-import LoginDialog from '@animato/components/login-dialog/LoginDialog'
 import styles from '@animato/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const t = useTranslations()
-  const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false)
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
-
   const { currentUser, logOut } = useAuth()
+  const { showLoginDialog, showSignupDialog } = useDialog()
 
   return (
     <>
@@ -45,7 +42,7 @@ export default function Home() {
             <Button 
               variant='secondary-inverted'
               size='medium'
-              onClick={() => setIsLoginDialogOpen(true)}
+              onClick={showLoginDialog}
             >
               {t('login')}
             </Button>
@@ -62,7 +59,7 @@ export default function Home() {
                 <Button 
                   variant='primary'
                   size='large'
-                  onClick={() => setIsSignupDialogOpen(true)}
+                  onClick={showSignupDialog}
                 >
                   {t('get-started')}
                 </Button>
@@ -78,14 +75,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <SignupDialog
-        isOpen={isSignupDialogOpen} 
-        onClose={() => setIsSignupDialogOpen(false)} 
-      />
-      <LoginDialog
-        isOpen={isLoginDialogOpen} 
-        onClose={() => setIsLoginDialogOpen(false)} 
-      />
     </>
   )
 }

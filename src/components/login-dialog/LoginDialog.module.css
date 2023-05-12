@@ -37,3 +37,9 @@
   margin-bottom: 1rem;
   font-weight: 900;
 }
+
+@container dialog (max-width: 635px) {
+  .left {
+    display: none;
+  }
+}

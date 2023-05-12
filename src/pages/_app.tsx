@@ -4,6 +4,7 @@ import { NextIntlProvider } from 'next-intl'
 import Firebase from '@animato/lib/firebase/Firebase'
 import { AuthUserProvider } from '@animato/context/AuthContext'
 import { ProjectsProvider } from '@animato/context/projects/ProjectsContext'
+import { DialogProvider } from '@animato/context/DialogContext'
 import '@animato/styles/globals.css'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -13,9 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <StrictMode>
       <NextIntlProvider messages={pageProps.messages}>
         <AuthUserProvider>
-          <ProjectsProvider>
-            <Component {...pageProps} />
-          </ProjectsProvider>
+          <DialogProvider>
+            <ProjectsProvider>
+              <Component {...pageProps} />
+            </ProjectsProvider>
+          </DialogProvider>
         </AuthUserProvider>
       </NextIntlProvider>
     </StrictMode>

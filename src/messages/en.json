@@ -6,15 +6,25 @@
   "home-description": "Animato empowers you to easily create and animate scalable vector graphics, breathing life into your designs and enhancing your web presence with eye-catching visuals that capture your audience's attention.",
   "get-started": "Get Started",
   "explore-demo-project": "Explore a demo project",
+  "close": "Close",
   "signup-dialog": {
     "create-account": "Create an account",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "invalid-email": "Invalid email format. Please enter a valid email address (e.g. example@example.com).",
+    "missing-password": "Please enter a password.",
+    "weak-password": "Password should be at least 6 characters.",
+    "unknown-error": "Oops! Something went wrong. Please try again later or contact customer support for assistance."
   },
   "login-dialog": {
     "log-in": "Log in",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "invalid-email": "Invalid email format. Please enter a valid email address (e.g. example@example.com).",
+    "missing-password": "Please enter a password.",
+    "user-not-found": "User not found. Please check your email and try again, or sign up for a new account.",
+    "wrong-password": "Incorrect password. Please try again.",
+    "unknown-error": "Oops! Something went wrong. Please try again later or contact customer support for assistance."
   },
   "project-list": {
     "projects": "Projects",

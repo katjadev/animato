@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalDialog renders correctly 1`] = `
+<div>
+  <dialog
+    aria-label="Test Modal"
+    class="dialog"
+  >
+    <button
+      aria-label="Close"
+      class="iconButton closeButton"
+    >
+      <i
+        class="iconoir-cancel "
+      />
+    </button>
+    <div
+      class="inter-class content"
+    >
+      <div>
+        Modal content
+      </div>
+    </div>
+  </dialog>
+</div>
+`;

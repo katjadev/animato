@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { NextIntlProvider } from 'next-intl'
-import messages from '../../../src/messages/en.json'
-import TimelinePointer from '../../../src/components/timeline-pointer/TimelinePointer'
+import messages from '../../../messages/en.json'
+import TimelinePointer from '../TimelinePointer'
 
 describe('TimelinePointer', () => {
   const useRouter = jest.spyOn(require('next/router'), 'useRouter')

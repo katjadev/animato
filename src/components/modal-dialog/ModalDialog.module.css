@@ -1,16 +1,24 @@
+.dialog {
+  padding: 0;
+  border: none;
+  inline-size: auto;
+  max-width: 40rem;
+}
+
 .content {
   display: flex;
-  max-width: 40rem;
   width: 100%;
+  container: dialog / inline-size;
 }
 
 .closeButton {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  font-size: 1.5rem;
+  z-index: 2;
 }
 
-/* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .closeButton:hover {
     background: rgba(0, 0, 0, 0.1);

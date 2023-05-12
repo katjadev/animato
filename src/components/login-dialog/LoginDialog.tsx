@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, MouseEventHandler, useState } from 'react'
+import { ChangeEvent, FC, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/AuthContext'
@@ -9,7 +9,7 @@ import styles from './LoginDialog.module.css'
 
 interface LoginDialogProps {
   isOpen: boolean;
-  onClose: MouseEventHandler<HTMLButtonElement>;
+  onClose: () => void;
 }
 
 const LoginDialog: FC<LoginDialogProps> = ({
@@ -20,6 +20,9 @@ const LoginDialog: FC<LoginDialogProps> = ({
   const t = useTranslations('login-dialog')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState<{[key: string]: string}>({})
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const { logIn } = useAuth()
 
@@ -27,16 +30,36 @@ const LoginDialog: FC<LoginDialogProps> = ({
     event.preventDefault()
     try {
       await logIn(email, password)
+      router.push('/projects')
+      onClose()
+      setEmail('')
+      setPassword('')
     } catch (error) {
-      console.log(error)
+      let message = 'Unknown Error'
+      if (error instanceof Error) message = error.message
+
+      if (message.includes('auth/invalid-email')) {
+        setError({ email: t('invalid-email') })
+        emailRef.current?.focus()
+      } else if (message.includes('auth/missing-password')) {
+        setError({ password: t('missing-password') })
+        passwordRef.current?.focus()
+      } else if (message.includes('auth/user-not-found')) {
+        setError({ email: t('user-not-found') })
+        emailRef.current?.focus()
+      } else if (message.includes('auth/wrong-password')) {
+        setError({ password: t('wrong-password') })
+        passwordRef.current?.focus()
+      } else {
+        setError({ unknown: t('unknown-error') })
+      }
     }
-    router.push('/projects')
   }
 
   return (
     <ModalDialog
       isOpen={isOpen}
-      ariaLabel={t('log-in')}
+      aria-label={t('log-in')}
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -59,6 +82,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
               name='email'
               label={t('email')}
               value={email}
+              error={error.email}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setEmail(event.target.value) }}
             />
           </div>
@@ -69,6 +93,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
               name='password'
               label={t('password')}
               value={password}
+              error={error.password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value) }}
             />
           </div>
