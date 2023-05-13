@@ -1,20 +1,27 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
+import { parseCookies } from 'nookies'
 import { useAuth } from '@animato/context/AuthContext'
 import { useDialog } from '@animato/context/DialogContext'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
 import Button from '@animato/components/button/Button'
 import styles from '@animato/styles/Home.module.css'
+import verifyCookie from '@animato/utils/verifyCookie'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+interface HomeProps {
+  authenticated: boolean; 
+  email?: string;
+}
+
+export default function Home({ authenticated }: HomeProps) {
   const t = useTranslations()
-  const { currentUser, logOut } = useAuth()
+  const { logOut } = useAuth()
   const { showLoginDialog, showSignupDialog } = useDialog()
 
   return (
@@ -25,8 +32,7 @@ export default function Home() {
           <div className={styles.logo}>
             <Logo variant='inverted' />
           </div>
-          
-          {currentUser && (
+          {authenticated && (
             <>
               <Link href='/projects'>{t('projects')}</Link>
               <Button 
@@ -38,7 +44,7 @@ export default function Home() {
               </Button>
             </>
           )}
-          {!currentUser && (
+          {!authenticated && (
             <Button 
               variant='secondary-inverted'
               size='medium'
@@ -55,7 +61,7 @@ export default function Home() {
             </h1>
             <p>{t('home-description')}</p>
             <div className={styles.buttons}>
-              {!currentUser && (
+              {!authenticated && (
                 <Button 
                   variant='primary'
                   size='large'
@@ -79,12 +85,16 @@ export default function Home() {
   )
 }
 
-export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
+export const getServerSideProps: GetServerSideProps<{ messages: [] }> = async (
   context
 ) => {
+  const cookies = parseCookies(context)
+  const authentication = await verifyCookie(cookies.user)
+
   return {
     props: {
-      messages: (await import(`../messages/${context.locale}.json`)).default
+      messages: (await import(`../messages/${context.locale}.json`)).default,
+      ...authentication,
     },
   }
 }

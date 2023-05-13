@@ -12,11 +12,11 @@ export default async function handler(
     return response.status(200).json(rows[0])
   }
 
-  if (!request.cookies.token) {
+  if (!request.cookies.user) {
     return response.status(403).json({ error: 'Permission denied' })
   }
 
-  const token = await firebaseAdminSDK.auth().verifyIdToken(request.cookies.token!);
+  const token = await firebaseAdminSDK.auth().verifySessionCookie(request.cookies.user!, true);
   if (!token) {
     return response.status(403).json({ error: 'Permission denied' })
   }

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { GetStaticProps } from 'next'
+import { GetServerSidePropsContext, GetStaticProps } from 'next'
 import { Inter } from 'next/font/google'
 import { Project, ScrollPosition } from '@animato/types'
 import { useAuth } from '@animato/context/AuthContext'
@@ -14,6 +14,8 @@ import Player from '@animato/components/player/Player'
 import Controls from '@animato/components/controls/Controls'
 import Timeline from '@animato/components/timeline/Timeline'
 import styles from '@animato/styles/Project.module.css'
+import { parseCookies } from 'nookies'
+import verifyCookie from '@animato/utils/verifyCookie'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +24,6 @@ interface ProjectProps {
 }
 
 const Project: FC<ProjectProps> = ({ projectId }) => {
-  const { currentUser } = useAuth()
   const [project, setProject] = useState<Project | null>(null)
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
     if (projectId) {
       loadProject(projectId)
     }
-  }, [currentUser, projectId])
+  }, [projectId])
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [isRepeatMode, setIsRepeatMode] = useState(false)
@@ -112,13 +113,19 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
   );
 }
 
-export async function getStaticPaths() {
-  return { paths: [], fallback: true }
-}
-
-export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
-  context
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
 ) => {
+  const cookies = parseCookies(context)
+  const authentication = await verifyCookie(cookies.user)
+
+  if (!authentication.authenticated && context.params?.id !== 'demo-project') {
+    const { res } = context
+    res.setHeader('location', '/')
+    res.statusCode = 302
+    res.end()
+  }
+
   return {
     props: {
       messages: (await import(`../../messages/${context.locale}.json`)).default,

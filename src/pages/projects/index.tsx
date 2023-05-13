@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { GetStaticProps } from 'next'
+import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
@@ -11,6 +11,8 @@ import IconButton from '@animato/components/icon-button/IconButton'
 import Button from '@animato/components/button/Button'
 import ProjectList from '@animato/components/project-list/ProjectList'
 import styles from '@animato/styles/ProjectList.module.css'
+import { parseCookies } from 'nookies'
+import verifyCookie from '@animato/utils/verifyCookie'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -92,12 +94,22 @@ export default function Projects() {
   );
 }
 
-export const getStaticProps: GetStaticProps<{ messages: [] }> = async (
-  context
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
 ) => {
+  const cookies = parseCookies(context)
+  const authentication = await verifyCookie(cookies.user)
+
+  if (!authentication.authenticated) {
+    const { res } = context
+    res.setHeader('location', '/')
+    res.statusCode = 302
+    res.end()
+  }
+
   return {
     props: {
-      messages: (await import(`../../messages/${context.locale}.json`)).default
+      messages: (await import(`../../messages/${context.locale}.json`)).default,
     },
   }
 }
