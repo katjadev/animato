@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import moment from 'moment'
+import { tz } from 'moment-timezone'
 import { useTranslations } from 'next-intl'
 import { Project } from '@animato/types'
 import Button from '@animato/components/button/Button';
@@ -14,6 +15,7 @@ interface ProjectRowProps {
 
 const ProjectRow: FC<ProjectRowProps> = ({ project, onDelete }) => {
   const t = useTranslations('project-list')
+  const updatedAt = moment(project.updated_at).tz(tz.guess())
   
   const handleDelete = () => {
     onDelete(project.id)
@@ -24,8 +26,8 @@ const ProjectRow: FC<ProjectRowProps> = ({ project, onDelete }) => {
       <td>{project.title}</td>
       <td>
         <div className={styles.date}>
-          <div>{moment(project.modifiedAt).format('Do MMMM YYYY')}</div>
-          <div>{moment(project.modifiedAt).format('HH:mm:ss')}</div>
+          <div>{updatedAt.format('Do MMMM YYYY')}</div>
+          <div>{updatedAt.format('HH:mm:ss')}</div>
         </div>
       </td>
       <td className={styles.right}>

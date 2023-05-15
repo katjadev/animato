@@ -3,6 +3,9 @@ import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
+import { parseCookies } from 'nookies'
+import { Project } from '@animato/types'
+import verifyCookie from '@animato/utils/verifyCookie'
 import useProjects from '@animato/hooks/useProjects'
 import Head from '@animato/components/head/Head'
 import Logo from '@animato/components/logo/Logo'
@@ -11,12 +14,16 @@ import IconButton from '@animato/components/icon-button/IconButton'
 import Button from '@animato/components/button/Button'
 import ProjectList from '@animato/components/project-list/ProjectList'
 import styles from '@animato/styles/ProjectList.module.css'
-import { parseCookies } from 'nookies'
-import verifyCookie from '@animato/utils/verifyCookie'
+import ProjectRow from '@animato/components/project-row/ProjectRow'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Projects() {
+interface ProjectsProps {
+  projects: Project[];
+  authenticated: boolean;
+}
+
+export default function Projects({ projects, authenticated }: ProjectsProps) {
   const router = useRouter()
   const t = useTranslations('project-list')
   const { actions } = useProjects()
@@ -70,7 +77,7 @@ export default function Projects() {
       <Head title={`Animato | ${t('projects')}`} />
       <main className={`${styles.main} ${inter.className}`}>
         <header className={styles.header}>
-          <Logo variant='standard' />
+          <Logo variant='standard' authenticated={authenticated} />
           <IconButton 
             ariaLabel={t('profile')}
             onClick={() => {}}
@@ -110,6 +117,7 @@ export const getServerSideProps = async (
   return {
     props: {
       messages: (await import(`../../messages/${context.locale}.json`)).default,
+      ...authentication,
     },
   }
 }

@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import Link from 'next/link'
-import { GetServerSideProps, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import { Inter } from 'next/font/google'
 import { useTranslations } from 'next-intl'
 import { parseCookies } from 'nookies'
@@ -30,7 +29,7 @@ export default function Home({ authenticated }: HomeProps) {
       <main className={`${styles.main} ${inter.className}`}>
         <header className={styles.header}>
           <div className={styles.logo}>
-            <Logo variant='inverted' />
+            <Logo variant='inverted' authenticated={authenticated} />
           </div>
           {authenticated && (
             <>

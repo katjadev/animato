@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from 'react'
-import { GetServerSidePropsContext, GetStaticProps } from 'next'
+import { GetServerSidePropsContext } from 'next'
 import { Inter } from 'next/font/google'
 import { Project, ScrollPosition } from '@animato/types'
-import { useAuth } from '@animato/context/AuthContext'
 import { MAX_ZOOM } from '@animato/constants'
 import useTimelineMarks from '@animato/hooks/useTimelineMarks'
 import useAnimationList from '@animato/hooks/useAnimationList'
@@ -21,9 +20,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 interface ProjectProps {
   projectId?: string;
+  authenticated: boolean;
 }
 
-const Project: FC<ProjectProps> = ({ projectId }) => {
+const Project: FC<ProjectProps> = ({ projectId, authenticated }) => {
   const [project, setProject] = useState<Project | null>(null)
 
   useEffect(() => {
@@ -61,7 +61,11 @@ const Project: FC<ProjectProps> = ({ projectId }) => {
     <>
       <Head title={project.title} />
       <main className={`${styles.main} ${inter.className}`}>
-        <Header title={project.title} className={styles.header} />
+        <Header 
+          title={project.title} 
+          className={styles.header} 
+          authenticated={authenticated} 
+        />
         <ElementTree 
           className={styles.elements}
           projectId={projectId!} 
@@ -130,6 +134,7 @@ export const getServerSideProps = async (
     props: {
       messages: (await import(`../../messages/${context.locale}.json`)).default,
       projectId: context.params?.id,
+      ...authentication,
     },
   }
 }

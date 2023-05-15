@@ -7,7 +7,7 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
-  const expiresIn = 5 * 60 * 1000
+  const expiresIn = 24 * 60 * 60 * 1000
   if (request.method === 'POST') {
     const { id, token, email } = request.body
     if (!id || !token) {

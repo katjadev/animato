@@ -64,7 +64,6 @@ const Timeline: FC<TimelineProps> = ({
   }, [onChangeWidth])
 
   const handleZoom = (event: React.WheelEvent) => {
-    console.log(zoom)
     if (event.deltaY > 0 && zoom > MIN_ZOOM) {
       onChangeZoom(zoom - 1)
     }

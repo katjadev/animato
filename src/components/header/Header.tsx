@@ -8,15 +8,16 @@ import styles from './Header.module.css'
 interface HeaderProps {
   title: string;
   className?: string;
+  authenticated: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ title, className }) => {
+const Header: FC<HeaderProps> = ({ title, className, authenticated }) => {
   const t = useTranslations('project-header')
   
   return (
     <header className={`${styles.header} ${className}`}>
       <div className={styles.left}>
-        <Logo variant='compact' />
+        <Logo variant='compact' authenticated={authenticated} />
         <IconButton ariaLabel={t('undo')}><Icon icon='undo' /></IconButton>
         <IconButton ariaLabel={t('redo')}><Icon icon='redo' /></IconButton>
       </div>

@@ -2,12 +2,6 @@ import { FC, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-// import { 
-//   SvgFormat, 
-//   NavArrowDown, 
-//   Download, 
-//   ArrowLeft,
-// } from 'iconoir-react'
 import Icon from '@animato/components/icon/Icon'
 import Menu from '@animato/components/menu/Menu'
 import MenuItem from '@animato/components/menu-item/MenuItem'
@@ -15,11 +9,12 @@ import MenuItemDivider from '@animato/components/menu-item-divider/MenuItemDivid
 import styles from './Logo.module.css'
 
 interface LogoProps {
-  variant: 'standard' | 'inverted' | 'compact',
-  className?: string,
+  variant: 'standard' | 'inverted' | 'compact';
+  className?: string;
+  authenticated: boolean;
 }
 
-const Logo: FC<LogoProps> = ({ variant, className }) => {
+const Logo: FC<LogoProps> = ({ variant, className, authenticated }) => {
   const t = useTranslations('main-menu')
   const size = variant === 'compact' ? 32 : 44
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -74,11 +69,15 @@ const Logo: FC<LogoProps> = ({ variant, className }) => {
           <Icon icon='download' />
           {t('export')}
         </MenuItem>
-        <MenuItemDivider />
-        <MenuItem href='/projects'>
-          <Icon icon='arrow-left' />
-          {t('back-to-projects')}
-        </MenuItem>
+        {authenticated && (
+          <>
+            <MenuItemDivider />
+            <MenuItem href='/projects'>
+              <Icon icon='arrow-left' />
+              {t('back-to-projects')}
+            </MenuItem>
+          </>
+        )}
       </Menu>
       </>
     )
