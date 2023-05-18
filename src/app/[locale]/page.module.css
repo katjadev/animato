@@ -89,3 +89,18 @@
     flex-direction: column;
   }
 }
+
+.loading {
+  display: flex;
+  width: 100%;
+  z-index: 2;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding-block: 2rem;
+}
+
+.loadingInner {
+  inline-size: 10rem;
+  block-size: 10rem;
+}

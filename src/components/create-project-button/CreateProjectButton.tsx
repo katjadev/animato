@@ -6,13 +6,16 @@ import Button from '@animato/components/button/Button'
 import { DialogProvider } from '@animato/context/DialogContext'
 
 interface CreateProjectButtonProps {
+  disabled: boolean;
   children: ReactNode;
 }
 
-const CreateProjectButtonComponent: FC<CreateProjectButtonProps> = ({ children }) => {
+const CreateProjectButtonComponent: FC<CreateProjectButtonProps> = ({ children, disabled }) => {
   const router = useRouter()
 
   const handleCreateProject = async () => {
+    if (disabled) return
+    
     try {
       const response = await fetch('/api/projects', { method: 'POST' })
       if (!response.ok) {

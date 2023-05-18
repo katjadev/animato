@@ -4,6 +4,7 @@
   justify-content: flex-start;
   align-items: center;
   padding-inline: 5rem;
+  padding-block: 2rem;
   min-height: 100vh;
   position: relative;
   color: var(--text-default);
@@ -15,16 +16,15 @@
 
 .header {
   display: flex;
-  padding: 1rem 0;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
 }
 
 .heading {
   width: 100%;
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
   font-weight: 800;
 }
 
