@@ -25,8 +25,13 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
 }) => {
   const { rootRef, scrollPosition } = useScrollObserver()
 
-  const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]'))
+  const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>([])
   const animationListHeight = animations.reduce((prev, element) => prev + element.animations.length + 1, 0)
+
+  useEffect(() => {
+    const storedCollapsedAnimations = JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]')
+    setCollapsedAnimations(storedCollapsedAnimations)
+  }, [projectId])
 
   useEffect(() => {
     onScroll(scrollPosition)

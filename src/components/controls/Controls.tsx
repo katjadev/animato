@@ -1,14 +1,21 @@
 import { FC, useCallback, useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import moment from 'moment'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import styles from './Controls.module.css'
 
+export type ControlsTranslations = {
+  restart: string;
+  play: string;
+  pause: string;
+  repeat: string;
+}
+
 interface ControlsProps {
   isPlaying: boolean;
   isRepeatMode: boolean;
   currentTime: number;
+  translations: ControlsTranslations;
   className?: string;
   onChangeTime: (newTime: number) => void;
   onTogglePlaying: (isPlaying: boolean) => void;
@@ -19,13 +26,12 @@ const Controls: FC<ControlsProps> = ({
   isPlaying,
   isRepeatMode,
   currentTime,
+  translations,
   className,
   onChangeTime,
   onTogglePlaying,
   onToggleRepeatMode,
 }) => {
-  const t = useTranslations('project-controls')
-
   const [formattedTime, setFormattedTime] = useState({
     minutes: '00',
     seconds: '00',
@@ -53,7 +59,7 @@ const Controls: FC<ControlsProps> = ({
   return (
     <div className={`${styles.controls} ${className}`}>
       <IconButton
-        ariaLabel={t('restart')}
+        ariaLabel={translations.restart}
         disabled={currentTime === 0}
         onClick={handleRestart}
       >
@@ -61,7 +67,7 @@ const Controls: FC<ControlsProps> = ({
       </IconButton>
       {!isPlaying && (
         <IconButton
-          ariaLabel={t('play')}
+          ariaLabel={translations.play}
           onClick={handlePlay}
         >
           <Icon icon='play' />
@@ -69,7 +75,7 @@ const Controls: FC<ControlsProps> = ({
       )}
       {isPlaying && (
         <IconButton
-          ariaLabel={t('pause')}
+          ariaLabel={translations.pause}
           onClick={handlePause}
         >
           <Icon icon='pause' />
@@ -82,7 +88,7 @@ const Controls: FC<ControlsProps> = ({
       </div>
       <IconButton
         className={isRepeatMode ? styles.activeButton : ''}
-        ariaLabel={t('repeat')}
+        ariaLabel={translations.repeat}
         onClick={handleRepeat}
       >
         <Icon icon='repeat' />

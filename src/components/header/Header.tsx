@@ -1,29 +1,41 @@
 import { FC } from 'react'
-import { useTranslations } from 'next-intl'
-import Logo from '@animato/components/logo/Logo'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
+import ProjectMenu, { ProjectMenuTranslations } from '../project-menu/ProjectMenu'
 import styles from './Header.module.css'
+
+export type HeaderTranslations = ProjectMenuTranslations & {
+  profile: string;
+  undo: string;
+  redo: string;
+}
 
 interface HeaderProps {
   title: string;
   className?: string;
-  authenticated: boolean;
+  isAuthenticated: boolean;
+  translations: HeaderTranslations;
 }
 
-const Header: FC<HeaderProps> = ({ title, className, authenticated }) => {
-  const t = useTranslations('project-header')
-  
+const Header: FC<HeaderProps> = ({ 
+  title, 
+  className,
+  isAuthenticated,
+  translations,
+}) => {
   return (
     <header className={`${styles.header} ${className}`}>
       <div className={styles.left}>
-        <Logo variant='compact' authenticated={authenticated} />
-        <IconButton ariaLabel={t('undo')}><Icon icon='undo' /></IconButton>
-        <IconButton ariaLabel={t('redo')}><Icon icon='redo' /></IconButton>
+        <ProjectMenu 
+          isAuthenticated={isAuthenticated}
+          translations={translations}
+        />
+        <IconButton ariaLabel={translations.undo}><Icon icon='undo' /></IconButton>
+        <IconButton ariaLabel={translations.redo}><Icon icon='redo' /></IconButton>
       </div>
       <h1 className={styles.heading}>{title}</h1>
       <IconButton 
-        ariaLabel={t('profile')}
+        ariaLabel={translations.profile}
         onClick={() => {}}
       >
         <Icon icon='profile-circle' />

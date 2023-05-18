@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/AuthContext'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
@@ -17,7 +17,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
   onClose,
 }) => {
   const router = useRouter()
-  const t = useTranslations('login-dialog')
+  const t = useTranslations()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<{[key: string]: string}>({})
@@ -57,7 +57,8 @@ const LoginDialog: FC<LoginDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      aria-label={t('log-in')}
+      aria-label={t('login-dialog.heading')}
+      closeButtonAriaLabel={t('close')}
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -71,7 +72,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>{t('heading')}</h2>
+        <h2 className={styles.dialogHeader}>{t('login-dialog.heading')}</h2>
         <form>
           <div className={styles.field}>
             <Input
@@ -100,7 +101,7 @@ const LoginDialog: FC<LoginDialogProps> = ({
             size='medium'
             onClick={handleSubmit}
           >
-            {t('log-in')}
+            {t('login-dialog.log-in')}
           </Button>
         </form>
       </div>

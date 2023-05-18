@@ -1,8 +1,8 @@
 export interface RawProject {
   title: string;
   data: string;
-  created_at: number;
-  updated_at: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Project extends RawProject {

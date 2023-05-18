@@ -17,6 +17,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 0, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={() => {}}
         />
       </NextIntlProvider>

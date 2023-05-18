@@ -4,13 +4,14 @@ import {
   useContext,
   FC,
 } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { 
   createUserWithEmailAndPassword, 
   getAuth, 
   signInWithEmailAndPassword, 
   signOut,
 } from 'firebase/auth'
+import Firebase from '@animato/lib/firebase/Firebase'
 
 export const AuthContext = createContext<{
   logIn: (email: string, password: string) => Promise<void>,
@@ -32,13 +33,13 @@ interface AuthUserProviderProps {
   children?: ReactNode;
 }
 
-export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
-  const auth = getAuth()
+export const AuthProvider: FC<AuthUserProviderProps> = ({ children }) => {
+  Firebase.initializeApp()
   const router = useRouter()
 
   const postAuthToken = async (user: User) => {
     const token = await user.getIdToken()
-    const response = await fetch('/api/users', {
+    await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -47,7 +48,6 @@ export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
         token,
       })
     })
-    return response.json()
   }
 
   const logIn = async (email: string, password: string) => {
@@ -74,7 +74,7 @@ export const AuthUserProvider: FC<AuthUserProviderProps> = ({ children }) => {
     const auth = getAuth()
     await signOut(auth)
     await fetch('/api/users', { method: 'DELETE' })
-    router.push('/')
+    router.refresh()
   }
 
   return (

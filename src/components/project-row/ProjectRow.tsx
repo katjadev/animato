@@ -1,24 +1,48 @@
+'use client'
+
 import { FC } from 'react'
+import { useRouter } from 'next/navigation'
 import moment from 'moment'
 import { tz } from 'moment-timezone'
-import { useTranslations } from 'next-intl'
 import { Project } from '@animato/types'
+import { DialogProvider, useDialog } from '@animato/context/DialogContext'
 import Button from '@animato/components/button/Button';
 import IconButton from '@animato/components/icon-button/IconButton';
 import Icon from '@animato/components/icon/Icon';
 import styles from './ProjectRow.module.css'
 
-interface ProjectRowProps {
-  project: Project;
-  onDelete: (id: string) => void;
+export type ProjectRowTranslations = {
+  open: string;
+  deleteProject: string;
+  deleteProjectErrorTitle: string;
+  deleteProjectErrorMessage: string;
 }
 
-const ProjectRow: FC<ProjectRowProps> = ({ project, onDelete }) => {
-  const t = useTranslations('project-list')
-  const updatedAt = moment(project.updated_at).tz(tz.guess())
-  
-  const handleDelete = () => {
-    onDelete(project.id)
+interface ProjectRowProps {
+  project: Project;
+  translations: ProjectRowTranslations;
+}
+
+const ProjectRowComponent: FC<ProjectRowProps> = ({ project, translations }) => {
+  const router = useRouter()
+  const { showErrorDialog } = useDialog()
+  const updatedAt = moment(project.updatedAt).tz(tz.guess())
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/projects/${project.id}`, { 
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        throw Error()
+      }
+      router.refresh()
+    } catch (_) {
+      showErrorDialog(
+        translations.deleteProjectErrorTitle, 
+        translations.deleteProjectErrorMessage,
+      )
+    }
   }
 
   return (
@@ -37,10 +61,10 @@ const ProjectRow: FC<ProjectRowProps> = ({ project, onDelete }) => {
             size='small'
             href={`/projects/${project.id}`}
           >
-            {t('open')}
+            {translations.open}
           </Button>
           <IconButton 
-            ariaLabel={t('delete-project')}
+            ariaLabel={translations.deleteProject}
             onClick={handleDelete}
           >
             <Icon icon='trash' />
@@ -51,4 +75,10 @@ const ProjectRow: FC<ProjectRowProps> = ({ project, onDelete }) => {
   )
 }
 
-export default ProjectRow
+export default function ProjectRow(props: ProjectRowProps) {
+  return (
+    <DialogProvider>
+      <ProjectRowComponent {...props} />
+    </DialogProvider>
+  )
+}

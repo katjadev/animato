@@ -1,16 +1,13 @@
 import { FC, ReactNode, useEffect, useRef } from 'react'
-import { Inter } from 'next/font/google'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import styles from './ModalDialog.module.css'
-import { useTranslations } from 'next-intl'
-
-const inter = Inter({ subsets: ['latin'] })
 
 interface ModalDialogProps {
   children?: ReactNode;
   isOpen: boolean;
   'aria-label': string;
+  closeButtonAriaLabel: string;
   onClose: () => void;
 }
 
@@ -18,9 +15,9 @@ const ModalDialog: FC<ModalDialogProps> = ({
   children,
   isOpen,
   'aria-label': ariaLabel,
+  closeButtonAriaLabel,
   onClose,
 }) => {
-  const t = useTranslations()
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -41,12 +38,12 @@ const ModalDialog: FC<ModalDialogProps> = ({
     >
       <IconButton 
         className={styles.closeButton} 
-        ariaLabel={t('close')} 
+        ariaLabel={closeButtonAriaLabel} 
         onClick={onClose} 
       >
         <Icon icon='cancel' />
       </IconButton>
-      <div className={`${inter.className} ${styles.content}`}>
+      <div className={styles.content}>
         {children}
       </div>
     </dialog>
