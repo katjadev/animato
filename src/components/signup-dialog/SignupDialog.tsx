@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@animato/context/AuthContext'
 import ModalDialog from '@animato/components/modal-dialog/ModalDialog'
@@ -17,7 +17,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
   onClose,
 }) => {
   const router = useRouter()
-  const t = useTranslations('signup-dialog')
+  const t = useTranslations()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<{[key: string]: string}>({})
@@ -55,7 +55,8 @@ const SignupDialog: FC<SignupDialogProps> = ({
   return (
     <ModalDialog
       isOpen={isOpen}
-      aria-label={t('create-account')}
+      aria-label={t('signup-dialog.heading')}
+      closeButtonAriaLabel={t('close')}
       onClose={onClose}
     >
       <div className={styles.left}>
@@ -69,7 +70,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <h2 className={styles.dialogHeader}>{t('heading')}</h2>
+        <h2 className={styles.dialogHeader}>{t('signup-dialog.heading')}</h2>
         <form>
           <div className={styles.field}>
             <Input
@@ -100,7 +101,7 @@ const SignupDialog: FC<SignupDialogProps> = ({
             size='medium'
             onClick={handleSubmit}
           >
-            {t('create-account')}
+            {t('signup-dialog.create-account')}
           </Button>
         </form>
       </div>

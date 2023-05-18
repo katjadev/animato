@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, Fragment, useCallback, useEffect, useRef } from 'react'
 import { 
   MAX_DURATION, 
   MAX_ZOOM, 
@@ -7,7 +7,7 @@ import {
   TIMELINE_PADDING,
 } from '@animato/constants'
 import { ScrollPosition, TimelineMark } from '@animato/types'
-import TimelinePointer from '../timeline-pointer/TimelinePointer'
+import TimelinePointer, { TimelinePointerTranslations } from '@animato/components/timeline-pointer/TimelinePointer'
 import styles from './Timeline.module.css'
 
 const findClosestMark = (marks: TimelineMark[], time: number): TimelineMark => {
@@ -18,6 +18,8 @@ const findClosestMark = (marks: TimelineMark[], time: number): TimelineMark => {
   }, { title: '', height: 0, position: 0, time: 0 })
 }
 
+export type TimelineTranslations = TimelinePointerTranslations & {}
+
 interface TimelineProps {
   zoom: number;
   marks: TimelineMark[];
@@ -26,6 +28,7 @@ interface TimelineProps {
   isRepeatMode: boolean;
   currentTime: number;
   scrollPosition: ScrollPosition;
+  translations: TimelineTranslations;
   className?: string;
   onChangeTime: (timeMillis: number) => void;
   onChangeWidth: (width: number) => void;
@@ -40,6 +43,7 @@ const Timeline: FC<TimelineProps> = ({
   isRepeatMode,
   currentTime,
   scrollPosition,
+  translations,
   className,
   onChangeTime,
   onChangeWidth,
@@ -123,6 +127,7 @@ const Timeline: FC<TimelineProps> = ({
         scrollPosition={scrollPosition}
         markSize={markSize}
         timelineWidth={timelineWidth}
+        translations={translations}
         onChangePosition={handleChangePointerPosition} 
       />
       <div 

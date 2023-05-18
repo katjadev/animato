@@ -1,8 +1,11 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { ScrollPosition } from '@animato/types'
 import { MAX_DURATION, REM_TO_PX_COEFFICIENT } from '@animato/constants';
 import styles from './TimelinePointer.module.css'
+
+export type TimelinePointerTranslations = {
+  timelinePointerAriaLabel: string;
+}
 
 interface TimelinePointerProps {
   currentTime: number;
@@ -10,6 +13,7 @@ interface TimelinePointerProps {
   scrollPosition: ScrollPosition;
   markSize: number;
   timelineWidth: number;
+  translations: TimelinePointerTranslations;
   onChangePosition: (position: number) => void;
 }
 
@@ -19,9 +23,9 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
   scrollPosition,
   markSize,
   timelineWidth,
+  translations,
   onChangePosition, 
 }) => {
-  const t = useTranslations('project.timeline')
   const pointerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
 
@@ -88,11 +92,10 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     <div 
       className={styles.pointer}
       role="slider"
-      aria-label={t('pointer-aria-label')}
+      aria-label={translations.timelinePointerAriaLabel}
       aria-valuemin={0}
       aria-valuemax={MAX_DURATION}
       aria-valuenow={currentTime}
-      aria-valuetext={t('pointer-aria-valuetext', { time: currentTime })}
       tabIndex={0}
       ref={pointerRef}
       style={{ 

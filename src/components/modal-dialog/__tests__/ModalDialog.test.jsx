@@ -1,33 +1,22 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import { NextIntlProvider } from 'next-intl'
-import messages from '../../../messages/en.json'
 import ModalDialog from '../ModalDialog'
 
-jest.mock('next/font/google', () => ({
-  Inter: jest.fn().mockImplementation(() => ({
-    className: 'inter-class',
-  })),
-}))
-
 describe('ModalDialog', () => {
-  const useRouter = jest.spyOn(require('next/router'), 'useRouter')
-  const locale = 'en'
-  useRouter.mockImplementationOnce(() => ({
-    query: { locale: locale },
-  }))
-
   it('should show modal when isOpen is true', () => {
     HTMLDialogElement.prototype.show = jest.fn()
     HTMLDialogElement.prototype.showModal = jest.fn()
     HTMLDialogElement.prototype.close = jest.fn()
 
     const { getByLabelText } = render(
-      <NextIntlProvider messages={messages} locale={locale}>
-        <ModalDialog isOpen={true} aria-label="Test Modal" onClose={() => {}}>
-          <div>Modal content</div>
-        </ModalDialog>
-      </NextIntlProvider>
+      <ModalDialog 
+        isOpen={true} 
+        aria-label="Test Modal"
+        closeButtonAriaLabel="Close"
+        onClose={() => {}}
+      >
+        <div>Modal content</div>
+      </ModalDialog>
     )
 
     const modal = getByLabelText('Test Modal')
@@ -41,11 +30,14 @@ describe('ModalDialog', () => {
     HTMLDialogElement.prototype.close = jest.fn()
 
     const { getByLabelText } = render(
-      <NextIntlProvider messages={messages} locale={locale}>
-        <ModalDialog isOpen={false} aria-label="Test Modal" onClose={() => {}}>
-          <div>Modal content</div>
-        </ModalDialog>
-      </NextIntlProvider>
+      <ModalDialog 
+        isOpen={false} 
+        aria-label="Test Modal"
+        closeButtonAriaLabel="Close"
+        onClose={() => {}}
+      >
+        <div>Modal content</div>
+      </ModalDialog>
     )
 
     const modal = getByLabelText('Test Modal')
@@ -56,11 +48,14 @@ describe('ModalDialog', () => {
   it('should call onClose when close button is clicked', () => {
     const onCloseMock = jest.fn()
     const { getByLabelText } = render(
-      <NextIntlProvider messages={messages} locale={locale}>
-        <ModalDialog isOpen={true} aria-label="Test Modal" onClose={onCloseMock}>
-          <div>Modal content</div>
-        </ModalDialog>
-      </NextIntlProvider>
+      <ModalDialog 
+        isOpen={true} 
+        aria-label="Test Modal"
+        closeButtonAriaLabel="Close"
+        onClose={onCloseMock}
+      >
+        <div>Modal content</div>
+      </ModalDialog>
     )
 
     const closeButton = getByLabelText('Close')

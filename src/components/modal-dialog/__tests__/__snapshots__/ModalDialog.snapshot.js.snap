@@ -15,7 +15,7 @@ exports[`ModalDialog renders correctly 1`] = `
       />
     </button>
     <div
-      class="inter-class content"
+      class="content"
     >
       <div>
         Modal content

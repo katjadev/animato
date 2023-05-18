@@ -18,6 +18,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 0, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={() => {}}
         />
       </NextIntlProvider>
@@ -36,6 +39,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 0, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={onChangePositionMock}
         />
       </NextIntlProvider>
@@ -58,6 +64,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 0, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={onChangePositionMock}
         />
       </NextIntlProvider>
@@ -88,6 +97,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 0, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={onChangePositionMock}
         />
       </NextIntlProvider>
@@ -115,6 +127,9 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={0}
           scrollPosition={{ left: 200, top: 0 }}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={onChangePositionMock}
         />
       </NextIntlProvider>
@@ -144,6 +159,9 @@ describe('TimelinePointer', () => {
           scrollPosition={{ left: 0, top: 0 }}
           markSize={1}
           timelineWidth={1000}
+          translations={{
+            timelinePointerAriaLabel: 'Current time',
+          }}
           onChangePosition={onChangePositionMock}
         />
       </NextIntlProvider>

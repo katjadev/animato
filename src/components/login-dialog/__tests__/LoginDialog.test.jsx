@@ -1,17 +1,11 @@
 import React from 'react'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { NextIntlProvider } from 'next-intl'
 import messages from '../../../messages/en.json'
 import { useAuth } from '@animato/context/AuthContext'
 import LoginDialog from '../LoginDialog'
 
-jest.mock('next/font/google', () => ({
-  Inter: jest.fn().mockImplementation(() => ({
-    className: 'inter-class',
-  })),
-}))
-
-jest.mock('next/router', () => ({
+jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
 
@@ -19,8 +13,21 @@ jest.mock('@animato/context/AuthContext', () => ({
   useAuth: jest.fn(),
 }))
 
+const translations = {
+  heading: 'Log In',
+  logIn: 'Log in',
+  email: 'Email',
+  password: 'Password',
+  invalidEmail: 'Invalid email format. Please enter a valid email address (e.g. example@example.com).',
+  missingPassword: 'Please enter a password.',
+  userNotFound: 'User not found. Please check your email and try again, or sign up for a new account.',
+  wrongPassword: 'Incorrect password. Please try again.',
+  unknownError: 'Oops! Something went wrong. Please try again later or contact customer support for assistance.',
+  close: 'Close',
+}
+
 describe('LoginDialog', () => {
-  const useRouter = jest.spyOn(require('next/router'), 'useRouter')
+  const useRouter = jest.spyOn(require('next/navigation'), 'useRouter')
   const locale = 'en'
   useRouter.mockImplementationOnce(() => ({
     query: { locale: locale },

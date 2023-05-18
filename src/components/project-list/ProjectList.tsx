@@ -1,37 +1,37 @@
 import { FC } from 'react'
-import { useTranslations } from 'next-intl'
-import useProjects from '@animato/hooks/useProjects'
-import ProjectRow from '@animato/components/project-row/ProjectRow'
+import { Project } from '@animato/types'
+import ProjectRow, { ProjectRowTranslations } from '@animato/components/project-row/ProjectRow'
 import styles from './ProjectList.module.css'
 
-interface ProjectListProps {
-  onDelete: (id: string) => void;
+export type ProjectListTranslations = ProjectRowTranslations & {
+  projects: string;
+  newProject: string;
+  emptyMessage: string;
+  errorMessage: string;
+  title: string;
+  lastModified: string;
+  actions: string;
 }
 
-const ProjectList: FC<ProjectListProps> = ({ onDelete }) => {
-  const t = useTranslations('project-list')
-  const { state } = useProjects()
-  const { projects, loading, error } = state
+interface ProjectListProps {
+  projects: Project[];
+  translations: ProjectListTranslations;
+}
 
+const ProjectList: FC<ProjectListProps> = ({ projects, translations }) => {
   return (
     <div className={styles.list}>
-      {loading && (
-        <>{t('loading')}</>
-      )}
-      {!loading && error && (
-        <>{t('error-message')}</>
-      )}
-      {!loading && !error && projects.length == 0 && (
-        <>{t('empty-message')}</>
+      {projects.length == 0 && (
+        <>{translations.emptyMessage}</>
       )}
       {projects.length > 0 && (
-        <table className={styles.table}>
+        <table className={styles.table} aria-label={translations.projects}>
           <thead>
             <tr>
-              <th scope='col'>{t('title')}</th>
-              <th scope='col'>{t('last-modified')}</th>
+              <th scope='col'>{translations.title}</th>
+              <th scope='col'>{translations.lastModified}</th>
               <th scope='col' className={styles.right}>
-                <span className='sr-only'>{t('actions')}</span>
+                <span className='sr-only'>{translations.actions}</span>
               </th>
             </tr>
           </thead>
@@ -39,8 +39,8 @@ const ProjectList: FC<ProjectListProps> = ({ onDelete }) => {
             {projects.map((project) => (
               <ProjectRow
                 key={project.id} 
-                project={project} 
-                onDelete={onDelete} 
+                project={project}
+                translations={translations}
               />
             ))}
           </tbody>

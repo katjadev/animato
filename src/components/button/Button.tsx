@@ -18,6 +18,9 @@ const Button: FC<ButtonProps> = ({
   children,
   href,
   onClick,
+} = {
+  variant: 'primary',
+  size: 'medium',
 }) => {
   if (href) {
     return (
@@ -39,10 +42,5 @@ const Button: FC<ButtonProps> = ({
     </button> 
   )
 }
-
-Button.defaultProps = {
-  variant: 'primary',
-  size: 'medium',
-};
 
 export default Button

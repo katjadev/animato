@@ -1,13 +1,17 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { ElementTreeNode } from '@animato/types'
 import useElementTree from '@animato/hooks/useElementTree'
 import Icon from '@animato/components/icon/Icon'
 import styles from './ElementTree.module.css'
 
+export type ElementTreeTranslations = {
+  elements: string;
+}
+
 interface ElementTreeProps {
   projectId: string;
   content: string;
+  translations: ElementTreeTranslations;
   className?: string;
   onSelectElement: (id: string | null) => void;
 }
@@ -15,13 +19,18 @@ interface ElementTreeProps {
 const ElementTree: FC<ElementTreeProps> = ({
   projectId,
   content,
+  translations,
   className,
   onSelectElement,
 }) => {
-  const t = useTranslations('project')
   const { elements } = useElementTree(content)
-  const [collapsedNodes, setCollapsedNodes] = useState<string[]>(JSON.parse(localStorage.getItem(`${projectId}-collapsed-elements`) || '[]'))
+  const [collapsedNodes, setCollapsedNodes] = useState<string[]>([])
   
+  useEffect(() => {
+    const storedCollapsedNodes = JSON.parse(localStorage.getItem(`${projectId}-collapsed-elements`) || '[]')
+    setCollapsedNodes(storedCollapsedNodes)
+  }, [projectId])
+
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-elements`, JSON.stringify(collapsedNodes))
   }, [collapsedNodes, projectId])
@@ -76,7 +85,7 @@ const ElementTree: FC<ElementTreeProps> = ({
 
   return (
     <div className={`${className} ${styles.elements}`}>
-      <h2 className={styles.title}>{t('elements')}</h2>
+      <h2 className={styles.title}>{translations.elements}</h2>
       {renderTree(elements, 0)}
     </div>
   )
