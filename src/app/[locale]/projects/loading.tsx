@@ -1,6 +1,7 @@
+import { useTranslations } from 'next-intl'
 import Logo from '@animato/components/logo/Logo'
 import CreateProjectButton from '@animato/components/create-project-button/CreateProjectButton'
-import { useTranslations } from 'next-intl'
+import ProjectListSkeleton from '@animato/components/project-list-skeleton/ProjectListSkeleton'
 import styles from './page.module.css'
 
 export default function Loading() {
@@ -17,9 +18,17 @@ export default function Loading() {
           {t('project-list.new-project')}
         </CreateProjectButton>
       </div>
-      <div className={styles.loading}>
-        {t('project-list.loading')}
-      </div>
+      <ProjectListSkeleton
+        translations={{
+          projects: t('project-list.projects'),
+          newProject: t('project-list.new-project'),
+          emptyMessage: t('project-list.empty-message'),
+          errorMessage: t('project-list.error-message'),
+          title: t('project-list.title'),
+          lastModified: t('project-list.last-modified'),
+          actions: t('project-list.actions'),
+        }}
+      />
     </main>
   )
 }

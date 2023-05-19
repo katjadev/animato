@@ -6,8 +6,8 @@ import Button from '@animato/components/button/Button'
 import { DialogProvider } from '@animato/context/DialogContext'
 
 interface CreateProjectButtonProps {
-  disabled: boolean;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const CreateProjectButtonComponent: FC<CreateProjectButtonProps> = ({ children, disabled }) => {
