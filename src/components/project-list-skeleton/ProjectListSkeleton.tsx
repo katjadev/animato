@@ -35,6 +35,7 @@ const ProjectListSkeleton: FC<ProjectListSkeletonProps> = ({ translations }) => 
             </td>
             <td>
               <div className={`${styles.skeleton} ${styles.medium}`} />
+              <br/>
               <div className={`${styles.skeleton} ${styles.small}`} />
             </td>
             <td className={styles.right}>
@@ -47,6 +48,7 @@ const ProjectListSkeleton: FC<ProjectListSkeletonProps> = ({ translations }) => 
             </td>
             <td>
               <div className={`${styles.skeleton} ${styles.medium}`} />
+              <br/>
               <div className={`${styles.skeleton} ${styles.small}`} />
             </td>
             <td className={styles.right}>

@@ -1,0 +1,103 @@
+.header {
+  grid-column-start: left-column-collapsed;
+  grid-column-end: end;
+  grid-row-start: header;
+  grid-row-end: header;
+  border-bottom: 1px solid var(--border-base);
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  block-size: 3rem;
+  overflow: hidden;
+}
+
+.elements {
+  grid-column-start: left-column-collapsed;
+  grid-column-end: main;
+  grid-row-start: main;
+  grid-row-end: main;
+  border-right: 1px solid var(--border-base);
+}
+
+.elements h2 {
+  font-size: 0.8rem;
+  padding: 1rem;
+}
+
+.player {
+  grid-column-start: main;
+  grid-column-end: end;
+  grid-row-start: main;
+  grid-row-end: main;
+  background-color: var(--background-secondary);
+}
+
+.controls {
+  grid-column-start: left-column-collapsed;
+  grid-column-end: main;
+  grid-row-start: sub-footer;
+  grid-row-end: sub-footer;
+  border: 1px solid var(--border-base);
+  border-width: 1px 1px 0 0;
+  background-color: var(--background-base);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding-inline: 0.5rem;
+}
+
+.timer {
+  flex: 1 1 auto;
+  text-align: center;
+  block-size: 1rem;
+}
+
+.timeline {
+  grid-column-start: main;
+  grid-column-end: end;
+  grid-row-start: sub-footer;
+  grid-row-end: sub-footer;
+  z-index: 1;
+  border-top: 1px solid var(--border-base);
+}
+
+.animations {
+  grid-column-start: left-column-collapsed;
+  grid-column-end: end;
+  grid-row-start: footer;
+  grid-row-end: end;
+  border-top: 1px solid var(--border-base);
+}
+
+.skeleton {
+  block-size: 1rem;
+  inline-size: 15rem;
+  background-color: var(--background-highlight);
+  display: inline-block;
+}
+
+.skeleton.large {
+  inline-size: 15rem;
+}
+
+.skeleton.medium {
+  inline-size: 10rem;
+}
+
+.skeleton.small {
+  inline-size: 5rem;
+}
+
+.skeleton:last-of-type {
+  margin-block-end: 0;
+}
+
+.skeletonIcon {
+  block-size: 1rem;
+  inline-size: 1rem;
+  margin: 0.5rem;
+  background-color: var(--background-highlight);
+  display: inline-block;
+  border-radius: 50%;
+}
