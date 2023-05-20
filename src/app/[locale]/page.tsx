@@ -46,7 +46,7 @@ export default async function Home() {
             <Button 
               variant='secondary-inverted'
               size='large'
-              href='/projects/demo-project'
+              href='/editor/demo-project'
             >
               {t('home.explore-demo-project')}
             </Button>

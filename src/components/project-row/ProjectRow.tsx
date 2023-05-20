@@ -59,7 +59,7 @@ const ProjectRowComponent: FC<ProjectRowProps> = ({ project, translations }) => 
           <Button
             variant='secondary'
             size='small'
-            href={`/projects/${project.id}`}
+            href={`/editor/${project.id}`}
           >
             {translations.open}
           </Button>
