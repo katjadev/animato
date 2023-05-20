@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
+import prisma from '@animato/lib/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 export async function POST() {
@@ -19,8 +19,6 @@ export async function POST() {
       status: 401,
     })
   }
-
-  const prisma = new PrismaClient()
 
   const id = uuidv4()
   try {

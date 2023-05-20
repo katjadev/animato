@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { PrismaClient } from '@prisma/client'
+import prisma from '@animato/lib/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
@@ -17,8 +17,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       status: 401,
     })
   }
-
-  const prisma = new PrismaClient()
 
   const project = await prisma.project.findUnique({
     where: { id: params.id },

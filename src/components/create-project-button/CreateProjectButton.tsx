@@ -22,7 +22,7 @@ const CreateProjectButtonComponent: FC<CreateProjectButtonProps> = ({ children, 
         throw Error()
       }
       const { id } = await response.json()
-      router.push(`/projects/${id}`)
+      router.push(`/editor/${id}`)
     } catch (_) {
       // showErrorDialog(
       //   translations.deleteProjectErrorTitle, 

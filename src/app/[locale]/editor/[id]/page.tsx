@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { PrismaClient } from '@prisma/client'
+import prisma from '@animato/lib/prisma'
 import verifyCookie from '@animato/utils/verifyCookie'
 import { getTranslations } from 'next-intl/server'
 import Editor from '@animato/components/editor/Editor'
@@ -46,7 +46,6 @@ const getAuthentication = async () => {
 }
 
 const getProject = async (id: string, userId: string | undefined) => {
-  const prisma = new PrismaClient()
   try {
     const project = await prisma.project.findUnique({
       where: { id },

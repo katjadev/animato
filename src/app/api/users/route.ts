@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '@animato/lib/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 const COOKIE_EXPIRES_IN = 24 * 60 * 60 * 1000
@@ -27,7 +27,6 @@ export async function POST(request: Request) {
     })
   }
 
-  const prisma = new PrismaClient()
   const user = await prisma.user.findUnique({
     where: { id },
   })
