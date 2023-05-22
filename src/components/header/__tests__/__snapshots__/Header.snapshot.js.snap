@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders correctly 1`] = `
+<div>
+  <header
+    class="header "
+  >
+    <div
+      class="left"
+    >
+      <button
+        aria-haspopup="true"
+        class="button"
+      >
+        <img
+          alt="Animato Logo"
+          class="image"
+          data-nimg="1"
+          decoding="async"
+          fetchpriority="high"
+          height="32"
+          src="/logo.svg"
+          style="color: transparent;"
+          width="32"
+        />
+        <i
+          class="iconoir-nav-arrow-down "
+        />
+      </button>
+      <button
+        aria-label="Undo"
+        class="iconButton "
+      >
+        <i
+          class="iconoir-undo "
+        />
+      </button>
+      <button
+        aria-label="Redo"
+        class="iconButton "
+      >
+        <i
+          class="iconoir-redo "
+        />
+      </button>
+    </div>
+    <h1
+      class="heading"
+    >
+      Test Project
+    </h1>
+    <button
+      aria-label="Profile"
+      class="iconButton "
+    >
+      <i
+        class="iconoir-profile-circle "
+      />
+    </button>
+  </header>
+</div>
+`;

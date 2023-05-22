@@ -3,27 +3,22 @@ import { AnimationGroup, ScrollPosition } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
 import Icon from '@animato/components/icon/Icon'
 import styles from './AnimationArea.module.css'
+import { useEditorState } from '../editor/EditorContextProvider'
 
 interface AnimationAreaProps {
   projectId: string;
   animations: AnimationGroup[];
-  selectedElementId: string | null;
-  timelineWidth: number;
   className?: string;
-  onChangeTime: (time: number) => void;
-  onScroll: (scrollPosition: ScrollPosition) => void;
 }
 
 const AnimationArea: FC<AnimationAreaProps> = memo(({
   projectId,
   animations,
-  selectedElementId,
-  timelineWidth,
   className,
-  onChangeTime,
-  onScroll,
 }) => {
   const { rootRef, scrollPosition } = useScrollObserver()
+  const { state, actions } = useEditorState()
+  const { selectedElementId, timelineWidth } = state
 
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>([])
   const animationListHeight = animations.reduce((prev, element) => prev + element.animations.length + 1, 0)
@@ -34,8 +29,8 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
   }, [projectId])
 
   useEffect(() => {
-    onScroll(scrollPosition)
-  }, [scrollPosition, onScroll])
+    actions.setScrollPosition({ value: scrollPosition })
+  }, [scrollPosition, actions.setScrollPosition])
 
   useEffect(() => {
     localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))
@@ -118,7 +113,7 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
                               className={styles.keyframe}
                               aria-label={`Keyframe: ${keyframe.time} milliseconds ${index}`}
                               style={{ left: `${keyframe.position}px` }}
-                              onClick={() => onChangeTime(keyframe.time)}
+                              onClick={() => actions.setCurrentTime({ time: keyframe.time })}
                             />
                             {index > 0 && (
                               <div 

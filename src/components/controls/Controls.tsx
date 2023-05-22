@@ -3,6 +3,7 @@ import moment from 'moment'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import styles from './Controls.module.css'
+import { useEditorState } from '../editor/EditorContextProvider'
 
 export type ControlsTranslations = {
   restart: string;
@@ -12,31 +13,22 @@ export type ControlsTranslations = {
 }
 
 interface ControlsProps {
-  isPlaying: boolean;
-  isRepeatMode: boolean;
-  currentTime: number;
   translations: ControlsTranslations;
   className?: string;
-  onChangeTime: (newTime: number) => void;
-  onTogglePlaying: (isPlaying: boolean) => void;
-  onToggleRepeatMode: (isRepeatMode: boolean) => void;
 }
 
-const Controls: FC<ControlsProps> = ({
-  isPlaying,
-  isRepeatMode,
-  currentTime,
-  translations,
-  className,
-  onChangeTime,
-  onTogglePlaying,
-  onToggleRepeatMode,
-}) => {
+const Controls: FC<ControlsProps> = ({ translations, className }) => {
   const [formattedTime, setFormattedTime] = useState({
     minutes: '00',
     seconds: '00',
     milliseconds: '00',
   })
+  const { state, actions } = useEditorState()
+  const { 
+    isPlaying, 
+    isRepeatMode, 
+    currentTime,
+  } = state
 
   useEffect(() => {
     const momentObject = moment({
@@ -50,25 +42,20 @@ const Controls: FC<ControlsProps> = ({
       milliseconds: momentObject.format('SSS'),
     })
   }, [currentTime])
-
-  const handleRestart = useCallback(() => onChangeTime(0), [onChangeTime]);
-  const handlePlay = useCallback(() => onTogglePlaying(true), [onTogglePlaying]);
-  const handlePause = useCallback(() => onTogglePlaying(false), [onTogglePlaying]);
-  const handleRepeat = useCallback(() => onToggleRepeatMode(!isRepeatMode), [isRepeatMode, onToggleRepeatMode]);
-
+  
   return (
     <div className={`${styles.controls} ${className}`}>
       <IconButton
         ariaLabel={translations.restart}
         disabled={currentTime === 0}
-        onClick={handleRestart}
+        onClick={() => actions.setCurrentTime({ time: 0 })}
       >
         <Icon icon='skip-prev' />
       </IconButton>
       {!isPlaying && (
         <IconButton
           ariaLabel={translations.play}
-          onClick={handlePlay}
+          onClick={actions.startPlaying}
         >
           <Icon icon='play' />
         </IconButton>
@@ -76,7 +63,7 @@ const Controls: FC<ControlsProps> = ({
       {isPlaying && (
         <IconButton
           ariaLabel={translations.pause}
-          onClick={handlePause}
+          onClick={actions.stopPlaying}
         >
           <Icon icon='pause' />
         </IconButton>
@@ -89,7 +76,7 @@ const Controls: FC<ControlsProps> = ({
       <IconButton
         className={isRepeatMode ? styles.activeButton : ''}
         ariaLabel={translations.repeat}
-        onClick={handleRepeat}
+        onClick={actions.toggleRepeatMode}
       >
         <Icon icon='repeat' />
       </IconButton>

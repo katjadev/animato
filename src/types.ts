@@ -23,7 +23,6 @@ export type TimelineMark = {
 
 export type AnimationKeyframe = {
   time: number;
-  position: number;
 }
 
 export type Animation = {

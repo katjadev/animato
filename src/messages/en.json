@@ -46,6 +46,8 @@
     "redo": "Redo",
     "error-message": "Couldn't load the project",
     "elements": "Elements",
+    "expand": "Expand",
+    "collapse": "Collapse",
     "timeline-pointer-aria-label": "Current time",
     "import-svg": "Import SVG",
     "export": "Export",

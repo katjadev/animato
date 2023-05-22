@@ -25,6 +25,8 @@ export default async function Project({ params }: { params: { id: string } }) {
             undo: t('project.undo'),
             redo: t('project.redo'),
             elements: t('project.elements'),
+            expand: t('project.expand'),
+            collapse: t('project.collapse'),
             timelinePointerAriaLabel: t('project.timeline-pointer-aria-label'),
             importSvg: t('project.import-svg'),
             export: t('project.export'),

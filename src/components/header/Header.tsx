@@ -24,7 +24,7 @@ const Header: FC<HeaderProps> = ({
   translations,
 }) => {
   return (
-    <header className={`${styles.header} ${className}`}>
+    <header className={`${styles.header} ${className || ''}`}>
       <div className={styles.left}>
         <ProjectMenu 
           isAuthenticated={isAuthenticated}
@@ -34,10 +34,7 @@ const Header: FC<HeaderProps> = ({
         <IconButton ariaLabel={translations.redo}><Icon icon='redo' /></IconButton>
       </div>
       <h1 className={styles.heading}>{title}</h1>
-      <IconButton 
-        ariaLabel={translations.profile}
-        onClick={() => {}}
-      >
+      <IconButton ariaLabel={translations.profile}>
         <Icon icon='profile-circle' />
       </IconButton>
     </header>

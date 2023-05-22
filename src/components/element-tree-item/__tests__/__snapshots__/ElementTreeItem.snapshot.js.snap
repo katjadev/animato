@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ElementTreeItem renders correctly for a collapsed parent element 1`] = `
+<div>
+  <div
+    class="title"
+    tabindex="0"
+  >
+    <div
+      class="titleIn level0"
+    >
+      <button
+        aria-label="Expand"
+        class="collapseButton"
+      >
+        <i
+          class="iconoir-nav-arrow-right "
+        />
+      </button>
+      <div>
+        test-element
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ElementTreeItem renders correctly for a leaf element 1`] = `
+<div>
+  <div
+    class="title"
+    tabindex="0"
+  >
+    <div
+      class="titleIn level0"
+    >
+      <div>
+        test-element
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ElementTreeItem renders correctly for a parent element 1`] = `
+<div>
+  <div
+    class="title"
+    tabindex="0"
+  >
+    <div
+      class="titleIn level0"
+    >
+      <button
+        aria-label="Collapse"
+        class="collapseButton"
+      >
+        <i
+          class="iconoir-nav-arrow-down "
+        />
+      </button>
+      <div>
+        test-element
+      </div>
+    </div>
+  </div>
+</div>
+`;

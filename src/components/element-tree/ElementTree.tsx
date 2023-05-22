@@ -1,52 +1,27 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { ElementTreeNode } from '@animato/types'
-import useElementTree from '@animato/hooks/useElementTree'
-import Icon from '@animato/components/icon/Icon'
+import { useEditorState } from '../editor/EditorContextProvider'
+import ElementTreeItem, { ElementTreeItemTranslations } from '../element-tree-item/ElementTreeItem'
 import styles from './ElementTree.module.css'
 
-export type ElementTreeTranslations = {
+export type ElementTreeTranslations = ElementTreeItemTranslations & {
   elements: string;
 }
 
 interface ElementTreeProps {
-  projectId: string;
-  content: string;
+  elements: ElementTreeNode[];
   translations: ElementTreeTranslations;
   className?: string;
-  onSelectElement: (id: string | null) => void;
 }
 
 const ElementTree: FC<ElementTreeProps> = ({
-  projectId,
-  content,
+  elements,
   translations,
   className,
-  onSelectElement,
 }) => {
-  const { elements } = useElementTree(content)
-  const [collapsedNodes, setCollapsedNodes] = useState<string[]>([])
+  const { state } = useEditorState()
+  const { collapsedElements } = state
   
-  useEffect(() => {
-    const storedCollapsedNodes = JSON.parse(localStorage.getItem(`${projectId}-collapsed-elements`) || '[]')
-    setCollapsedNodes(storedCollapsedNodes)
-  }, [projectId])
-
-  useEffect(() => {
-    localStorage.setItem(`${projectId}-collapsed-elements`, JSON.stringify(collapsedNodes))
-  }, [collapsedNodes, projectId])
-
-  const toggleNode = (elementId: string): void => {
-    if (collapsedNodes.includes(elementId)) {
-      setCollapsedNodes(collapsedNodes.filter((id) => id !== elementId))
-    } else {
-      setCollapsedNodes([...collapsedNodes, elementId])
-    }
-  }
-
-  const handleSelectElement = (id: string | null) => {
-    onSelectElement(id)
-  }
-
   const renderTree = (list: ElementTreeNode[], level: number): ReactNode => (
     <>
       {list.map((element: ElementTreeNode) => (
@@ -54,28 +29,12 @@ const ElementTree: FC<ElementTreeProps> = ({
           key={element.id} 
           className={styles.treeNode}
         >
-          <div 
-            className={styles.nodeTitle} 
-            tabIndex={0}
-            onMouseEnter={() => handleSelectElement(element.id)}
-            onMouseLeave={() => handleSelectElement(null)}
-            onFocus={() => handleSelectElement(element.id)}
-            onBlur={() => handleSelectElement(null)}
-          >
-            <div className={`${styles.nodeTitleIn} ${styles[`level${level}`]}`}>
-              {element.children.length > 0 && (
-                <button
-                  className={styles.collapseButton}
-                  aria-label={collapsedNodes.includes(element.id) ? 'Expand' : 'Collapse'}
-                  onClick={() => toggleNode(element.id)} // TODO: extract into a component
-                >
-                  {collapsedNodes.includes(element.id) ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
-                </button>
-              )}
-              <div>{element.title}</div>
-            </div>
-          </div>
-          {element.children.length > 0 && !collapsedNodes.includes(element.id) && (
+          <ElementTreeItem 
+            element={element}
+            level={level} 
+            translations={translations}
+          />
+          {element.children.length > 0 && !collapsedElements.includes(element.id) && (
             <>{renderTree(element.children, level + 1)}</>
           )}
         </div>
@@ -84,7 +43,7 @@ const ElementTree: FC<ElementTreeProps> = ({
   )
 
   return (
-    <div className={`${className} ${styles.elements}`}>
+    <div className={`${className || ''} ${styles.elements}`}>
       <h2 className={styles.title}>{translations.elements}</h2>
       {renderTree(elements, 0)}
     </div>

@@ -1,0 +1,56 @@
+.title {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.5rem 0.4rem 2rem;
+  gap: 0.6rem;
+  border: 2px solid transparent;
+}
+
+.titleIn {
+  position: relative;
+}
+
+.titleIn.level0 {
+  margin-left: 0;
+}
+
+.titleIn.level1 {
+  margin-left: 1rem;
+}
+
+.titleIn.level2 {
+  margin-left: 2rem;
+}
+
+.titleIn.level3 {
+  margin-left: 3rem;
+}
+
+.titleIn.level4 {
+  margin-left: 4rem;
+}
+
+.titleIn.level5 {
+  margin-left: 5rem;
+}
+
+.titleIn.level6 {
+  margin-left: 6rem;
+}
+
+.collapseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  width: 1rem;
+  font-size: 1rem;
+  position: absolute;
+  left: -1.4rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .title:hover {
+    border-color: var(--highlight-2);
+  }
+}
