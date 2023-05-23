@@ -1,0 +1,18 @@
+.keyframe {
+  position: absolute;
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: var(--highlight-3);
+  transform: rotate(45deg);
+  margin-left: -0.35rem;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.keyframeLine {
+  position: absolute;
+  height: 2px;
+  background-color: var(--highlight-3);
+  pointer-events: none;
+}

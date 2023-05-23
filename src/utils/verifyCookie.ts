@@ -17,5 +17,5 @@ async function verifyCookie(cookie: string) {
 
   return { authenticated, email, userId }
 }
-  
+
 export default verifyCookie

@@ -61,7 +61,7 @@ const Player: FC<PlayerProps> = ({
         window.clearTimeout(timeoutRef.current)
       }
     }
-  }, [isPlaying, isRepeatMode, duration])
+  }, [isPlaying, isRepeatMode, duration, playAnimation])
 
   useEffect(() => {
     if (!isPlaying) {

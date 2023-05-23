@@ -47,6 +47,5 @@ export type ScrollPosition = {
 export type ElementTreeNode = {
   id: string;
   title: string;
-  // element: Element;
   children: ElementTreeNode[];
 }

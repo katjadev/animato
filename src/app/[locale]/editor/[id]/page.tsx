@@ -21,12 +21,12 @@ export default async function Project({ params }: { params: { id: string } }) {
     )
   }
 
-  const { elements, animations, duration } = parseProjectData(project.data)
+  const { elements, animations, duration } = parseProjectData(project!.data)
 
   return (
     <main className={styles.main}>
       <Editor
-        project={project}
+        project={project!}
         elements={elements}
         animations={animations}
         duration={duration}

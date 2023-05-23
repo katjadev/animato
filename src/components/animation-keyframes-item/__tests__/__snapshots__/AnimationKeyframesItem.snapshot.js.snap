@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimationKeyframesItem renders correctly with previous keyframe 1`] = `
+<div>
+  <button
+    aria-label="Keyframe: 1000 milliseconds"
+    class="keyframe"
+    style="left: 176px;"
+  />
+  <div
+    class="keyframeLine"
+    style="left: 96px; width: 80px;"
+  />
+</div>
+`;
+
+exports[`AnimationKeyframesItem renders correctly without previous keyframe 1`] = `
+<div>
+  <button
+    aria-label="Keyframe: 1000 milliseconds"
+    class="keyframe"
+    style="left: 176px;"
+  />
+</div>
+`;

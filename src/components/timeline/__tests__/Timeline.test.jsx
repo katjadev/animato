@@ -15,13 +15,14 @@ const defaultState = {
     top: 0,
   },
   zoom: 1,
+  timelineWidth: 4848,
   timelineMarks: [
     { position: 0, height: 10, title: '0s', time: 0 },
-    { position: 100, height: 10, title: '1s', time: 1000 },
-    { position: 200, height: 10, title: '2s', time: 2000 },
-    { position: 300, height: 10, title: '3s', time: 3000 },
-    { position: 400, height: 10, title: '4s', time: 4000 },
-    { position: 500, height: 10, title: '5s', time: 5000 },
+    { position: 16, height: 10, title: '1s', time: 1000 },
+    { position: 32, height: 10, title: '2s', time: 2000 },
+    { position: 48, height: 10, title: '3s', time: 3000 },
+    { position: 64, height: 10, title: '4s', time: 4000 },
+    { position: 96, height: 10, title: '5s', time: 5000 },
   ],
 }
 
@@ -86,12 +87,12 @@ describe('Timeline', () => {
     render(<Timeline duration={0} translations={translations} />)
 
     const timeline = screen.getByTestId('timeline')
-    fireEvent.click(timeline, { clientX: 25 })
+    fireEvent.click(timeline, { clientX: 35 + 16 }) // 16 = timeline padding
 
-    expect(mockSetCurrentTime).toHaveBeenCalledWith({ value: 4000 })
+    expect(mockSetCurrentTime).toHaveBeenCalledWith({ value: 2000 })
   })
 
-  it('calls setCurrentTime when timelinepointer is moved', () => {
+  it('calls setCurrentTime when timeline pointer is moved', () => {
     const mockSetCurrentTime = jest.fn()
     useEditorState.mockReturnValue({
       state: defaultState,
@@ -103,7 +104,7 @@ describe('Timeline', () => {
     const pointer = screen.getByRole('slider')
     fireEvent.keyDown(pointer, { key: 'ArrowRight' })
 
-    expect(mockSetCurrentTime).toHaveBeenCalledWith({ value: 5000 })
+    expect(mockSetCurrentTime).toHaveBeenCalledWith({ value: 1000 })
   })
 
   it('adds the correct name to the duration mark when isRepeatMode is true', () => {

@@ -31,11 +31,11 @@ const Timeline: FC<TimelineProps> = ({
     scrollPosition,
     zoom,
     timelineMarks,
+    timelineWidth,
   } = state
 
   const timelinePaddingPx = TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
   const markSize = timelineMarks[1].position - timelineMarks[0].position
-  const timelineWidth = timelineMarks.length * markSize + 2 * timelinePaddingPx
   const currentPointerPosition = findClosestTimelineMark(timelineMarks, currentTime).position + 0.5 * REM_TO_PX_COEFFICIENT
   const durationMarkPosition = findClosestTimelineMark(timelineMarks, duration * 1000).position + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
 
@@ -52,7 +52,7 @@ const Timeline: FC<TimelineProps> = ({
     const newTime = Math.round(((position * MAX_DURATION) / (timelineWidth * 100))) * 100
     const closestMark = findClosestTimelineMark(timelineMarks, newTime)
     actions.setCurrentTime({ value: closestMark.time })
-  }, [timelineMarks, timelineWidth, actions.setCurrentTime])
+  }, [timelineMarks, timelineWidth, actions])
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const timelineLeft = event.currentTarget.getBoundingClientRect().left

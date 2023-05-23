@@ -7,14 +7,15 @@ import { AnimationGroup, ElementTreeNode, Project } from '@animato/types'
 import Player from '@animato/components/player/Player'
 import Controls, { ControlsTranslations } from '@animato/components/controls/Controls'
 import Timeline, { TimelineTranslations } from '@animato/components/timeline/Timeline'
-import AnimationArea from '@animato/components/animation-area/AnimationArea'
+import AnimationArea, { AnimationAreaTranslations } from '@animato/components/animation-area/AnimationArea'
 import EditorContextProvider from './EditorContextProvider'
 import styles from './Editor.module.css'
 
 type EditorTranslations = HeaderTranslations & 
   ElementTreeTranslations & 
   ControlsTranslations &
-  TimelineTranslations
+  TimelineTranslations &
+  AnimationAreaTranslations & {}
 
 interface EditorProps {
   project: Project;
@@ -62,8 +63,8 @@ const Editor: FC<EditorProps> = ({
       />
       <AnimationArea
         className={styles.animations}
-        projectId={project.id}
         animations={animations}
+        translations={translations}
       />
     </EditorContextProvider>
   )

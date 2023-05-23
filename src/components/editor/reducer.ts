@@ -1,6 +1,6 @@
 import { Action, ScrollPosition, TimelineMark } from '@animato/types'
 import { actionTypes } from './actions'
-import { MAX_ZOOM } from '@animato/constants';
+import { MAX_ZOOM, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants';
 import generateTimelineMarks from '@animato/utils/generateTimelineMarks';
 
 export type EditorState = {
@@ -13,18 +13,25 @@ export type EditorState = {
   zoom: number;
   timelineMarks: TimelineMark[];
   collapsedElements: string[];
+  collapsedAnimations: string[];
 }
+
+const timelinePaddingPx = TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
+const timelineMarks = generateTimelineMarks(MAX_ZOOM)
+const markSize = timelineMarks[1].position - timelineMarks[0].position
+const timelineWidth = timelineMarks.length * markSize + 2 * timelinePaddingPx
 
 export const initialEditorState: EditorState = {
   isPlaying: false,
   isRepeatMode: false,
   selectedElementId: null,
   currentTime: 0,
-  timelineWidth: 0,
+  timelineWidth,
   scrollPosition: { top: 0, left: 0 },
   zoom: MAX_ZOOM,
-  timelineMarks: generateTimelineMarks(MAX_ZOOM),
+  timelineMarks,
   collapsedElements: [],
+  collapsedAnimations: [],
 }
 
 export const editorReducer = (state: EditorState, action: Action) => {
@@ -66,10 +73,14 @@ export const editorReducer = (state: EditorState, action: Action) => {
       }
     case actionTypes.SET_ZOOM:
       const zoom = action.payload!.value
+      const timelineMarks = generateTimelineMarks(zoom)
+      const markSize = timelineMarks[1].position - timelineMarks[0].position
+      const timelineWidth = timelineMarks.length * markSize + 2 * timelinePaddingPx
       return {
         ...state,
         zoom,
-        timelineMarks: generateTimelineMarks(zoom),
+        timelineMarks,
+        timelineWidth,
       }
     case actionTypes.COLLAPSE_ELEMENT:
       return {
@@ -80,6 +91,16 @@ export const editorReducer = (state: EditorState, action: Action) => {
       return {
         ...state,
         collapsedElements: state.collapsedElements.filter(id => id !== action.payload!.id),
+      }
+    case actionTypes.COLLAPSE_ANIMATION:
+      return {
+        ...state,
+        collapsedAnimations: [...state.collapsedAnimations, action.payload!.id],
+      }
+    case actionTypes.EXPAND_ANIMATION:
+      return {
+        ...state,
+        collapsedAnimations: state.collapsedAnimations.filter(id => id !== action.payload!.id),
       }
     default:
       return state

@@ -12,6 +12,8 @@ export const actionTypes = {
   SET_ZOOM: 'SET_ZOOM',
   COLLAPSE_ELEMENT: 'COLLAPSE_ELEMENT',
   EXPAND_ELEMENT: 'EXPAND_ELEMENT',
+  COLLAPSE_ANIMATION: 'COLLAPSE_ANIMATION',
+  EXPAND_ANIMATION: 'EXPAND_ANIMATION',
 }
 
 export const editorActions = (dispatch: Dispatch<Action>) => (
@@ -26,5 +28,7 @@ export const editorActions = (dispatch: Dispatch<Action>) => (
     setZoom: (payload: { value: number }) => dispatch({ type: actionTypes.SET_ZOOM, payload }),
     collapseElement: (payload: { id: string }) => dispatch({ type: actionTypes.COLLAPSE_ELEMENT, payload }),
     expandElement: (payload: { id: string }) => dispatch({ type: actionTypes.EXPAND_ELEMENT, payload }),
+    collapseAnimation: (payload: { id: string }) => dispatch({ type: actionTypes.COLLAPSE_ANIMATION, payload }),
+    expandAnimation: (payload: { id: string }) => dispatch({ type: actionTypes.EXPAND_ANIMATION, payload }),
   }
 )

@@ -1,0 +1,48 @@
+.element {
+  height: 1.5rem;
+  border-bottom: 1px solid var(--border-base);
+  border-right: 1px solid var(--border-base);
+  font-size: 0.8rem;
+  font-weight: 200;
+  display: flex;
+  background-color: var(--background-highlight);
+  padding: 0 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.element.selected {
+  background-color: var(--highlight-2);
+  color: var(--text-inverted);
+}
+
+.collapseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animationList {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.animation {
+  height: 1.5rem;
+  border-bottom: 1px solid var(--border-base);
+  border-right: 1px solid var(--border-base);
+  font-size: 0.7rem;
+  font-weight: 200;
+  display: flex;
+  padding: 0 1rem 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
