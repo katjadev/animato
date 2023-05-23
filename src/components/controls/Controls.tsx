@@ -1,9 +1,9 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import moment from 'moment'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
-import styles from './Controls.module.css'
 import { useEditorState } from '../editor/EditorContextProvider'
+import styles from './Controls.module.css'
 
 export type ControlsTranslations = {
   restart: string;
@@ -48,7 +48,7 @@ const Controls: FC<ControlsProps> = ({ translations, className }) => {
       <IconButton
         ariaLabel={translations.restart}
         disabled={currentTime === 0}
-        onClick={() => actions.setCurrentTime({ time: 0 })}
+        onClick={() => actions.setCurrentTime({ value: 0 })}
       >
         <Icon icon='skip-prev' />
       </IconButton>

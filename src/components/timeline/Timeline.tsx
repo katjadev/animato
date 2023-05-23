@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback, useEffect, useRef } from 'react'
+import { FC, Fragment, useCallback } from 'react'
 import { 
   MAX_DURATION, 
   MAX_ZOOM, 
@@ -6,18 +6,10 @@ import {
   REM_TO_PX_COEFFICIENT, 
   TIMELINE_PADDING,
 } from '@animato/constants'
-import { ScrollPosition, TimelineMark } from '@animato/types'
 import TimelinePointer, { TimelinePointerTranslations } from '@animato/components/timeline-pointer/TimelinePointer'
 import styles from './Timeline.module.css'
 import { useEditorState } from '../editor/EditorContextProvider'
-
-const findClosestMark = (marks: TimelineMark[], time: number): TimelineMark => {
-  return marks.reduce(function(prev, current) {
-    return (Math.abs(current.time - time) < Math.abs(prev.time - time)
-      ? current 
-      : prev)
-  }, { title: '', height: 0, position: 0, time: 0 })
-}
+import findClosestTimelineMark from '@animato/utils/findClosestTimelineMark'
 
 export type TimelineTranslations = TimelinePointerTranslations & {}
 
@@ -42,23 +34,10 @@ const Timeline: FC<TimelineProps> = ({
   } = state
 
   const timelinePaddingPx = TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
-  const timelineRef = useRef<SVGSVGElement>(null)
-  const observer = useRef<ResizeObserver | null>(null)
-  const markSize = timelineMarks.length > 1 ? timelineMarks[1].position - timelineMarks[0].position : 0
-  const timelineWidth = timelineMarks.length * markSize * REM_TO_PX_COEFFICIENT + 2 * timelinePaddingPx
-  const currentPointerPosition = findClosestMark(timelineMarks, currentTime).position + 0.5 * REM_TO_PX_COEFFICIENT
-  const durationMarkPosition = findClosestMark(timelineMarks, duration * 1000).position + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
-
-  useEffect(() => {
-    if (timelineRef.current) {
-      const ref = timelineRef.current
-      observer.current = new ResizeObserver(() => actions.setTimelineWidth({ width: ref.getBoundingClientRect().width }))
-      observer.current.observe(ref)
-      return () => {
-        observer.current?.unobserve(ref)
-      };
-    }
-  }, [actions.setTimelineWidth])
+  const markSize = timelineMarks[1].position - timelineMarks[0].position
+  const timelineWidth = timelineMarks.length * markSize + 2 * timelinePaddingPx
+  const currentPointerPosition = findClosestTimelineMark(timelineMarks, currentTime).position + 0.5 * REM_TO_PX_COEFFICIENT
+  const durationMarkPosition = findClosestTimelineMark(timelineMarks, duration * 1000).position + TIMELINE_PADDING * REM_TO_PX_COEFFICIENT
 
   const handleZoom = (event: React.WheelEvent) => {
     if (event.deltaY > 0 && zoom > MIN_ZOOM) {
@@ -71,24 +50,24 @@ const Timeline: FC<TimelineProps> = ({
 
   const handleChangePointerPosition = useCallback((position: number) => {
     const newTime = Math.round(((position * MAX_DURATION) / (timelineWidth * 100))) * 100
-    const closestMark = findClosestMark(timelineMarks, newTime)
-    actions.setCurrentTime({ time: closestMark.time })
+    const closestMark = findClosestTimelineMark(timelineMarks, newTime)
+    actions.setCurrentTime({ value: closestMark.time })
   }, [timelineMarks, timelineWidth, actions.setCurrentTime])
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
     const timelineLeft = event.currentTarget.getBoundingClientRect().left
     const position = event.clientX - timelineLeft - timelinePaddingPx
     const newTime = Math.round((position * MAX_DURATION) / timelineWidth)
-    const closestMark = findClosestMark(timelineMarks, newTime)
-    actions.setCurrentTime({ time: closestMark.time })
+    const closestMark = findClosestTimelineMark(timelineMarks, newTime)
+    actions.setCurrentTime({ value: closestMark.time })
   }
 
   return (
     <div className={`${styles.timeline} ${className}`}>
-      <svg 
+      <svg
+        data-testid='timeline'
         width={`${timelineWidth}px`} 
         height={`${3 * REM_TO_PX_COEFFICIENT}px`}
-        ref={timelineRef}
         style={{ marginLeft: `-${scrollPosition.left}px` }}
         onWheel={handleZoom}
         onClick={handleClick}
@@ -118,10 +97,13 @@ const Timeline: FC<TimelineProps> = ({
         currentTime={currentTime}
         currentPosition={currentPointerPosition}
         scrollPosition={scrollPosition}
+        markSize={markSize}
+        timelineWidth={timelineWidth}
         translations={translations}
         onChangePosition={handleChangePointerPosition} 
       />
-      <div 
+      <div
+        data-testid='timeline-duration-mark'
         className={`${styles.durationMark} ${isRepeatMode ? styles.repeatMode : ''}`}
         style={{
           left: `${durationMarkPosition}px`,

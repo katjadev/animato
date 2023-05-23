@@ -21,7 +21,7 @@ export default function useScrollObserver() {
     return () => {
       rootElement?.removeEventListener('scroll', handleScroll)
     }
-  })
+  }, [])
 
   return { 
     rootRef,

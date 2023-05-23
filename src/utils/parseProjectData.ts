@@ -1,3 +1,10 @@
+import parse from 'html-dom-parser'
+import {
+  Comment,
+  Element,
+  ProcessingInstruction,
+  Text
+} from 'domhandler'
 import { v4 as uuidv4 } from 'uuid'
 import { ALLOWED_ANIMATIONS, ALLOWED_SVG_ELEMENTS } from '@animato/constants'
 import { 
@@ -7,24 +14,39 @@ import {
   ElementTreeNode,
 } from '@animato/types'
 
+function isElement(node: Comment | Element | ProcessingInstruction | Text): node is Element {
+  return (node as Element).children !== undefined;
+}
+
 export default function parseProjectData(data: string): { 
   elements: ElementTreeNode[],
   animations: AnimationGroup[],
   duration: number,
 } {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(data, 'application/xml')
-  const elements = buildElementTree(doc.documentElement)
+  const doc = parse(data)
+  if (doc.length === 0 || !isElement(doc[0])) {
+    return { elements: [], animations: [], duration: 0 }
+  }
 
-  const animatedElements = Array.from(doc.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', ')))
+  const elements = buildElementTree(doc[0])
+  const allElements = treeToArray(doc[0])
+  const animatedElements = allElements.filter(element => element.attribs.id && ALLOWED_SVG_ELEMENTS.includes(element.name))
+  const animationElements = allElements.filter(element => ALLOWED_ANIMATIONS.includes(element.name))
+
   const [animations, duration] = animatedElements.reduce((result: [Array<AnimationGroup>, number], current: Element) => {
-    const id = current.getAttribute('id')?.toString()
-    if (!id) {
-      return result
-    }
-    
-    const title = current?.getAttribute('data-title') || current!.tagName
-    const [animationList, currentDuration] = getAnimationsForElement(id, doc)
+    const id = current.attribs.id
+    const title = current.attribs['data-title'] || current!.name
+
+    let currentDuration = 0
+    const animationList = animationElements
+      .filter(item => item.attribs['xlink:href'] === `#${id}`)
+      .map((animationNode) => {
+        const animation = parseAnimationNode(animationNode)
+        if (currentDuration < animation.duration) {
+          currentDuration = animation.duration
+        }
+        return animation
+      })
 
     if (animationList.length > 0) {
       result[0] = [...result[0], {
@@ -42,16 +64,27 @@ export default function parseProjectData(data: string): {
 }
 
 const buildElementTree = (currentElement: Element): ElementTreeNode[] => {
-  const children = Array.from(currentElement.children)
-    .filter((element) => ALLOWED_SVG_ELEMENTS.includes(element.nodeName))
+  const children = currentElement.children
+    .filter((element) => isElement(element as Element))
+    .filter((element) =>  ALLOWED_SVG_ELEMENTS.includes((element as Element).name))
+    .map((element) => element as Element)
 
   return children.map((element) => ({
-    id: element.getAttribute('id') || uuidv4(),
-    element,
-    title: element.getAttribute('data-title') || element.nodeName,
+    id: element.attribs.id || uuidv4(),
+    title: element.attribs['data-title'] || element.name,
     children: buildElementTree(element),
   }))
 }
+
+const treeToArray = (node: Element, result: Element[] = []): Element[] => {
+  result.push(node)
+  for (const child of node.children) {
+    if (isElement(child as Element)) {
+      treeToArray(child as Element, result)
+    }
+  }
+  return result
+} 
 
 const translateKeyTimesToTimelinePoints = (
   keyTimes: string[], 
@@ -59,11 +92,11 @@ const translateKeyTimesToTimelinePoints = (
 ): AnimationKeyframe[] => keyTimes.map((keyTime) => ({ time: duration * 1000 * parseFloat(keyTime) }))
 
 const parseAnimationNode = (node: Element): Animation => {
-  const id = node.getAttribute('id') || uuidv4()
-  const title = node.getAttribute('data-title') || node.tagName
-  const values = node.getAttribute('values')?.split('; ') || []
-  const duration = parseInt(node.getAttribute('dur') || '0')
-  const keyTimes = (node.getAttribute('keyTimes') || '')
+  const id = node.attribs.id || uuidv4()
+  const title = node.attribs['data-title'] || node.tagName
+  const values = node.attribs.values?.split('; ') || []
+  const duration = parseInt(node.attribs.dur || '0')
+  const keyTimes = (node.attribs.keytimes || '')
     .split('; ')
     .filter(keyTime => !!keyTime)
   const keyframes = translateKeyTimesToTimelinePoints(keyTimes, duration)
@@ -75,20 +108,4 @@ const parseAnimationNode = (node: Element): Animation => {
     keyframes,
     duration,
   }
-}
-
-const getAnimationsForElement = (id: string, document: Document): [Animation[], number] => {
-  let currentDuration = 0
-  const selector = ALLOWED_ANIMATIONS.map((element) => `${element}`).join(', ')
-  const animations = Array.from(document.querySelectorAll(selector))
-    .filter(item => item.getAttribute('xlink:href') === `#${id}`)
-    .map((animationNode) => {
-      const animation = parseAnimationNode(animationNode)
-      if (currentDuration < animation.duration) {
-        currentDuration = animation.duration
-      }
-      return animation
-    })
-
-  return [animations, currentDuration]
 }

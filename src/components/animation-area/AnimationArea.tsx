@@ -23,18 +23,18 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
   const [collapsedAnimations, setCollapsedAnimations] = useState<string[]>([])
   const animationListHeight = animations.reduce((prev, element) => prev + element.animations.length + 1, 0)
 
-  useEffect(() => {
-    const storedCollapsedAnimations = JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]')
-    setCollapsedAnimations(storedCollapsedAnimations)
-  }, [projectId])
+  // useEffect(() => {
+  //   const storedCollapsedAnimations = JSON.parse(localStorage.getItem(`${projectId}-collapsed-animations`) || '[]')
+  //   setCollapsedAnimations(storedCollapsedAnimations)
+  // }, [projectId])
 
-  useEffect(() => {
-    actions.setScrollPosition({ value: scrollPosition })
-  }, [scrollPosition, actions.setScrollPosition])
+  // useEffect(() => {
+  //   actions.setScrollPosition({ value: scrollPosition })
+  // }, [scrollPosition, actions.setScrollPosition])
 
-  useEffect(() => {
-    localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))
-  }, [collapsedAnimations, projectId])
+  // useEffect(() => {
+  //   localStorage.setItem(`${projectId}-collapsed-animations`, JSON.stringify(collapsedAnimations))
+  // }, [collapsedAnimations, projectId])
 
   const toggleAnimation = (elementId: string): void => {
     if (collapsedAnimations.includes(elementId)) {
@@ -45,7 +45,7 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
   }
 
   return (
-    <div className={`${styles.animationArea} ${className}`}>
+    <div className={`${styles.animationArea} ${className || ''}`}>
       <div className={styles.elements}>
         <div className={styles.elementsScrollable}>
           <div

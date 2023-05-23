@@ -52,7 +52,7 @@ export const editorReducer = (state: EditorState, action: Action) => {
     case actionTypes.SET_CURRENT_TIME:
       return {
         ...state,
-        currentTime: action.payload!.time,
+        currentTime: action.payload!.value,
       }
     case actionTypes.SET_TIMELINE_WIDTH:
       return {
@@ -65,9 +65,11 @@ export const editorReducer = (state: EditorState, action: Action) => {
         scrollPosition: action.payload!.value,
       }
     case actionTypes.SET_ZOOM:
+      const zoom = action.payload!.value
       return {
         ...state,
-        zoom: action.payload!.value,
+        zoom,
+        timelineMarks: generateTimelineMarks(zoom),
       }
     case actionTypes.COLLAPSE_ELEMENT:
       return {

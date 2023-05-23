@@ -22,7 +22,7 @@ export default function generateTimelineMarks(zoom: number): TimelineMark[] {
     return Array.from(Array(maxDurationSeconds / 6 + 1).keys()).map((index) => ({
       title: index % 10 === 0 ? `${index / 10}m` : '',
       height: (index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2)) * REM_TO_PX_COEFFICIENT,
-      position: (index * markSize) * REM_TO_PX_COEFFICIENT,
+      position: Math.round((index * markSize) * REM_TO_PX_COEFFICIENT),
       time: 6000 * index,
     }))
   }
@@ -31,7 +31,7 @@ export default function generateTimelineMarks(zoom: number): TimelineMark[] {
     return Array.from(Array(maxDurationSeconds + 1).keys()).map((index) => ({
       title: index % 10 === 0 ? `${index}s` : '',
       height: (index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2)) * REM_TO_PX_COEFFICIENT,
-      position: (index * markSize) * REM_TO_PX_COEFFICIENT,
+      position: Math.round((index * markSize) * REM_TO_PX_COEFFICIENT),
       time: 1000 * index,
     }))
   }
@@ -39,7 +39,7 @@ export default function generateTimelineMarks(zoom: number): TimelineMark[] {
   return Array.from(Array(maxDurationSeconds * 10 + 1).keys()).map((index) => ({
     title: index % 10 === 0 ? `${index / 10}s` : '',
     height: (index % 10 === 0 ? 1 : (index % 5 === 0 ? 1.5 : 2)) * REM_TO_PX_COEFFICIENT,
-    position: (index * markSize) * REM_TO_PX_COEFFICIENT,
+    position: Math.round((index * markSize) * REM_TO_PX_COEFFICIENT),
     time: 100 * index,
   }))
 }

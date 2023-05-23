@@ -48,11 +48,8 @@ describe('TimelinePointer', () => {
     )
 
     const pointer = screen.getByRole('slider')
-    fireEvent(
-      pointer,
-      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
-    )
-
+    fireEvent.mouseMove(pointer, { clientX: 200 })
+    
     expect(onChangePositionMock).toBeCalledTimes(0)
   })
 
@@ -73,19 +70,10 @@ describe('TimelinePointer', () => {
     )
 
     const pointer = screen.getByRole('slider')
-    fireEvent(
-      pointer,
-      new MouseEvent('mousedown', { bubbles: true }),
-    )
-    fireEvent(
-      pointer,
-      new MouseEvent('mouseup', { bubbles: true }),
-    )
-    fireEvent(
-      pointer,
-      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
-    )
-
+    fireEvent.mouseDown(pointer)
+    fireEvent.mouseUp(pointer)
+    fireEvent.mouseMove(pointer, { clientX: 200 })
+    
     expect(onChangePositionMock).toBeCalledTimes(0)
   })
 
@@ -106,15 +94,9 @@ describe('TimelinePointer', () => {
     )
 
     const pointer = screen.getByRole('slider')
-    fireEvent(
-      pointer,
-      new MouseEvent('mousedown', { bubbles: true }),
-    )
-    fireEvent(
-      pointer,
-      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
-    )
-
+    fireEvent.mouseDown(pointer)
+    fireEvent.mouseMove(pointer, { clientX: 200 })
+    
     expect(onChangePositionMock).toBeCalledTimes(1)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(200)
   })
@@ -136,20 +118,14 @@ describe('TimelinePointer', () => {
     )
 
     const pointer = screen.getByRole('slider')
-    fireEvent(
-      pointer,
-      new MouseEvent('mousedown', { bubbles: true }),
-    )
-    fireEvent(
-      pointer,
-      new MouseEvent('mousemove', { clientX: 200, bubbles: true }),
-    )
+    fireEvent.mouseDown(pointer)
+    fireEvent.mouseMove(pointer, { clientX: 200 })
 
     expect(onChangePositionMock).toBeCalledTimes(1)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(400)
   })
 
-  /*it('calls onChangePosition when moved with keyboard', () => {
+  it('calls onChangePosition when moved with keyboard', () => {
     const onChangePositionMock = jest.fn()
     render(
       <NextIntlProvider messages={messages} locale={locale}>
@@ -157,7 +133,7 @@ describe('TimelinePointer', () => {
           currentTime={0}
           currentPosition={100}
           scrollPosition={{ left: 0, top: 0 }}
-          markSize={1}
+          markSize={16}
           timelineWidth={1000}
           translations={{
             timelinePointerAriaLabel: 'Current time',
@@ -168,36 +144,24 @@ describe('TimelinePointer', () => {
     )
 
     const pointer = screen.getByRole('slider')
-    fireEvent(
-      pointer,
-      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowRight' }),
-    )
+    fireEvent.keyDown(pointer, { key: 'ArrowRight' })
 
     expect(onChangePositionMock).toBeCalledTimes(1)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(116)
 
-    fireEvent(
-      pointer,
-      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowUp' }),
-    )
+    fireEvent.keyDown(pointer, { key: 'ArrowUp' })
 
     expect(onChangePositionMock).toBeCalledTimes(2)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(116)
 
-    fireEvent(
-      pointer,
-      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
-    )
+    fireEvent.keyDown(pointer, { key: 'ArrowDown' })
 
     expect(onChangePositionMock).toBeCalledTimes(3)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(84)
 
-    fireEvent(
-      pointer,
-      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowLeft' }),
-    )
+    fireEvent.keyDown(pointer, { key: 'ArrowLeft' })
 
     expect(onChangePositionMock).toBeCalledTimes(4)
     expect(onChangePositionMock).toHaveBeenLastCalledWith(84)
-  }) */
+  })
 })

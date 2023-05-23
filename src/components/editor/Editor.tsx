@@ -1,15 +1,14 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import Header, { HeaderTranslations } from '@animato/components/header/Header'
 import ElementTree, { ElementTreeTranslations } from '@animato/components/element-tree/ElementTree'
-import { AnimationGroup, ElementTreeNode, Project, ScrollPosition } from '@animato/types'
-import parseProjectData from '@animato/utils/parseProjectData'
+import { AnimationGroup, ElementTreeNode, Project } from '@animato/types'
 import Player from '@animato/components/player/Player'
 import Controls, { ControlsTranslations } from '@animato/components/controls/Controls'
 import Timeline, { TimelineTranslations } from '@animato/components/timeline/Timeline'
 import AnimationArea from '@animato/components/animation-area/AnimationArea'
-import EditorContextProvider, { useEditorState } from './EditorContextProvider'
+import EditorContextProvider from './EditorContextProvider'
 import styles from './Editor.module.css'
 
 type EditorTranslations = HeaderTranslations & 
@@ -19,22 +18,21 @@ type EditorTranslations = HeaderTranslations &
 
 interface EditorProps {
   project: Project;
+  elements: ElementTreeNode[];
+  animations: AnimationGroup[];
+  duration: number;
   isAuthenticated: boolean;
   translations: EditorTranslations;
 }
 
-const Editor: FC<EditorProps> = ({ project, isAuthenticated, translations }) => {
-  const [elements, setElements] = useState<ElementTreeNode[]>([])
-  const [animations, setAnimations] = useState<AnimationGroup[]>([])
-  const [duration, setDuration] = useState(0)
-
-  useEffect(() => {
-    const data = parseProjectData(project.data)
-    setElements(data.elements)
-    setAnimations(data.animations)
-    setDuration(data.duration)
-  }, [])
-
+const Editor: FC<EditorProps> = ({ 
+  project, 
+  elements, 
+  animations, 
+  duration, 
+  isAuthenticated, 
+  translations,
+}) => {
   return (
     <EditorContextProvider>
       <Header 
@@ -62,11 +60,11 @@ const Editor: FC<EditorProps> = ({ project, isAuthenticated, translations }) => 
         duration={duration}
         translations={translations}
       />
-      {/*<AnimationArea
+      <AnimationArea
         className={styles.animations}
         projectId={project.id}
         animations={animations}
-      />*/}
+      />
     </EditorContextProvider>
   )
 }

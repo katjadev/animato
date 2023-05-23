@@ -20,7 +20,7 @@ export const editorActions = (dispatch: Dispatch<Action>) => (
     stopPlaying: () => dispatch({ type: actionTypes.STOP_PLAYING }),
     toggleRepeatMode: () => dispatch({ type: actionTypes.TOGGLE_REPEAT_MODE }),
     selectElement: (payload: { id: string | null }) => dispatch({ type: actionTypes.SELECT_ELEMENT, payload }),
-    setCurrentTime: (payload: { time: number }) => dispatch({ type: actionTypes.SET_CURRENT_TIME, payload }),
+    setCurrentTime: (payload: { value: number }) => dispatch({ type: actionTypes.SET_CURRENT_TIME, payload }),
     setTimelineWidth: (payload: { width: number }) => dispatch({ type: actionTypes.SET_TIMELINE_WIDTH, payload }),
     setScrollPosition: (payload: { value: number }) => dispatch({ type: actionTypes.SET_SCROLL_POSITION, payload }),
     setZoom: (payload: { value: number }) => dispatch({ type: actionTypes.SET_ZOOM, payload }),

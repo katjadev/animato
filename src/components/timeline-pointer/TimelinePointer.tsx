@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ScrollPosition } from '@animato/types'
-import { MAX_DURATION, REM_TO_PX_COEFFICIENT } from '@animato/constants';
+import { MAX_DURATION } from '@animato/constants';
 import styles from './TimelinePointer.module.css'
 
 export type TimelinePointerTranslations = {
@@ -11,6 +11,8 @@ interface TimelinePointerProps {
   currentTime: number;
   currentPosition: number;
   scrollPosition: ScrollPosition;
+  markSize: number;
+  timelineWidth: number;
   translations: TimelinePointerTranslations;
   onChangePosition: (position: number) => void;
 }
@@ -19,6 +21,8 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
   currentTime,
   currentPosition,
   scrollPosition,
+  markSize,
+  timelineWidth,
   translations,
   onChangePosition, 
 }) => {
@@ -56,17 +60,15 @@ const TimelinePointer: FC<TimelinePointerProps> = ({
     if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
       event.preventDefault()
       event.stopPropagation()
-      // TODO: fix
-      // const newPosition = Math.min(currentPosition + markSize * REM_TO_PX_COEFFICIENT, timelineWidth)
-      // onChangePosition(newPosition)
+      const newPosition = Math.min(currentPosition + markSize, timelineWidth)
+      onChangePosition(newPosition)
     }
 
     if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
       event.preventDefault()
       event.stopPropagation()
-      // TODO: fix
-      // const newPosition = Math.max(currentPosition - markSize * REM_TO_PX_COEFFICIENT, 0)
-      // onChangePosition(newPosition)
+      const newPosition = Math.max(currentPosition - markSize, 0)
+      onChangePosition(newPosition)
     }
   }
 

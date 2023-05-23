@@ -5,23 +5,21 @@ jest.mock('uuid', () => ({
 }))
 
 describe('parseProjectData', () => {
-  test('should parse project data and return elements', () => {
+  it('should parse project data and return elements', () => {
     const data = '<svg><rect id="rect1" /><circle id="circle1" /></svg>'
     const { elements } = parseProjectData(data)
 
     expect(elements).toHaveLength(2)
     expect(elements[0].id).toBe('rect1')
-    expect(elements[0].element.nodeName).toBe('rect')
     expect(elements[0].title).toBe('rect')
     expect(elements[0].children).toHaveLength(0)
 
     expect(elements[1].id).toBe('circle1')
-    expect(elements[1].element.nodeName).toBe('circle')
     expect(elements[1].title).toBe('circle')
     expect(elements[1].children).toHaveLength(0)
   })
 
-  test('should generate unique IDs for elements without ID attributes', () => {
+  it('should generate unique IDs for elements without ID attributes', () => {
     const data = '<svg><rect /><circle /></svg>'
     const { elements } = parseProjectData(data)
 
@@ -29,18 +27,18 @@ describe('parseProjectData', () => {
     expect(elements[1].id).toBe('mocked-uuid')
   })
 
-  test('should handle nested elements', () => {
+  it('should handle nested elements', () => {
     const data = '<svg><g><rect /><circle /></g></svg>'
     const { elements } = parseProjectData(data)
 
     expect(elements).toHaveLength(1)
-    expect(elements[0].element.nodeName).toBe('g')
+    expect(elements[0].title).toBe('g')
     expect(elements[0].children).toHaveLength(2)
-    expect(elements[0].children[0].element.nodeName).toBe('rect')
-    expect(elements[0].children[1].element.nodeName).toBe('circle')
+    expect(elements[0].children[0].title).toBe('rect')
+    expect(elements[0].children[1].title).toBe('circle')
   })
 
-  test('should return animation list', () => {
+  it('should return animation list', () => {
     const data = `<svg xmlns:xlink="http://www.w3.org/1999/xlink">
       <rect id="test-element-1" />
       <circle id="test-element-2" data-title="custom-title" />
@@ -52,7 +50,7 @@ describe('parseProjectData', () => {
     const { animations } = parseProjectData(data)
 
     expect(animations).toHaveLength(2)
-    
+
     expect(animations[0].id).toBe('test-element-1')
     expect(animations[0].title).toBe('rect')
     expect(animations[0].animations).toHaveLength(2)
@@ -78,5 +76,14 @@ describe('parseProjectData', () => {
     expect(animations[1].animations[0].keyframes[0]).toEqual({ time: 0 })
     expect(animations[1].animations[0].keyframes[1]).toEqual({ time: 5000 })
     expect(animations[1].animations[0].keyframes[2]).toEqual({ time: 10000 })
+  })
+
+  it('should return default values for empty data', () => {
+    const data = ''
+    const { elements, animations, duration } = parseProjectData(data)
+
+    expect(elements).toHaveLength(0)
+    expect(animations).toHaveLength(0)
+    expect(duration).toBe(0)
   })
 })
