@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimationElement enders correctly when selected 1`] = `
+<div>
+  <div
+    class="element selected"
+  >
+    <div>
+      Animation Group
+    </div>
+    <button
+      aria-label="Collapse"
+      class="collapseButton"
+    >
+      <i
+        class="iconoir-nav-arrow-down "
+      />
+    </button>
+  </div>
+  <div
+    class="animationList"
+  >
+    <div
+      class="animation"
+    >
+      Animation 1
+    </div>
+    <div
+      class="animation"
+    >
+      Animation 2
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AnimationElement renders correctly 1`] = `
+<div>
+  <div
+    class="element "
+  >
+    <div>
+      Animation Group
+    </div>
+    <button
+      aria-label="Collapse"
+      class="collapseButton"
+    >
+      <i
+        class="iconoir-nav-arrow-down "
+      />
+    </button>
+  </div>
+  <div
+    class="animationList"
+  >
+    <div
+      class="animation"
+    >
+      Animation 1
+    </div>
+    <div
+      class="animation"
+    >
+      Animation 2
+    </div>
+  </div>
+</div>
+`;

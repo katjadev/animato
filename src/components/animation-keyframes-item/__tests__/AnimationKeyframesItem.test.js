@@ -35,6 +35,6 @@ describe('AnimationKeyframesItem', () => {
     const keyframeButton = getByLabelText(`Keyframe: ${keyframe.time} milliseconds`)
     fireEvent.click(keyframeButton)
 
-    expect(setCurrentTimeMock).toHaveBeenCalledWith({ time: keyframe.time })
+    expect(setCurrentTimeMock).toHaveBeenCalledWith({ value: keyframe.time })
   })
 })

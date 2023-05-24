@@ -1,5 +1,5 @@
-import { FC, Fragment, memo, useEffect, useState } from 'react'
-import { AnimationGroup, ScrollPosition } from '@animato/types'
+import { FC, memo } from 'react'
+import { AnimationGroup } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
 import { useEditorState } from '@animato/components/editor/EditorContextProvider'
 import AnimationElement, { AnimationElementTranslations } from '@animato/components/animation-element/AnimationElement'
@@ -37,7 +37,7 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
             }}
           >
             {animations.map((element) => (
-              <AnimationElement 
+              <AnimationElement
                 key={element.id} 
                 element={element}
                 selected={element.id === selectedElementId}

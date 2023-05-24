@@ -1,4 +1,4 @@
-import prisma from '@animato/lib/prisma'
+import prisma from '@animato/lib/prisma/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 const COOKIE_EXPIRES_IN = 24 * 60 * 60 * 1000

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
-import prisma from '@animato/lib/prisma'
+import prisma from '@animato/lib/prisma/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 export async function POST() {

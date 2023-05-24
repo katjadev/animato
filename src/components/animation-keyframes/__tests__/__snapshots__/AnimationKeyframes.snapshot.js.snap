@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimationKeyframes enders correctly when selected 1`] = `
+<div>
+  <div
+    class="keyframesEl selected"
+  />
+  <div
+    class="keyframes"
+  >
+    <button
+      aria-label="Keyframe: 0 milliseconds"
+      class="keyframe"
+      style="left: 16px;"
+    />
+    <button
+      aria-label="Keyframe: 1000 milliseconds"
+      class="keyframe"
+      style="left: 176px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 16px; width: 160px;"
+    />
+    <button
+      aria-label="Keyframe: 2000 milliseconds"
+      class="keyframe"
+      style="left: 336px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 176px; width: 160px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`AnimationKeyframes renders correctly 1`] = `
+<div>
+  <div
+    class="keyframesEl "
+  />
+  <div
+    class="keyframes"
+  >
+    <button
+      aria-label="Keyframe: 0 milliseconds"
+      class="keyframe"
+      style="left: 16px;"
+    />
+    <button
+      aria-label="Keyframe: 1000 milliseconds"
+      class="keyframe"
+      style="left: 176px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 16px; width: 160px;"
+    />
+    <button
+      aria-label="Keyframe: 2000 milliseconds"
+      class="keyframe"
+      style="left: 336px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 176px; width: 160px;"
+    />
+  </div>
+</div>
+`;

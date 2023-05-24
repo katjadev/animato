@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import prisma from '@animato/lib/prisma'
+import prisma from '@animato/lib/prisma/prisma'
 import verifyCookie from '@animato/utils/verifyCookie'
 import { getTranslations } from 'next-intl/server'
 import Logo from '@animato/components/logo/Logo'

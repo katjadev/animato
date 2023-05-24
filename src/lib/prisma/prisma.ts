@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 let instance: PrismaClient
 
-class PrismaClientSingleton {
+export class PrismaClientSingleton {
   constructor() {
     if (instance) {
       throw new Error('You can only create one PrismaClient instance')

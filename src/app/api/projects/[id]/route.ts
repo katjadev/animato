@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import prisma from '@animato/lib/prisma'
+import prisma from '@animato/lib/prisma/prisma'
 import { firebaseAdminSDK } from '@animato/lib/firebase/FirebaseAdminSDK'
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {

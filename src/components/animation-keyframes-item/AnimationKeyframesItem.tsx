@@ -20,7 +20,7 @@ const AnimationKeyframesItem: FC<AnimationKeyframesItemProps> = ({ keyframe, pre
     ? findClosestTimelineMark(timelineMarks, prevKeyframe.time).position + offset
     : 0
   
-  const handleClick = () => actions.setCurrentTime({ time: keyframe.time })
+  const handleClick = () => actions.setCurrentTime({ value: keyframe.time })
 
   return (
     <>
