@@ -41,7 +41,10 @@ describe('Player', () => {
 
   it('starts playing animation and sets timeout when isPlaying is true', () => {
     const mockUnpauseAnimation = jest.fn()
-    HTMLDivElement.prototype.querySelector = jest.fn().mockReturnValue({ unpauseAnimations: mockUnpauseAnimation })
+    HTMLDivElement.prototype.querySelector = jest.fn().mockReturnValue({ 
+      unpauseAnimations: mockUnpauseAnimation,
+      querySelectorAll: jest.fn().mockReturnValue([]),
+    })
     jest.spyOn(global, 'setTimeout')
     useEditorState.mockImplementation(() => ({
       state: {
@@ -61,7 +64,10 @@ describe('Player', () => {
   it('pauses animation and clears timeout when isPlaying is false', () => {
     const mockPauseAnimation = jest.fn()
     HTMLDivElement.prototype.querySelector = jest.fn()
-      .mockReturnValue({ pauseAnimations: mockPauseAnimation })
+      .mockReturnValue({ 
+        pauseAnimations: mockPauseAnimation,
+        querySelectorAll: jest.fn().mockReturnValue([]),
+      })
 
     jest.spyOn(global, 'clearTimeout')
 
@@ -83,6 +89,10 @@ describe('Player', () => {
   it('sets current time and updates isPlaying when duration is reached and not in repeat mode', () => {
     const mockSetCurrentTime = jest.fn()
     const mockStopPlaying = jest.fn()
+    HTMLDivElement.prototype.querySelector = jest.fn()
+      .mockReturnValue({ 
+        querySelectorAll: jest.fn().mockReturnValue([]),
+      })
 
     useEditorState.mockImplementation(() => ({
       state: {
@@ -109,6 +119,10 @@ describe('Player', () => {
   it('resets current time and continues playing when duration is reached and in repeat mode', () => {
     const mockSetCurrentTime = jest.fn()
     const mockStopPlaying = jest.fn()
+    HTMLDivElement.prototype.querySelector = jest.fn()
+      .mockReturnValue({ 
+        querySelectorAll: jest.fn().mockReturnValue([]),
+      })
 
     useEditorState.mockImplementation(() => ({
       state: {
@@ -135,7 +149,10 @@ describe('Player', () => {
   it('updates animation current time', () => {
     const mockSetCurrentTime = jest.fn()
     HTMLDivElement.prototype.querySelector = jest.fn()
-      .mockReturnValue({ setCurrentTime: mockSetCurrentTime })
+      .mockReturnValue({ 
+        setCurrentTime: mockSetCurrentTime,
+        querySelectorAll: jest.fn().mockReturnValue([]),
+      })
 
     useEditorState.mockImplementation(() => ({
       state: {

@@ -14,7 +14,7 @@ exports[`ElementTree renders correctly 1`] = `
       class="treeNode"
     >
       <div
-        class="title"
+        class="title "
         tabindex="0"
       >
         <div
@@ -37,7 +37,7 @@ exports[`ElementTree renders correctly 1`] = `
         class="treeNode"
       >
         <div
-          class="title"
+          class="title "
           tabindex="0"
         >
           <div
@@ -68,7 +68,7 @@ exports[`ElementTree renders correctly with collapsed elements 1`] = `
       class="treeNode"
     >
       <div
-        class="title"
+        class="title "
         tabindex="0"
       >
         <div

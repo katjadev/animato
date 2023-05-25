@@ -16,8 +16,12 @@ const Player: FC<PlayerProps> = ({
   const playerRef = useRef<PlayerRef>(null)
   const timeoutRef = useRef<number>(0)
   const { state, actions } = useEditorState()
-  const { isPlaying, isRepeatMode, currentTime } = state
+  const { isPlaying, isRepeatMode, currentTime, selectedElementId } = state
   const currentTimeRef = useRef(currentTime)
+  const prevStrokeStyleRef = useRef<{
+    width: string | null;
+    color: string | null;
+  }>()
 
   const updateCurrentTime = () => {
     timeoutRef.current = window.setTimeout(updateCurrentTime, 100)
@@ -70,6 +74,62 @@ const Player: FC<PlayerProps> = ({
 
     currentTimeRef.current = currentTime
   }, [currentTime, isPlaying])
+
+  const addSelectedHighlight = (element: Element) => {
+    prevStrokeStyleRef.current = {
+      width: element.getAttribute('stroke-width'),
+      color: element.getAttribute('stroke'),
+    }
+    element.setAttribute('stroke-width', '4')
+    element.setAttribute('stroke', getComputedStyle(document.documentElement).getPropertyValue('--highlight-2'))
+  }
+
+  const removeSelectedHighlight = (element: Element) => {
+    element.setAttribute('stroke-width', prevStrokeStyleRef.current?.width || '')
+    element.setAttribute('stroke', prevStrokeStyleRef.current?.color || '')
+  }
+
+  const handleMouseEnter = (event: Event) => {
+    const { target } = event
+    const element = target as Element
+    if (element) {
+      actions.selectElement({ id: element.getAttribute('id') })
+      addSelectedHighlight(element)
+    }
+  }
+
+  const handleMouseLeave = (event: Event) => {
+    const { target } = event
+    const element = target as Element
+    if (element) {
+      actions.selectElement({ id: null })
+      removeSelectedHighlight(element)
+    }
+  }
+
+  useEffect(() => {
+    playerRef.current?.addEventListeners({
+      onEnter: handleMouseEnter,
+      onLeave: handleMouseLeave,
+    })
+
+    return () => {
+      playerRef.current?.removeEventListeners({
+        onEnter: handleMouseEnter,
+        onLeave: handleMouseLeave,
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    const elements = playerRef.current?.getElements()
+    elements && elements.forEach(removeSelectedHighlight)
+
+    if (selectedElementId) {
+      const element = playerRef.current?.getElementById(selectedElementId)
+      element && addSelectedHighlight(element)
+    }
+  }, [selectedElementId])
 
   return (
     <PlayerSVG 

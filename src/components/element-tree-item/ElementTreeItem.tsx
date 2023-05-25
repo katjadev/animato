@@ -12,10 +12,16 @@ export type ElementTreeItemTranslations = {
 interface ElementTreeItemProps {
   element: ElementTreeNode;
   level: number;
+  selected: boolean;
   translations: ElementTreeItemTranslations;
 }
 
-const ElementTreeItem: FC<ElementTreeItemProps> = ({ element, level, translations }) => {
+const ElementTreeItem: FC<ElementTreeItemProps> = ({
+  element, 
+  level, 
+  selected, 
+  translations,
+}) => {
   const { state, actions } = useEditorState()
   const { collapsedElements } = state
 
@@ -28,7 +34,7 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({ element, level, translation
 
   return (
     <div 
-      className={styles.title} 
+      className={`${styles.title} ${selected ? styles.selected :''}`} 
       tabIndex={0}
       onMouseEnter={select}
       onMouseLeave={deselect}

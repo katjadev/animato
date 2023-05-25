@@ -20,7 +20,7 @@ const ElementTree: FC<ElementTreeProps> = ({
   className,
 }) => {
   const { state } = useEditorState()
-  const { collapsedElements } = state
+  const { collapsedElements, selectedElementId } = state
   
   const renderTree = (list: ElementTreeNode[], level: number): ReactNode => (
     <>
@@ -31,7 +31,8 @@ const ElementTree: FC<ElementTreeProps> = ({
         >
           <ElementTreeItem 
             element={element}
-            level={level} 
+            level={level}
+            selected={selectedElementId === element.id}
             translations={translations}
           />
           {element.children.length > 0 && !collapsedElements.includes(element.id) && (
