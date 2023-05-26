@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { ElementTreeNode } from '@animato/types'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import Icon from '@animato/components/icon/Icon'
 import styles from './ElementTreeItem.module.css'
 

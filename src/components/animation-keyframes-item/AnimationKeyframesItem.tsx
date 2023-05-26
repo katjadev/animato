@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants'
 import findClosestTimelineMark from '@animato/utils/findClosestTimelineMark'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import { AnimationKeyframe } from '@animato/types'
 import styles from './AnimationKeyframesItem.module.css'
 

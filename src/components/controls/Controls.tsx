@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import moment from 'moment'
 import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
-import { useEditorState } from '../editor/EditorContextProvider'
+import { useEditorState } from '../../context/EditorContext/EditorContextProvider'
 import styles from './Controls.module.css'
 
 export type ControlsTranslations = {
@@ -46,7 +46,7 @@ const Controls: FC<ControlsProps> = ({ translations, className }) => {
   return (
     <div className={`${styles.controls} ${className}`}>
       <IconButton
-        ariaLabel={translations.restart}
+        aria-label={translations.restart}
         disabled={currentTime === 0}
         onClick={() => actions.setCurrentTime({ value: 0 })}
       >
@@ -54,7 +54,7 @@ const Controls: FC<ControlsProps> = ({ translations, className }) => {
       </IconButton>
       {!isPlaying && (
         <IconButton
-          ariaLabel={translations.play}
+          aria-label={translations.play}
           onClick={actions.startPlaying}
         >
           <Icon icon='play' />
@@ -62,7 +62,7 @@ const Controls: FC<ControlsProps> = ({ translations, className }) => {
       )}
       {isPlaying && (
         <IconButton
-          ariaLabel={translations.pause}
+          aria-label={translations.pause}
           onClick={actions.stopPlaying}
         >
           <Icon icon='pause' />
@@ -75,7 +75,7 @@ const Controls: FC<ControlsProps> = ({ translations, className }) => {
       </div>
       <IconButton
         className={isRepeatMode ? styles.activeButton : ''}
-        ariaLabel={translations.repeat}
+        aria-label={translations.repeat}
         onClick={actions.toggleRepeatMode}
       >
         <Icon icon='repeat' />

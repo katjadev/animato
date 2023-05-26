@@ -38,7 +38,7 @@ const ModalDialog: FC<ModalDialogProps> = ({
     >
       <IconButton 
         className={styles.closeButton} 
-        ariaLabel={closeButtonAriaLabel} 
+        aria-label={closeButtonAriaLabel} 
         onClick={onClose} 
       >
         <Icon icon='cancel' />

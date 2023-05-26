@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import PlayerSVG, { PlayerRef } from './PlayerSVG'
 
 interface PlayerProps {

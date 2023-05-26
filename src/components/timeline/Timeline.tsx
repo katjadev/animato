@@ -8,7 +8,7 @@ import {
 } from '@animato/constants'
 import TimelinePointer, { TimelinePointerTranslations } from '@animato/components/timeline-pointer/TimelinePointer'
 import styles from './Timeline.module.css'
-import { useEditorState } from '../editor/EditorContextProvider'
+import { useEditorState } from '../../context/EditorContext/EditorContextProvider'
 import findClosestTimelineMark from '@animato/utils/findClosestTimelineMark'
 
 export type TimelineTranslations = TimelinePointerTranslations & {}

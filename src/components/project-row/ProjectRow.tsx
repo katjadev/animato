@@ -64,7 +64,7 @@ const ProjectRowComponent: FC<ProjectRowProps> = ({ project, translations }) => 
             {translations.open}
           </Button>
           <IconButton 
-            ariaLabel={translations.deleteProject}
+            aria-label={translations.deleteProject}
             onClick={handleDelete}
           >
             <Icon icon='trash' />

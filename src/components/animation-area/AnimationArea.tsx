@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { AnimationGroup } from '@animato/types'
 import useScrollObserver from '@animato/hooks/useScrollObserver'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import AnimationElement, { AnimationElementTranslations } from '@animato/components/animation-element/AnimationElement'
 import AnimationKeyframes from '../animation-keyframes/AnimationKeyframes'
 import styles from './AnimationArea.module.css'

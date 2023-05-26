@@ -3,7 +3,7 @@ import styles from './IconButton.module.css'
 
 interface IconButtonProps {
   children?: React.ReactNode;
-  ariaLabel: string;
+  'aria-label': string;
   className?: string;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -11,7 +11,7 @@ interface IconButtonProps {
 
 const IconButton: FC<IconButtonProps> = ({ 
   children, 
-  ariaLabel,
+  'aria-label': ariaLabel,
   className,
   disabled,
   onClick,
@@ -23,7 +23,7 @@ const IconButton: FC<IconButtonProps> = ({
   }
 
   return (
-    <button 
+    <button
       className={`${styles.iconButton} ${className || ''}`} 
       aria-label={ariaLabel}
       aria-disabled={disabled}

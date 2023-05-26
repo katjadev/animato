@@ -8,7 +8,8 @@ import Player from '@animato/components/player/Player'
 import Controls, { ControlsTranslations } from '@animato/components/controls/Controls'
 import Timeline, { TimelineTranslations } from '@animato/components/timeline/Timeline'
 import AnimationArea, { AnimationAreaTranslations } from '@animato/components/animation-area/AnimationArea'
-import EditorContextProvider from './EditorContextProvider'
+import EditorContextProvider from '@animato/context/EditorContext/EditorContextProvider'
+import ProjectContextProvider from '@animato/context/ProjectContext/ProjectContextProvider'
 import styles from './Editor.module.css'
 
 type EditorTranslations = HeaderTranslations & 
@@ -35,38 +36,39 @@ const Editor: FC<EditorProps> = ({
   translations,
 }) => {
   return (
-    <EditorContextProvider>
-      <Header 
-        title={project.title} 
-        className={styles.header} 
-        isAuthenticated={isAuthenticated}
-        translations={translations}
-      />
-      <ElementTree 
-        className={styles.elements}
-        elements={elements}
-        translations={translations}
-      />
-      <Player 
-        className={styles.player}
-        duration={duration}
-        content={project.data}
-      />
-      <Controls
-        className={styles.controls}
-        translations={translations}
-      />
-      <Timeline
-        className={styles.timeline}
-        duration={duration}
-        translations={translations}
-      />
-      <AnimationArea
-        className={styles.animations}
-        animations={animations}
-        translations={translations}
-      />
-    </EditorContextProvider>
+    <ProjectContextProvider project={project}>
+      <EditorContextProvider>
+        <Header 
+          className={styles.header} 
+          isAuthenticated={isAuthenticated}
+          translations={translations}
+        />
+        <ElementTree 
+          className={styles.elements}
+          elements={elements}
+          translations={translations}
+        />
+        <Player 
+          className={styles.player}
+          duration={duration}
+          content={project.data}
+        />
+        <Controls
+          className={styles.controls}
+          translations={translations}
+        />
+        <Timeline
+          className={styles.timeline}
+          duration={duration}
+          translations={translations}
+        />
+        <AnimationArea
+          className={styles.animations}
+          animations={animations}
+          translations={translations}
+        />
+      </EditorContextProvider>
+    </ProjectContextProvider>
   )
 }
 

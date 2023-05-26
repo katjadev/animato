@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { AnimationGroup } from '@animato/types'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import AnimationKeyframesItem from '@animato/components/animation-keyframes-item/AnimationKeyframesItem'
 import styles from './AnimationKeyframes.module.css'
 
