@@ -1,4 +1,5 @@
-import { Children, FC, ReactNode, RefObject, useEffect, useRef, useState } from 'react'
+import { Children, FC, ReactNode, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './Menu.module.css'
 
 interface MenuProps {
@@ -19,7 +20,22 @@ const Menu: FC<MenuProps> = ({
   const [ top, setTop ] = useState(0)
   const [ left, setLeft ] = useState(0)
   const [ currentItemIndex, setCurrentItemIndex ] = useState(0)
-  const menuElement = useRef<HTMLDivElement>(null);
+  const menuElement = useRef<HTMLDivElement>(null)
+  const documentRef = useRef<Element | null>(null)
+
+  useEffect(() => {
+    documentRef.current = document.body
+  }, [])
+
+  useEffect(() => {
+    if (open) {
+      document.addEventListener('click', onClose)
+    }
+
+    return () => {
+      document.removeEventListener('click', onClose)
+    }
+  }, [open])
 
   useEffect(() => {
     if (anchorEl) {
@@ -68,20 +84,24 @@ const Menu: FC<MenuProps> = ({
     }
   }
 
-  if (!open) return null
+  if (!open || !documentRef.current) return null
+
   return (
-    <div 
-      className={styles.menu} 
-      id={id}
-      style={{ top: `${top}px`, left: `${left}px` }}
-      ref={menuElement}
-      onKeyDown={handleKeyDown}
-    >
-      <ul className={styles.list} role='menu'>
-        {children}
-      </ul>
-      <div className={styles.overlay} onClick={onClose} />
-    </div>
+    <>
+      {createPortal((
+        <div 
+          className={styles.menu} 
+          id={id}
+          style={{ top: `${top}px`, left: `${left}px` }}
+          ref={menuElement}
+          onKeyDown={handleKeyDown}
+        >
+          <ul className={styles.list} role='menu'>
+            {children}
+          </ul>
+        </div>
+      ), documentRef.current)}
+    </>
   )
 }
 

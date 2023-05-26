@@ -8,6 +8,7 @@ export const actionTypes = {
   RENAME_PROJECT: 'RENAME_PROJECT',
   UNDO: 'UNDO',
   REDO: 'REDO',
+  RENAME_ELEMENT: 'RENAME_ELEMENT',
 }
 
 export const projectActions = (dispatch: Dispatch<Action>) => (
@@ -18,5 +19,6 @@ export const projectActions = (dispatch: Dispatch<Action>) => (
     savingStart: () => dispatch({ type: actionTypes.SAVING_START }),
     savingSuccess: () => dispatch({ type: actionTypes.SAVING_SUCCESS }),
     savingError: () => dispatch({ type: actionTypes.SAVING_ERROR }),
+    renameElement: (payload: { id: string; value: string }) => dispatch({ type: actionTypes.RENAME_ELEMENT, payload }),
   }
 )

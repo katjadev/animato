@@ -29,52 +29,21 @@ const Header: FC<HeaderProps> = ({
   isAuthenticated,
   translations,
 }) => {
-  const { showErrorDialog } = useDialog()
   const { 
-    state: { id, title, undoableHistory, redoableHistory }, 
+    state: { title, undoableHistory, redoableHistory }, 
     actions,
   } = useProjectState()
 
-  const saveProject = useCallback(debounce(async (data: { title?: string, data?: string }) => {
-    actions.savingStart()
-    const response = await fetch(`/api/projects/${id}`, { 
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-    if (!response.ok) {
-      showErrorDialog(
-        translations.savingErrorTitle, 
-        translations.savingErrorMessage,
-      )
-      actions.savingError()
-      return
-    }
-
-    actions.savingSuccess()
-  }, 500), [id])
-
   const handleRename = (value: string) => {
     actions.renameProject({ title: value })
-    saveProject({ title: value })
   }
 
   const handleUndo = () => {
     actions.undo()
-    const historyItem = undoableHistory[undoableHistory.length - 1]
-    saveProject({
-      title: historyItem.title,
-      data: historyItem.data,
-    })
   }
 
   const handleRedo = () => {
     actions.redo()
-    const historyItem = redoableHistory[redoableHistory.length - 1]
-    saveProject({
-      title: historyItem.title,
-      data: historyItem.data,
-    })
   }
 
   return (

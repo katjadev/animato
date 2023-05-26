@@ -36,7 +36,12 @@ const Editor: FC<EditorProps> = ({
   translations,
 }) => {
   return (
-    <ProjectContextProvider project={project}>
+    <ProjectContextProvider 
+      project={project}
+      elements={elements} 
+      animations={animations} 
+      duration={duration}
+    >
       <EditorContextProvider>
         <Header 
           className={styles.header} 
@@ -45,7 +50,6 @@ const Editor: FC<EditorProps> = ({
         />
         <ElementTree 
           className={styles.elements}
-          elements={elements}
           translations={translations}
         />
         <Player 

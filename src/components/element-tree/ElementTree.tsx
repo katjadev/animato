@@ -3,22 +3,22 @@ import { ElementTreeNode } from '@animato/types'
 import { useEditorState } from '../../context/EditorContext/EditorContextProvider'
 import ElementTreeItem, { ElementTreeItemTranslations } from '../element-tree-item/ElementTreeItem'
 import styles from './ElementTree.module.css'
+import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 
 export type ElementTreeTranslations = ElementTreeItemTranslations & {
   elements: string;
 }
 
 interface ElementTreeProps {
-  elements: ElementTreeNode[];
   translations: ElementTreeTranslations;
   className?: string;
 }
 
 const ElementTree: FC<ElementTreeProps> = ({
-  elements,
   translations,
   className,
 }) => {
+  const { state: { elements } } = useProjectState()
   const { state } = useEditorState()
   const { collapsedElements, selectedElementId } = state
   

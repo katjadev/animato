@@ -23,6 +23,7 @@
 .elements h2 {
   font-size: 0.8rem;
   padding: 1rem;
+  margin: 0;
 }
 
 .player {

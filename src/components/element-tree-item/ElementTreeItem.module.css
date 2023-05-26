@@ -1,9 +1,11 @@
 .title {
   display: flex;
   align-items: center;
-  padding: 0.4rem 0.5rem 0.4rem 2rem;
+  padding-inline: 2rem 0.5rem;
+  padding-block: 0.2rem;
   gap: 0.6rem;
   border: 2px solid transparent;
+  position: relative;
 }
 
 .title.selected {
@@ -16,6 +18,8 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.2rem;
+  flex: 1;
+  block-size: 1.5rem;
 }
 
 .titleIn.level0 {
@@ -48,6 +52,10 @@
 
 .shapeIcon {
   color: var(--text-secondary)
+}
+
+.titleText {
+  flex: 1 1 auto;
 }
 
 .collapseButton {

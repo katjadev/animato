@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, useState, KeyboardEvent, useRef } from 'react'
+import styles from './EditableText.module.css'
 
 interface EditableTextProps {
   value: string;
@@ -38,6 +39,7 @@ const EditableText: FC<EditableTextProps> = ({ value, 'aria-label': ariaLabel, o
     <>
       {isEditing && (
         <input
+          className={styles.input}
           ref={inputRef}
           value={value}
           aria-label={ariaLabel}
@@ -50,7 +52,7 @@ const EditableText: FC<EditableTextProps> = ({ value, 'aria-label': ariaLabel, o
       {!isEditing && (
         <span 
           tabIndex={0}
-          onClick={startEditing}
+          onDoubleClick={startEditing}
           onFocus={startEditing}
         >
           {value}
