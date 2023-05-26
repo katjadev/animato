@@ -12,6 +12,10 @@
 
 .titleIn {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.2rem;
 }
 
 .titleIn.level0 {
@@ -42,6 +46,10 @@
   margin-left: 6rem;
 }
 
+.shapeIcon {
+  color: var(--text-secondary)
+}
+
 .collapseButton {
   background: none;
   border: none;
@@ -50,5 +58,5 @@
   width: 1rem;
   font-size: 1rem;
   position: absolute;
-  left: -1.4rem;
+  left: -1.8rem;
 }

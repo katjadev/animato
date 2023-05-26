@@ -72,6 +72,7 @@ const buildElementTree = (currentElement: Element): ElementTreeNode[] => {
   return children.map((element) => ({
     id: element.attribs.id || uuidv4(),
     title: element.attribs['data-title'] || element.name,
+    tagName: element.name,
     children: buildElementTree(element),
   }))
 }

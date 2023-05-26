@@ -4,6 +4,13 @@ import { useEditorState } from '@animato/context/EditorContext/EditorContextProv
 import Icon from '@animato/components/icon/Icon'
 import styles from './ElementTreeItem.module.css'
 
+const icons: { [key: string]: string } = {
+  rect: 'square',
+  circle: 'circle',
+  g: 'intersect',
+  path: '3d-bridge',
+}
+
 export type ElementTreeItemTranslations = {
   expand: string;
   collapse: string;
@@ -25,6 +32,7 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({
   const { state, actions } = useEditorState()
   const { collapsedElements } = state
 
+  const icon = icons[element.tagName] || 'flare'
   const isCollapsed = collapsedElements.includes(element.id)
 
   const select = () => actions.selectElement({ id: element.id })
@@ -63,6 +71,7 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({
             )}
           </>
         )}
+        <Icon className={styles.shapeIcon} icon={icon} />
         <div>{element.title}</div>
       </div>
     </div>
