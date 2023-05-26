@@ -1,9 +1,9 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import AnimationKeyframesItem from '../AnimationKeyframesItem'
 
-jest.mock('@animato/components/editor/EditorContextProvider', () => ({
+jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
   useEditorState: jest.fn(() => ({
     state: { timelineMarks: [] },
     actions: { setCurrentTime: jest.fn() },

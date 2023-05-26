@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { useEditorState } from '@animato/components/editor/EditorContextProvider'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import AnimationKeyframesItem from '@animato/components/animation-keyframes-item/AnimationKeyframesItem'
 import AnimationKeyframes from '../AnimationKeyframes'
 
-jest.mock('@animato/components/editor/EditorContextProvider', () => ({
+jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
   useEditorState: jest.fn(),
 }))
 

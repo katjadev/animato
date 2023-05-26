@@ -28,6 +28,7 @@ exports[`Header renders correctly 1`] = `
         />
       </button>
       <button
+        aria-disabled="true"
         aria-label="Undo"
         class="iconButton "
       >
@@ -36,6 +37,7 @@ exports[`Header renders correctly 1`] = `
         />
       </button>
       <button
+        aria-disabled="true"
         aria-label="Redo"
         class="iconButton "
       >
@@ -47,16 +49,29 @@ exports[`Header renders correctly 1`] = `
     <h1
       class="heading"
     >
-      Test Project
-    </h1>
-    <button
-      aria-label="Profile"
-      class="iconButton "
-    >
-      <i
-        class="iconoir-profile-circle "
+      <span
+        tabindex="0"
       />
-    </button>
+    </h1>
+    <div
+      class="right"
+    >
+      <div
+        class="autosave"
+      >
+        <i
+          class="iconoir-cloud-check "
+        />
+      </div>
+      <button
+        aria-label="Profile"
+        class="iconButton "
+      >
+        <i
+          class="iconoir-profile-circle "
+        />
+      </button>
+    </div>
   </header>
 </div>
 `;

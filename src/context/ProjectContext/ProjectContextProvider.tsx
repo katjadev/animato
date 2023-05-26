@@ -18,11 +18,10 @@ interface ProjectContextProviderProps {
 
 export default function ProjectContextProvider({ project, children }: ProjectContextProviderProps) {
   const [state, dispatch] = useReducer(projectReducer, {
+    ...initialProjectState,
     id: project.id,
     title: project.title,
     data: project.data,
-    undoableHistory: [],
-    redoableHistory: [],
   })
   const actions = projectActions(dispatch)
 

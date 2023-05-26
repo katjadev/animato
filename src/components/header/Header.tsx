@@ -4,17 +4,18 @@ import Icon from '@animato/components/icon/Icon'
 import IconButton from '@animato/components/icon-button/IconButton'
 import ProjectMenu, { ProjectMenuTranslations } from '@animato/components/project-menu/ProjectMenu'
 import EditableText from '@animato/components/editable-text/EditableText'
+import AutosaveStatus, { AutosaveStatusTranslations } from '@animato/components/autosave-status/AutosaveStatus'
 import { useDialog } from '@animato/context/DialogContext'
 import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import styles from './Header.module.css'
 
-export type HeaderTranslations = ProjectMenuTranslations & {
+export type HeaderTranslations = ProjectMenuTranslations & AutosaveStatusTranslations & {
   profile: string;
   undo: string;
   redo: string;
   editTitleAriaLabel: string;
-  editTitleErrorTitle: string;
-  editTitleErrorMessage: string;
+  savingErrorTitle: string;
+  savingErrorMessage: string;
 }
 
 interface HeaderProps {
@@ -35,6 +36,7 @@ const Header: FC<HeaderProps> = ({
   } = useProjectState()
 
   const saveProject = useCallback(debounce(async (data: { title?: string, data?: string }) => {
+    actions.savingStart()
     const response = await fetch(`/api/projects/${id}`, { 
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -42,11 +44,15 @@ const Header: FC<HeaderProps> = ({
     })
     if (!response.ok) {
       showErrorDialog(
-        translations.editTitleErrorTitle, 
-        translations.editTitleErrorMessage,
+        translations.savingErrorTitle, 
+        translations.savingErrorMessage,
       )
+      actions.savingError()
+      return
     }
-  }, 1000), [id])
+
+    actions.savingSuccess()
+  }, 500), [id])
 
   const handleRename = (value: string) => {
     actions.renameProject({ title: value })
@@ -100,9 +106,12 @@ const Header: FC<HeaderProps> = ({
           onChange={handleRename}
         />
       </h1>
-      <IconButton aria-label={translations.profile}>
-        <Icon icon='profile-circle' />
-      </IconButton>
+      <div className={styles.right}>
+        <AutosaveStatus translations={translations} />
+        <IconButton aria-label={translations.profile}>
+          <Icon icon='profile-circle' />
+        </IconButton>
+      </div>
     </header>
   )
 }

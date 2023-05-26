@@ -1,0 +1,13 @@
+.autosave {
+  font-size: 0.8rem;
+  font-weight: 200;
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  justify-content: flex-start;
+  inline-size: 4.5rem;
+}
+
+.autosave i {
+  font-size: 1rem;
+}
