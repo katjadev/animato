@@ -54,6 +54,7 @@
     "elements": "Elements",
     "expand": "Expand",
     "collapse": "Collapse",
+    "element-menu-aria-label": "More actions",
     "timeline-pointer-aria-label": "Current time",
     "import-svg": "Import SVG",
     "export": "Export",

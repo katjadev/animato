@@ -19,7 +19,7 @@ const icons: { [key: string]: string } = {
 export type ElementTreeItemTranslations = {
   expand: string;
   collapse: string;
-  elementAriaLabel: string;
+  elementMenuAriaLabel: string;
 }
 
 interface ElementTreeItemProps {
@@ -102,7 +102,7 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({
           />
         </div>
         <IconButton 
-          aria-label={translations.elementAriaLabel} 
+          aria-label={translations.elementMenuAriaLabel} 
           size='small'
           onClick={handleClick}
         >
@@ -117,6 +117,10 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({
           <MenuItem onClick={() => { console.log('!!! animate') }}>
             <Icon icon='bounce-right' />
             Animate
+          </MenuItem>
+          <MenuItem onClick={() => { console.log('!!! remove') }}>
+            <Icon icon='trash' />
+            Remove
           </MenuItem>
         </Menu>
       </div>

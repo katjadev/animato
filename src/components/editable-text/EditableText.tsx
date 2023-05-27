@@ -17,6 +17,12 @@ const EditableText: FC<EditableTextProps> = ({ value, 'aria-label': ariaLabel, o
     setTimeout(() => inputRef.current?.focus(), 0)
   }
 
+  const handleTextKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      startEditing()
+    }
+  }
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value)
   }
@@ -53,7 +59,7 @@ const EditableText: FC<EditableTextProps> = ({ value, 'aria-label': ariaLabel, o
         <span 
           tabIndex={0}
           onDoubleClick={startEditing}
-          onFocus={startEditing}
+          onKeyDown={handleTextKeyDown}
         >
           {value}
         </span>

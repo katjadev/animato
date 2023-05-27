@@ -44,6 +44,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           elements: t('project.elements'),
           expand: t('project.expand'),
           collapse: t('project.collapse'),
+          elementMenuAriaLabel: t('project.element-menu-aria-label'),
           timelinePointerAriaLabel: t('project.timeline-pointer-aria-label'),
           importSvg: t('project.import-svg'),
           export: t('project.export'),
