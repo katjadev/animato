@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useCallback, useEffect, useRef } from 'react'
 import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import PlayerSVG, { PlayerRef } from './PlayerSVG'
 
@@ -42,10 +42,10 @@ const Player: FC<PlayerProps> = ({
     }
   }
 
-  const playAnimation = () => {
+  const playAnimation = useCallback(() => {
     playerRef.current?.unpauseAnimation()
     timeoutRef.current = window.setTimeout(updateCurrentTime, 100)
-  }
+  }, [])
 
   const pauseAnimation = () => {
     playerRef.current?.pauseAnimation()

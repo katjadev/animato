@@ -6,10 +6,10 @@ import {
   useEffect, 
   useReducer,
 } from 'react'
+import debounce from '@animato/utils/debounce'
 import { AnimationGroup, ElementTreeNode, Project } from '@animato/types'
 import { ProjectState, projectReducer, initialProjectState } from './reducer'
 import { projectActions } from './actions'
-import debounce from '@animato/utils/debounce'
 
 export const ProjectContext = createContext<{
   state: ProjectState;
@@ -61,8 +61,10 @@ export default function ProjectContextProvider({
   }, 500), [state.id])
 
   useEffect(() => {
-    saveProject({ title: state.title, data: state.data })
-  }, [state.title, state.data])
+    if (state.id !== 'demo-project') {
+      saveProject({ title: state.title, data: state.data })
+    }
+  }, [state.id, state.title, state.data])
 
   return (
     <ProjectContext.Provider value={{ state, actions }}>

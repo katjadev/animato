@@ -46,7 +46,7 @@
     "redo": "Redo",
     "edit-title-aria-label": "Project title",
     "saving-error-title": "Couldn't remove the project",
-    "saving-error-message": "We ran into a problem while trying to rename the project. Please give it another shot or reach out to our support team for assistance.",
+    "saving-error-message": "We ran into a problem while trying to save the project. Please give it another shot or reach out to our support team for assistance.",
     "autosave-saving": "Saving...",
     "autosave-error": "Error",
     "autosave-saved": "Saved",

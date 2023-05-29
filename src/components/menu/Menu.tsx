@@ -35,7 +35,7 @@ const Menu: FC<MenuProps> = ({
     return () => {
       document.removeEventListener('click', onClose)
     }
-  }, [open])
+  }, [open, onClose])
 
   useEffect(() => {
     if (anchorEl) {

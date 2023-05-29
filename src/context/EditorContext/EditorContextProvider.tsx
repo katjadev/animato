@@ -2,8 +2,6 @@ import { ReactNode, createContext, useContext, useReducer } from 'react'
 import { EditorState, editorReducer, initialEditorState } from './reducer'
 import { editorActions } from './actions'
 
-
-
 export const EditorContext = createContext<{
   state: EditorState;
   actions: any;
