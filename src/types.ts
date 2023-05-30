@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    showOpenFilePicker: any;
+  }
+}
+
 export interface RawProject {
   title: string;
   data: string;

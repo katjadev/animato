@@ -54,8 +54,6 @@ const Editor: FC<EditorProps> = ({
         />
         <Player 
           className={styles.player}
-          duration={duration}
-          content={project.data}
         />
         <Controls
           className={styles.controls}

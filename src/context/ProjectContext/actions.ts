@@ -9,6 +9,7 @@ export const actionTypes = {
   UNDO: 'UNDO',
   REDO: 'REDO',
   RENAME_ELEMENT: 'RENAME_ELEMENT',
+  IMPORT_SVG: 'IMPORT_SVG',
 }
 
 export const projectActions = (dispatch: Dispatch<Action>) => (
@@ -20,5 +21,6 @@ export const projectActions = (dispatch: Dispatch<Action>) => (
     savingSuccess: () => dispatch({ type: actionTypes.SAVING_SUCCESS }),
     savingError: () => dispatch({ type: actionTypes.SAVING_ERROR }),
     renameElement: (payload: { id: string; value: string }) => dispatch({ type: actionTypes.RENAME_ELEMENT, payload }),
+    importSvg: (payload: { data: string }) => dispatch({ type: actionTypes.IMPORT_SVG, payload }),
   }
 )

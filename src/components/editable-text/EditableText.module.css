@@ -6,3 +6,8 @@
   padding-block: 0.2rem;
   width: 100%;
 }
+
+.text {
+  display: inline-block;
+  width: 100%;
+}

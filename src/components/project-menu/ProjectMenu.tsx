@@ -1,5 +1,7 @@
 import { FC, useState } from 'react'
 import Image from 'next/image'
+import replaceIds from '@animato/utils/replaceIds'
+import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import Menu from '../menu/Menu'
 import MenuItem from '../menu-item/MenuItem'
 import Icon from '../icon/Icon'
@@ -20,6 +22,41 @@ interface ProjectMenuProps {
 const ProjectMenu: FC<ProjectMenuProps> = ({ translations, isAuthenticated }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
+  const { actions } = useProjectState()
+
+  const importSvg = async () => {
+    // TODO: add confirmation if data is not empty
+
+    const handleFileContent = (content: string) => {
+      actions.importSvg({ data: replaceIds(content) })
+    }
+
+    try {
+      const [fileHandle] = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "SVG images",
+            accept: {
+              "image/svg": [".svg"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+        multiple: false,
+      })
+      const file = await fileHandle.getFile()
+
+      const fileReader = new FileReader()
+      fileReader.onload = () => {
+        if (typeof fileReader.result === 'string') {
+          handleFileContent(fileReader.result)
+        }
+      }
+
+      fileReader.readAsText(file)
+    } catch (_) {}
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -61,7 +98,7 @@ const ProjectMenu: FC<ProjectMenuProps> = ({ translations, isAuthenticated }) =>
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={importSvg}>
           <Icon icon='svg-format' />
           {translations.importSvg}
         </MenuItem>

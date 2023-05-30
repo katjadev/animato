@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Action, AnimationGroup, ElementTreeNode } from '@animato/types'
 import { actionTypes } from './actions'
-import updateElementById from '@animato/utils/updateElement';
-import generateProjectData from '@animato/utils/generateProjectData';
-import parseProjectData from '@animato/utils/parseProjectData';
+import updateElementById from '@animato/utils/updateElement'
+import generateProjectData from '@animato/utils/generateProjectData'
+import parseProjectData from '@animato/utils/parseProjectData'
 
 export type HistoryItem = {
   id: string;
@@ -34,7 +34,7 @@ export const initialProjectState: ProjectState = {
   saving: false,
   savingError: false,
   undoableHistory: [],
-  redoableHistory: []
+  redoableHistory: [],
 }
 
 export const projectReducer = (state: ProjectState, action: Action) => {
@@ -104,6 +104,17 @@ export const projectReducer = (state: ProjectState, action: Action) => {
         undoableHistory: [...state.undoableHistory, { id: uuidv4(), title: state.title, data: state.data }],
       }
     }
+    case actionTypes.IMPORT_SVG:
+      const { elements, animations, duration } = parseProjectData(action.payload!.data)
+
+      return {
+        ...state,
+        data: action.payload!.data,
+        elements,
+        animations,
+        duration,
+        undoableHistory: [...state.undoableHistory, { id: uuidv4(), title: state.title, data: state.data }],
+      }
     default:
       return state
   }

@@ -56,7 +56,8 @@ const EditableText: FC<EditableTextProps> = ({ value, 'aria-label': ariaLabel, o
         />
       )}
       {!isEditing && (
-        <span 
+        <span
+          className={styles.text}
           tabIndex={0}
           onDoubleClick={startEditing}
           onKeyDown={handleTextKeyDown}

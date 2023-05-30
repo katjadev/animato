@@ -1,27 +1,25 @@
 import { FC, useCallback, useEffect, useRef } from 'react'
 import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
+import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import PlayerSVG, { PlayerRef } from './PlayerSVG'
 
 interface PlayerProps {
-  duration: number;
-  content: string;
   className?: string;
 }
 
-const Player: FC<PlayerProps> = ({ 
-  duration,
-  content, 
-  className,
-}) => {
+type StrokeStyle = {
+  width: string | null;
+  color: string | null;
+}
+
+const Player: FC<PlayerProps> = ({ className }) => {
+  const { state: { duration, data } } = useProjectState()
   const playerRef = useRef<PlayerRef>(null)
   const timeoutRef = useRef<number>(0)
   const { state, actions } = useEditorState()
   const { isPlaying, isRepeatMode, currentTime, selectedElementId } = state
   const currentTimeRef = useRef(currentTime)
-  const prevStrokeStyleRef = useRef<{
-    width: string | null;
-    color: string | null;
-  }>()
+  const prevStrokeStyleRef = useRef<{[key: string]: StrokeStyle}>({})
 
   const updateCurrentTime = () => {
     timeoutRef.current = window.setTimeout(updateCurrentTime, 100)
@@ -65,7 +63,12 @@ const Player: FC<PlayerProps> = ({
         window.clearTimeout(timeoutRef.current)
       }
     }
-  }, [isPlaying, isRepeatMode, duration, playAnimation])
+  }, [
+    isPlaying,
+    isRepeatMode,
+    duration,
+    playAnimation,
+  ])
 
   useEffect(() => {
     if (!isPlaying) {
@@ -76,7 +79,7 @@ const Player: FC<PlayerProps> = ({
   }, [currentTime, isPlaying])
 
   const addSelectedHighlight = (element: Element) => {
-    prevStrokeStyleRef.current = {
+    prevStrokeStyleRef.current[element.id] = {
       width: element.getAttribute('stroke-width'),
       color: element.getAttribute('stroke'),
     }
@@ -85,8 +88,23 @@ const Player: FC<PlayerProps> = ({
   }
 
   const removeSelectedHighlight = (element: Element) => {
-    element.setAttribute('stroke-width', prevStrokeStyleRef.current?.width || '')
-    element.setAttribute('stroke', prevStrokeStyleRef.current?.color || '')
+    if (prevStrokeStyleRef.current && prevStrokeStyleRef.current[element.id]) {
+      const prevStyles = prevStrokeStyleRef.current[element.id]
+      if (prevStyles.width) {
+        element.setAttribute('stroke-width', prevStyles.width)
+      } else {
+        element.removeAttribute('stroke-width')
+      }
+
+      if (prevStyles.color) {
+        element.setAttribute('stroke', prevStyles.color)
+      } else {
+        element.removeAttribute('stroke')
+      }
+    } else {
+      element.removeAttribute('stroke-width')
+      element.removeAttribute('stroke')
+    }
   }
 
   const handleMouseEnter = (event: Event) => {
@@ -94,7 +112,6 @@ const Player: FC<PlayerProps> = ({
     const element = target as Element
     if (element) {
       actions.selectElement({ id: element.getAttribute('id') })
-      addSelectedHighlight(element)
     }
   }
 
@@ -103,7 +120,6 @@ const Player: FC<PlayerProps> = ({
     const element = target as Element
     if (element) {
       actions.selectElement({ id: null })
-      removeSelectedHighlight(element)
     }
   }
 
@@ -119,7 +135,7 @@ const Player: FC<PlayerProps> = ({
         onLeave: handleMouseLeave,
       })
     }
-  }, [])
+  }, [data])
 
   useEffect(() => {
     const elements = playerRef.current?.getElements()
@@ -135,7 +151,7 @@ const Player: FC<PlayerProps> = ({
     <PlayerSVG 
       className={className}
       ref={playerRef}
-      content={content}
+      content={data}
     />
   )
 }
