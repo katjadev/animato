@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import moment from 'moment'
 import { tz } from 'moment-timezone'
 import { Project } from '@animato/types'
-import { DialogProvider, useDialog } from '@animato/context/DialogContext'
+import { DialogProvider, useDialog } from '@animato/context/DialogContext/DialogContextProvider'
 import Button from '@animato/components/button/Button';
 import IconButton from '@animato/components/icon-button/IconButton';
 import Icon from '@animato/components/icon/Icon';
@@ -14,6 +14,10 @@ import styles from './ProjectRow.module.css'
 export type ProjectRowTranslations = {
   open: string;
   deleteProject: string;
+  deleteProjectConfirmationTitle: string;
+  deleteProjectConfirmationMessage: string;
+  deleteProjectConfirmationConfirm: string;
+  deleteProjectConfirmationCancel: string;
   deleteProjectErrorTitle: string;
   deleteProjectErrorMessage: string;
 }
@@ -25,10 +29,10 @@ interface ProjectRowProps {
 
 const ProjectRowComponent: FC<ProjectRowProps> = ({ project, translations }) => {
   const router = useRouter()
-  const { showErrorDialog } = useDialog()
+  const { showConfirmationDialog, showErrorDialog } = useDialog()
   const updatedAt = moment(project.updatedAt).tz(tz.guess())
 
-  const handleDelete = async () => {
+  const doDelete = async () => {
     try {
       const response = await fetch(`/api/projects/${project.id}`, { 
         method: 'DELETE',
@@ -43,6 +47,17 @@ const ProjectRowComponent: FC<ProjectRowProps> = ({ project, translations }) => 
         translations.deleteProjectErrorMessage,
       )
     }
+  }
+
+  const handleDelete = () => {
+    showConfirmationDialog({
+      title: translations.deleteProjectConfirmationTitle,
+      content: translations.deleteProjectConfirmationMessage,
+      confirmButtonText: translations.deleteProjectConfirmationConfirm,
+      cancelButtonText: translations.deleteProjectConfirmationCancel,
+    })
+      .then(doDelete)
+      .catch(() => {})
   }
 
   return (

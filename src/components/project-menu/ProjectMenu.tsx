@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import Image from 'next/image'
 import replaceIds from '@animato/utils/replaceIds'
 import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
+import { useDialog } from '@animato/context/DialogContext/DialogContextProvider'
 import Menu from '../menu/Menu'
 import MenuItem from '../menu-item/MenuItem'
 import Icon from '../icon/Icon'
@@ -10,6 +11,10 @@ import styles from './ProjectMenu.module.css'
 
 export type ProjectMenuTranslations = {
   importSvg: string;
+  importSvgConfirmationTitle: string;
+  importSvgConfirmationMessage: string;
+  importSvgConfirmationConfirm: string;
+  importSvgConfirmationCancel: string;
   export: string;
   backToProjects: string;
 }
@@ -23,15 +28,10 @@ const ProjectMenu: FC<ProjectMenuProps> = ({ translations, isAuthenticated }) =>
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  const { actions } = useProjectState()
+  const { actions, state: { data } } = useProjectState()
+  const { showConfirmationDialog } = useDialog()
 
-  const importSvg = async () => {
-    // TODO: add confirmation if data is not empty
-
-    const handleFileContent = (content: string) => {
-      actions.importSvg({ data: replaceIds(content) })
-    }
-
+  const doImport = async () => {
     try {
       const [fileHandle] = await window.showOpenFilePicker({
         types: [
@@ -50,12 +50,27 @@ const ProjectMenu: FC<ProjectMenuProps> = ({ translations, isAuthenticated }) =>
       const fileReader = new FileReader()
       fileReader.onload = () => {
         if (typeof fileReader.result === 'string') {
-          handleFileContent(fileReader.result)
+          actions.importSvg({ data: replaceIds(fileReader.result) })
         }
       }
 
       fileReader.readAsText(file)
     } catch (_) {}
+  }
+
+  const importSvg = async () => {
+    if (data !== '') {
+      showConfirmationDialog({
+        title: translations.importSvgConfirmationTitle,
+        content: translations.importSvgConfirmationMessage,
+        confirmButtonText: translations.importSvgConfirmationConfirm,
+        cancelButtonText: translations.importSvgConfirmationCancel,
+      })
+        .then(doImport)
+        .catch(() => {})
+    } else {
+      doImport()
+    }
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

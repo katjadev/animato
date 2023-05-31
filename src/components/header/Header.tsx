@@ -5,7 +5,7 @@ import IconButton from '@animato/components/icon-button/IconButton'
 import ProjectMenu, { ProjectMenuTranslations } from '@animato/components/project-menu/ProjectMenu'
 import EditableText from '@animato/components/editable-text/EditableText'
 import AutosaveStatus, { AutosaveStatusTranslations } from '@animato/components/autosave-status/AutosaveStatus'
-import { useDialog } from '@animato/context/DialogContext'
+import { useDialog } from '@animato/context/DialogContext/DialogContextProvider'
 import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import styles from './Header.module.css'
 

@@ -2,7 +2,7 @@
 
 import { FC } from 'react'
 import { AuthProvider } from '@animato/context/AuthContext'
-import { DialogProvider, useDialog } from '@animato/context/DialogContext'
+import { DialogProvider, useDialog } from '@animato/context/DialogContext/DialogContextProvider'
 import Button from '@animato/components/button/Button'
 
 export interface LoginButtonProps {

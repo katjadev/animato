@@ -11,6 +11,7 @@ import AnimationArea, { AnimationAreaTranslations } from '@animato/components/an
 import EditorContextProvider from '@animato/context/EditorContext/EditorContextProvider'
 import ProjectContextProvider from '@animato/context/ProjectContext/ProjectContextProvider'
 import styles from './Editor.module.css'
+import { DialogProvider } from '@animato/context/DialogContext/DialogContextProvider'
 
 type EditorTranslations = HeaderTranslations & 
   ElementTreeTranslations & 
@@ -43,32 +44,34 @@ const Editor: FC<EditorProps> = ({
       duration={duration}
     >
       <EditorContextProvider>
-        <Header 
-          className={styles.header} 
-          isAuthenticated={isAuthenticated}
-          translations={translations}
-        />
-        <ElementTree 
-          className={styles.elements}
-          translations={translations}
-        />
-        <Player 
-          className={styles.player}
-        />
-        <Controls
-          className={styles.controls}
-          translations={translations}
-        />
-        <Timeline
-          className={styles.timeline}
-          duration={duration}
-          translations={translations}
-        />
-        <AnimationArea
-          className={styles.animations}
-          animations={animations}
-          translations={translations}
-        />
+        <DialogProvider>
+          <Header 
+            className={styles.header} 
+            isAuthenticated={isAuthenticated}
+            translations={translations}
+          />
+          <ElementTree 
+            className={styles.elements}
+            translations={translations}
+          />
+          <Player 
+            className={styles.player}
+          />
+          <Controls
+            className={styles.controls}
+            translations={translations}
+          />
+          <Timeline
+            className={styles.timeline}
+            duration={duration}
+            translations={translations}
+          />
+          <AnimationArea
+            className={styles.animations}
+            animations={animations}
+            translations={translations}
+          />
+        </DialogProvider>
       </EditorContextProvider>
     </ProjectContextProvider>
   )

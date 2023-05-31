@@ -43,6 +43,10 @@ export default async function Projects() {
             actions: t('project-list.actions'),
             open: t('project-list.open'),
             deleteProject: t('project-list.delete-project'),
+            deleteProjectConfirmationTitle: t('project-list.delete-project-confirmation-title'),
+            deleteProjectConfirmationMessage: t('project-list.delete-project-confirmation-message'),
+            deleteProjectConfirmationConfirm: t('project-list.delete-project-confirmation-confirm'),
+            deleteProjectConfirmationCancel: t('project-list.delete-project-confirmation-cancel'),
             deleteProjectErrorTitle: t('project-list.delete-project-error-title'),
             deleteProjectErrorMessage: t('project-list.delete-project-error-message'),
           }}

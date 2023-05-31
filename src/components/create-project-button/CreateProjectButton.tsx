@@ -3,7 +3,7 @@
 import { FC, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '@animato/components/button/Button'
-import { DialogProvider } from '@animato/context/DialogContext'
+import { DialogProvider } from '@animato/context/DialogContext/DialogContextProvider'
 
 interface CreateProjectButtonProps {
   children: ReactNode;
