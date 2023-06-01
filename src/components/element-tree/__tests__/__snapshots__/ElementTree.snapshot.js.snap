@@ -14,7 +14,7 @@ exports[`ElementTree renders correctly 1`] = `
       class="treeNode"
     >
       <div
-        class="title "
+        class="title  "
         tabindex="0"
       >
         <div
@@ -28,24 +28,58 @@ exports[`ElementTree renders correctly 1`] = `
               class="iconoir-nav-arrow-down "
             />
           </button>
-          <div>
-            Element 1
+          <i
+            class="iconoir-square shapeIcon"
+          />
+          <div
+            class="titleText"
+          >
+            <span
+              class="text"
+              tabindex="0"
+            >
+              Element 1
+            </span>
           </div>
+          <button
+            class="iconButton  small"
+          >
+            <i
+              class="iconoir-more-vert "
+            />
+          </button>
         </div>
       </div>
       <div
         class="treeNode"
       >
         <div
-          class="title "
+          class="title  "
           tabindex="0"
         >
           <div
             class="titleIn level1"
           >
-            <div>
-              Element 2
+            <i
+              class="iconoir-3d-bridge shapeIcon"
+            />
+            <div
+              class="titleText"
+            >
+              <span
+                class="text"
+                tabindex="0"
+              >
+                Element 2
+              </span>
             </div>
+            <button
+              class="iconButton  small"
+            >
+              <i
+                class="iconoir-more-vert "
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -68,7 +102,7 @@ exports[`ElementTree renders correctly with collapsed elements 1`] = `
       class="treeNode"
     >
       <div
-        class="title "
+        class="title  "
         tabindex="0"
       >
         <div
@@ -82,9 +116,26 @@ exports[`ElementTree renders correctly with collapsed elements 1`] = `
               class="iconoir-nav-arrow-right "
             />
           </button>
-          <div>
-            Element 1
+          <i
+            class="iconoir-square shapeIcon"
+          />
+          <div
+            class="titleText"
+          >
+            <span
+              class="text"
+              tabindex="0"
+            >
+              Element 1
+            </span>
           </div>
+          <button
+            class="iconButton  small"
+          >
+            <i
+              class="iconoir-more-vert "
+            />
+          </button>
         </div>
       </div>
     </div>

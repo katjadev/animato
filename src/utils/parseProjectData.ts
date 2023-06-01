@@ -23,7 +23,14 @@ export default function parseProjectData(data: string): {
   animations: AnimationGroup[],
   duration: number,
 } {
-  const doc = parse(data)
+  const xmlRegexp = new RegExp(/\<\?xml(.*)\?\>/gi)
+  const commentRegexp = new RegExp(/<!--(.*)-->/gi)
+  const content = data
+    .replaceAll(xmlRegexp, '')
+    .replaceAll(commentRegexp, '')
+    .trim()
+
+  const doc = parse(content)
   if (doc.length === 0 || !isElement(doc[0])) {
     return { elements: [], animations: [], duration: 0 }
   }

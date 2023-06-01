@@ -31,9 +31,20 @@ const TEST_SVG = `<svg xmlns:xlink="http://www.w3.org/1999/xlink" role="image">
   <animateTransform xlink:href="#test-element-2" data-title="scale" id="test-scale-animation" attributeName="transform" type="scale" values="0.5; 1.5; 0.5" keyTimes="0; 0.5; 1" dur="10s"/>
 </svg>`
 
+jest.mock('@animato/context/ProjectContext/ProjectContextProvider', () => {
+  const defaultContextValue = {
+    state: { data: TEST_SVG, duration: 10 },
+    actions: {},
+  }
+
+  return {
+    useProjectState: jest.fn(() => defaultContextValue),
+  }
+})
+
 describe('Player', () => {
   it('renders PlayerSVG with correct props', () => {
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     const svg = screen.getByRole('image')
     expect(svg).toBeInTheDocument()
@@ -55,7 +66,7 @@ describe('Player', () => {
       actions: {},
     }))
 
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     expect(mockUnpauseAnimation).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenCalledTimes(1)
@@ -80,7 +91,7 @@ describe('Player', () => {
       actions: {},
     }))
 
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     expect(mockPauseAnimation).toHaveBeenCalledTimes(1)
     expect(clearTimeout).toHaveBeenCalledTimes(1)
@@ -108,7 +119,7 @@ describe('Player', () => {
 
     jest.useFakeTimers()
 
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     jest.advanceTimersByTime(10101)
 
@@ -138,7 +149,7 @@ describe('Player', () => {
 
     jest.useFakeTimers()
 
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     jest.advanceTimersByTime(10101)
 
@@ -163,7 +174,7 @@ describe('Player', () => {
       actions: {},
     }))
 
-    render(<Player duration={10} content={TEST_SVG} />)
+    render(<Player />)
 
     expect(mockSetCurrentTime).toHaveBeenCalledWith(0.3)
   })

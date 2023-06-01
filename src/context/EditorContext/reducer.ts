@@ -1,12 +1,13 @@
 import { Action, ScrollPosition, TimelineMark } from '@animato/types'
+import { MAX_ZOOM, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants'
+import generateTimelineMarks from '@animato/utils/generateTimelineMarks'
 import { actionTypes } from './actions'
-import { MAX_ZOOM, REM_TO_PX_COEFFICIENT, TIMELINE_PADDING } from '@animato/constants';
-import generateTimelineMarks from '@animato/utils/generateTimelineMarks';
 
 export type EditorState = {
   isPlaying: boolean;
   isRepeatMode: boolean;
-  selectedElementId: string | null;
+  hoveredElementId: string | null;
+  selectedElementIds: string[];
   currentTime: number;
   timelineWidth: number;
   scrollPosition: ScrollPosition;
@@ -24,7 +25,8 @@ const timelineWidth = timelineMarks.length * markSize + 2 * timelinePaddingPx
 export const initialEditorState: EditorState = {
   isPlaying: false,
   isRepeatMode: false,
-  selectedElementId: null,
+  hoveredElementId: null,
+  selectedElementIds: [],
   currentTime: 0,
   timelineWidth,
   scrollPosition: { top: 0, left: 0 },
@@ -51,10 +53,20 @@ export const editorReducer = (state: EditorState, action: Action) => {
         ...state,
         isRepeatMode: !state.isRepeatMode,
       }
+    case actionTypes.HOVER_ELEMENT:
+      return {
+        ...state,
+        hoveredElementId: action.payload!.id,
+      }
     case actionTypes.SELECT_ELEMENT:
       return {
         ...state,
-        selectedElementId: action.payload!.id,
+        selectedElementIds: [...state.selectedElementIds, action.payload!.id],
+      }
+    case actionTypes.DESELECT_ELEMENT:
+      return {
+        ...state,
+        selectedElementIds: state.selectedElementIds.filter(id => id !== action.payload!.id),
       }
     case actionTypes.SET_CURRENT_TIME:
       return {

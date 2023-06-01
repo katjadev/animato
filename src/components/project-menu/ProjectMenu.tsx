@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import Image from 'next/image'
-import replaceIds from '@animato/utils/replaceIds'
+import processSvgData from '@animato/utils/processSvgData'
 import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import { useDialog } from '@animato/context/DialogContext/DialogContextProvider'
 import Menu from '../menu/Menu'
@@ -50,7 +50,7 @@ const ProjectMenu: FC<ProjectMenuProps> = ({ translations, isAuthenticated }) =>
       const fileReader = new FileReader()
       fileReader.onload = () => {
         if (typeof fileReader.result === 'string') {
-          actions.importSvg({ data: replaceIds(fileReader.result) })
+          actions.importSvg({ data: processSvgData(fileReader.result) })
         }
       }
 

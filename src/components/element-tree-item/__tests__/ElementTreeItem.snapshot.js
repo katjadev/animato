@@ -6,6 +6,7 @@ jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
   useEditorState: jest.fn().mockReturnValue({
     state: {
       collapsedElements: [],
+      selectedElementIds: [],
     },
     actions: {},
   })
@@ -60,6 +61,7 @@ describe('ElementTreeItem', () => {
     useEditorState.mockReturnValue({
       state: {
         collapsedElements: [TEST_ID],
+        selectedElementIds: [],
       },
       actions: {},
     })

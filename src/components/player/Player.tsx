@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef } from 'react'
+import { FC, useCallback, useDeferredValue, useEffect, useRef } from 'react'
 import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import { useProjectState } from '@animato/context/ProjectContext/ProjectContextProvider'
 import PlayerSVG, { PlayerRef } from './PlayerSVG'
@@ -10,6 +10,7 @@ interface PlayerProps {
 type StrokeStyle = {
   width: string | null;
   color: string | null;
+  dasharray: string | null;
 }
 
 const Player: FC<PlayerProps> = ({ className }) => {
@@ -17,9 +18,10 @@ const Player: FC<PlayerProps> = ({ className }) => {
   const playerRef = useRef<PlayerRef>(null)
   const timeoutRef = useRef<number>(0)
   const { state, actions } = useEditorState()
-  const { isPlaying, isRepeatMode, currentTime, selectedElementId } = state
+  const { isPlaying, isRepeatMode, currentTime, hoveredElementId } = state
   const currentTimeRef = useRef(currentTime)
   const prevStrokeStyleRef = useRef<{[key: string]: StrokeStyle}>({})
+  const deferredHoveredElementId = useDeferredValue(hoveredElementId)
 
   const updateCurrentTime = () => {
     timeoutRef.current = window.setTimeout(updateCurrentTime, 100)
@@ -82,9 +84,11 @@ const Player: FC<PlayerProps> = ({ className }) => {
     prevStrokeStyleRef.current[element.id] = {
       width: element.getAttribute('stroke-width'),
       color: element.getAttribute('stroke'),
+      dasharray: element.getAttribute('stroke-dasharray'),
     }
-    element.setAttribute('stroke-width', '4')
+    element.setAttribute('stroke-width', '2px')
     element.setAttribute('stroke', getComputedStyle(document.documentElement).getPropertyValue('--highlight-2'))
+    element.setAttribute('stroke-dasharray', '8')
   }
 
   const removeSelectedHighlight = (element: Element) => {
@@ -101,9 +105,16 @@ const Player: FC<PlayerProps> = ({ className }) => {
       } else {
         element.removeAttribute('stroke')
       }
+
+      if (prevStyles.dasharray) {
+        element.setAttribute('stroke-dasharray', prevStyles.dasharray)
+      } else {
+        element.removeAttribute('stroke-dasharray')
+      }
     } else {
       element.removeAttribute('stroke-width')
       element.removeAttribute('stroke')
+      element.removeAttribute('stroke-dasharray')
     }
   }
 
@@ -111,7 +122,7 @@ const Player: FC<PlayerProps> = ({ className }) => {
     const { target } = event
     const element = target as Element
     if (element) {
-      actions.selectElement({ id: element.getAttribute('id') })
+      actions.hoverElement({ id: element.getAttribute('id') })
     }
   }
 
@@ -119,7 +130,7 @@ const Player: FC<PlayerProps> = ({ className }) => {
     const { target } = event
     const element = target as Element
     if (element) {
-      actions.selectElement({ id: null })
+      actions.hoverElement({ id: null })
     }
   }
 
@@ -139,13 +150,13 @@ const Player: FC<PlayerProps> = ({ className }) => {
 
   useEffect(() => {
     const elements = playerRef.current?.getElements()
-    elements && elements.forEach(removeSelectedHighlight)
+    deferredHoveredElementId !== null && elements && elements.forEach(removeSelectedHighlight)
 
-    if (selectedElementId) {
-      const element = playerRef.current?.getElementById(selectedElementId)
+    if (hoveredElementId) {
+      const element = playerRef.current?.getElementById(hoveredElementId)
       element && addSelectedHighlight(element)
     }
-  }, [selectedElementId])
+  }, [hoveredElementId])
 
   return (
     <PlayerSVG 

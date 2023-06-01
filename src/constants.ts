@@ -1,4 +1,4 @@
-export const ALLOWED_SVG_ELEMENTS = ['g', 'path', 'rect', 'circle']
+export const ALLOWED_SVG_ELEMENTS = ['g', 'path', 'rect', 'circle', 'ellipse']
 export const ALLOWED_ANIMATIONS = ['animate', 'animatemotion', 'animatetransform']
 
 export const MAX_DURATION = 5 * 60 * 1000

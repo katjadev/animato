@@ -30,7 +30,7 @@ exports[`Header renders correctly 1`] = `
       <button
         aria-disabled="true"
         aria-label="Undo"
-        class="iconButton "
+        class="iconButton  medium"
       >
         <i
           class="iconoir-undo "
@@ -39,7 +39,7 @@ exports[`Header renders correctly 1`] = `
       <button
         aria-disabled="true"
         aria-label="Redo"
-        class="iconButton "
+        class="iconButton  medium"
       >
         <i
           class="iconoir-redo "
@@ -50,6 +50,7 @@ exports[`Header renders correctly 1`] = `
       class="heading"
     >
       <span
+        class="text"
         tabindex="0"
       />
     </h1>
@@ -65,7 +66,7 @@ exports[`Header renders correctly 1`] = `
       </div>
       <button
         aria-label="Profile"
-        class="iconButton "
+        class="iconButton  medium"
       >
         <i
           class="iconoir-profile-circle "

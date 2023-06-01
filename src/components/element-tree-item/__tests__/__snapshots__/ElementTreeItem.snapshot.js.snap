@@ -3,7 +3,7 @@
 exports[`ElementTreeItem renders correctly for a collapsed parent element 1`] = `
 <div>
   <div
-    class="title "
+    class="title  "
     tabindex="0"
   >
     <div
@@ -17,9 +17,26 @@ exports[`ElementTreeItem renders correctly for a collapsed parent element 1`] = 
           class="iconoir-nav-arrow-right "
         />
       </button>
-      <div>
-        test-element
+      <i
+        class="iconoir-flare shapeIcon"
+      />
+      <div
+        class="titleText"
+      >
+        <span
+          class="text"
+          tabindex="0"
+        >
+          test-element
+        </span>
       </div>
+      <button
+        class="iconButton  small"
+      >
+        <i
+          class="iconoir-more-vert "
+        />
+      </button>
     </div>
   </div>
 </div>
@@ -28,15 +45,32 @@ exports[`ElementTreeItem renders correctly for a collapsed parent element 1`] = 
 exports[`ElementTreeItem renders correctly for a leaf element 1`] = `
 <div>
   <div
-    class="title "
+    class="title  "
     tabindex="0"
   >
     <div
       class="titleIn level0"
     >
-      <div>
-        test-element
+      <i
+        class="iconoir-flare shapeIcon"
+      />
+      <div
+        class="titleText"
+      >
+        <span
+          class="text"
+          tabindex="0"
+        >
+          test-element
+        </span>
       </div>
+      <button
+        class="iconButton  small"
+      >
+        <i
+          class="iconoir-more-vert "
+        />
+      </button>
     </div>
   </div>
 </div>
@@ -45,7 +79,7 @@ exports[`ElementTreeItem renders correctly for a leaf element 1`] = `
 exports[`ElementTreeItem renders correctly for a parent element 1`] = `
 <div>
   <div
-    class="title "
+    class="title  "
     tabindex="0"
   >
     <div
@@ -59,9 +93,26 @@ exports[`ElementTreeItem renders correctly for a parent element 1`] = `
           class="iconoir-nav-arrow-down "
         />
       </button>
-      <div>
-        test-element
+      <i
+        class="iconoir-flare shapeIcon"
+      />
+      <div
+        class="titleText"
+      >
+        <span
+          class="text"
+          tabindex="0"
+        >
+          test-element
+        </span>
       </div>
+      <button
+        class="iconButton  small"
+      >
+        <i
+          class="iconoir-more-vert "
+        />
+      </button>
     </div>
   </div>
 </div>

@@ -8,7 +8,7 @@ exports[`ModalDialog renders correctly 1`] = `
   >
     <button
       aria-label="Close"
-      class="iconButton closeButton"
+      class="iconButton closeButton medium"
     >
       <i
         class="iconoir-cancel "

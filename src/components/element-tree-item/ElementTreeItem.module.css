@@ -6,10 +6,16 @@
   gap: 0.6rem;
   border: 2px solid transparent;
   position: relative;
+  cursor: pointer;
+}
+
+.title.hovered {
+  border-color: var(--highlight-2);
 }
 
 .title.selected {
-  border-color: var(--highlight-2);
+  background-color: var(--highlight-2);
+  color: var(--text-inverted); 
 }
 
 .titleIn {
@@ -48,6 +54,10 @@
 
 .titleIn.level6 {
   margin-left: 6rem;
+}
+
+.title.selected .shapeIcon {
+  color: var(--text-inverted); 
 }
 
 .shapeIcon {

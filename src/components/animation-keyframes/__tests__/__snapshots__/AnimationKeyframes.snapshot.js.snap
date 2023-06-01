@@ -1,40 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AnimationKeyframes enders correctly when selected 1`] = `
-<div>
-  <div
-    class="keyframesEl selected"
-  />
-  <div
-    class="keyframes"
-  >
-    <button
-      aria-label="Keyframe: 0 milliseconds"
-      class="keyframe"
-      style="left: 16px;"
-    />
-    <button
-      aria-label="Keyframe: 1000 milliseconds"
-      class="keyframe"
-      style="left: 176px;"
-    />
-    <div
-      class="keyframeLine"
-      style="left: 16px; width: 160px;"
-    />
-    <button
-      aria-label="Keyframe: 2000 milliseconds"
-      class="keyframe"
-      style="left: 336px;"
-    />
-    <div
-      class="keyframeLine"
-      style="left: 176px; width: 160px;"
-    />
-  </div>
-</div>
-`;
-
 exports[`AnimationKeyframes renders correctly 1`] = `
 <div>
   <div
@@ -51,20 +16,55 @@ exports[`AnimationKeyframes renders correctly 1`] = `
     <button
       aria-label="Keyframe: 1000 milliseconds"
       class="keyframe"
-      style="left: 176px;"
+      style="left: 32px;"
     />
     <div
       class="keyframeLine"
-      style="left: 16px; width: 160px;"
+      style="left: 16px; width: 16px;"
     />
     <button
       aria-label="Keyframe: 2000 milliseconds"
       class="keyframe"
-      style="left: 336px;"
+      style="left: 48px;"
     />
     <div
       class="keyframeLine"
-      style="left: 176px; width: 160px;"
+      style="left: 32px; width: 16px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`AnimationKeyframes renders correctly when selected 1`] = `
+<div>
+  <div
+    class="keyframesEl selected"
+  />
+  <div
+    class="keyframes"
+  >
+    <button
+      aria-label="Keyframe: 0 milliseconds"
+      class="keyframe"
+      style="left: 16px;"
+    />
+    <button
+      aria-label="Keyframe: 1000 milliseconds"
+      class="keyframe"
+      style="left: 16px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 16px; width: 0px;"
+    />
+    <button
+      aria-label="Keyframe: 2000 milliseconds"
+      class="keyframe"
+      style="left: 16px;"
+    />
+    <div
+      class="keyframeLine"
+      style="left: 16px; width: 0px;"
     />
   </div>
 </div>

@@ -5,7 +5,29 @@ import ElementTree from '../ElementTree'
 
 jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
   useEditorState: jest.fn(() => ({
-    state: { collapsedElements: [] },
+    state: { collapsedElements: [], selectedElementIds: [] },
+  })),
+}))
+
+const TEST_ID = 'test-id'
+
+jest.mock('@animato/context/ProjectContext/ProjectContextProvider', () => ({
+  useProjectState: jest.fn(() => ({
+    state: { elements: [
+      {
+        id: 'test-id',
+        tagName: 'rect',
+        title: 'Element 1',
+        children: [
+          {
+            id: 'element2',
+            tagName: 'path',
+            title: 'Element 2',
+            children: [],
+          },
+        ],
+      },
+    ] },
   })),
 }))
 
@@ -15,28 +37,10 @@ const translations = {
   elements: 'Elements',
 }
 
-const TEST_ID = 'test-id'
-
-const elements = [
-  {
-    id: TEST_ID,
-    element: document.createElement('rect'),
-    title: 'Element 1',
-    children: [
-      {
-        id: 'element2',
-        element: document.createElement('path'),
-        title: 'Element 2',
-        children: [],
-      },
-    ],
-  },
-]
-
 describe('ElementTree', () => {
   it('renders correctly', () => {
     const { container } = render(
-      <ElementTree elements={elements} translations={translations} />
+      <ElementTree translations={translations} />
     )
 
     expect(container).toMatchSnapshot()
@@ -44,12 +48,12 @@ describe('ElementTree', () => {
 
   it('renders correctly with collapsed elements', () => {
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [TEST_ID] },
+      state: { collapsedElements: [TEST_ID], selectedElementIds: [] },
       actions: {},
     })
 
     const { container } = render(
-      <ElementTree elements={elements} translations={translations} />
+      <ElementTree translations={translations} />
     )
 
     expect(container).toMatchSnapshot()

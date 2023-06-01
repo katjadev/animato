@@ -34,20 +34,20 @@ describe('AnimationKeyframes', () => {
   })
 
   it('renders AnimationKeyframesItem for each keyframe', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [], selectedElementIds: [] } })
     AnimationKeyframesItem.mockImplementation(() => <div data-testid="mock-animation-keyframes-item" />)
 
-    render(<AnimationKeyframes element={TEST_ELEMENT} selected={false} />)
+    render(<AnimationKeyframes element={TEST_ELEMENT} />)
 
     expect(AnimationKeyframesItem).toHaveBeenCalledTimes(3)
     expect(screen.getAllByTestId('mock-animation-keyframes-item')).toHaveLength(3)
   })
 
   it('renders AnimationKeyframesItem with prevKeyframe prop', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [], selectedElementIds: [] } })
     AnimationKeyframesItem.mockImplementation(() => <div data-testid="mock-animation-keyframes-item" />)
 
-    render(<AnimationKeyframes element={TEST_ELEMENT} selected={false} />)
+    render(<AnimationKeyframes element={TEST_ELEMENT} />)
 
     expect(AnimationKeyframesItem).toHaveBeenCalledTimes(3)
     expect(AnimationKeyframesItem.mock.calls[0][0].prevKeyframe).toBeUndefined()
@@ -55,10 +55,10 @@ describe('AnimationKeyframes', () => {
     expect(AnimationKeyframesItem.mock.calls[2][0].prevKeyframe).toEqual({ time: 1000 })
   })
 
-  it('renders collapsed keyframes when isCollapsed is true', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID] } })
+  it('renders collapsed keyframes when collapsed is true', () => {
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID], selectedElementIds: [] } })
 
-    render(<AnimationKeyframes element={TEST_ELEMENT} selected={false} />)
+    render(<AnimationKeyframes element={TEST_ELEMENT} />)
 
     expect(screen.queryByTestId('mock-animation-keyframes-item')).toBeNull()
   })

@@ -6,17 +6,17 @@ import styles from './AnimationKeyframes.module.css'
 
 interface AnimationKeyframesProps {
   element: AnimationGroup;
-  selected: boolean;
 }
 
-const AnimationKeyframes: FC<AnimationKeyframesProps> = ({ element, selected }) => {
-  const { state: { collapsedAnimations } } = useEditorState()
-  const isCollapsed = collapsedAnimations.includes(element.id)
+const AnimationKeyframes: FC<AnimationKeyframesProps> = ({ element }) => {
+  const { state: { collapsedAnimations, selectedElementIds } } = useEditorState()
+  const collapsed = collapsedAnimations.includes(element.id)
+  const selected = selectedElementIds.includes(element.id)
 
   return (
     <>
       <div className={`${styles.keyframesEl} ${selected ? styles.selected : ''}`} />
-      {!isCollapsed && (
+      {!collapsed && (
         <>
           {element.animations.map((animation) => (
             <div key={animation.id} className={styles.keyframes}>

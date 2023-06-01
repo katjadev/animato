@@ -1,10 +1,17 @@
 import { render } from '@testing-library/react'
+import { useEditorState } from '@animato/context/EditorContext/EditorContextProvider'
 import AnimationElement from '../AnimationElement'
 
 const translations = {
   expand: 'Expand',
   collapse: 'Collapse',
 }
+
+jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
+  useEditorState: jest.fn(() => ({
+    state: { collapsedAnimations: [], selectedElementIds: [] },
+  })),
+}))
 
 const TEST_ID = 'test-id'
 const TEST_ELEMENT = {
@@ -21,7 +28,6 @@ describe('AnimationElement', () => {
     const { container } = render(
       <AnimationElement 
         element={TEST_ELEMENT} 
-        selected={false} 
         translations={translations}
       />
     )
@@ -30,10 +36,14 @@ describe('AnimationElement', () => {
   })
 
   it('enders correctly when selected', () => {
+    useEditorState.mockReturnValue({
+      state: { collapsedAnimations: [], selectedElementIds: [TEST_ID] },
+      actions: {},
+    })
+
     const { container } = render(
       <AnimationElement 
         element={TEST_ELEMENT} 
-        selected={true} 
         translations={translations}
       />
     )

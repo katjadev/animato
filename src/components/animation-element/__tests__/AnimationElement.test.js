@@ -24,7 +24,7 @@ const TEST_ELEMENT = {
 
 describe('AnimationElement', () => {
   it('renders the element title', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [], selectedElementIds: [] } })
 
     render(
       <AnimationElement
@@ -39,7 +39,7 @@ describe('AnimationElement', () => {
   })
 
   it('renders the expand icon when the animation group is collapsed', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID], selectedElementIds: [] } })
 
     render(
       <AnimationElement
@@ -54,7 +54,7 @@ describe('AnimationElement', () => {
   })
 
   it('renders the collapse icon when the animation group is expanded', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [], selectedElementIds: [] } })
 
     render(
       <AnimationElement
@@ -71,7 +71,7 @@ describe('AnimationElement', () => {
   it('toggles the collapsed state when the expand button is clicked', () => {
     const mockExpandAnimation = jest.fn()
     useEditorState.mockReturnValue({ 
-      state: { collapsedAnimations: [TEST_ID] },
+      state: { collapsedAnimations: [TEST_ID], selectedElementIds: [] },
       actions: { expandAnimation: mockExpandAnimation },
     })
 
@@ -93,7 +93,7 @@ describe('AnimationElement', () => {
   it('toggles the collapsed state when the collapse button is clicked', () => {
     const mockCollapseAnimation = jest.fn()
     useEditorState.mockReturnValue({ 
-      state: { collapsedAnimations: [] },
+      state: { collapsedAnimations: [], selectedElementIds: [] },
       actions: { collapseAnimation: mockCollapseAnimation },
     })
 
@@ -112,7 +112,7 @@ describe('AnimationElement', () => {
   })
 
   it('renders the animation titles when the animation group is expanded', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [], selectedElementIds: [] } })
 
     render(
       <AnimationElement
@@ -130,7 +130,7 @@ describe('AnimationElement', () => {
   })
 
   it('does not render the animation titles when the animation group is collapsed', () => {
-    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID] } })
+    useEditorState.mockReturnValue({ state: { collapsedAnimations: [TEST_ID], selectedElementIds: [] } })
 
     render(
       <AnimationElement

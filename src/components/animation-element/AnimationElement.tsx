@@ -11,18 +11,17 @@ export type AnimationElementTranslations = {
 
 interface AnimationElementProps {
   element: AnimationGroup;
-  selected: boolean;
   translations: AnimationElementTranslations;
 }
 
-const AnimationElement: FC<AnimationElementProps> = ({ element, selected, translations }) => {
-  const { state, actions } = useEditorState()
-  const { collapsedAnimations } = state
+const AnimationElement: FC<AnimationElementProps> = ({ element, translations }) => {
+  const { state: { collapsedAnimations, selectedElementIds }, actions } = useEditorState()
 
-  const isCollapsed = collapsedAnimations.includes(element.id)
+  const collapsed = collapsedAnimations.includes(element.id)
+  const selected = selectedElementIds.includes(element.id)
 
   const toggleCollapsed = () => {
-    if (isCollapsed) {
+    if (collapsed) {
       actions.expandAnimation({ id: element.id })
     } else {
       actions.collapseAnimation({ id: element.id })
@@ -35,13 +34,13 @@ const AnimationElement: FC<AnimationElementProps> = ({ element, selected, transl
         <div>{element.title}</div>
         <button
           className={styles.collapseButton}
-          aria-label={isCollapsed ? translations.expand : translations.collapse}
+          aria-label={collapsed ? translations.expand : translations.collapse}
           onClick={toggleCollapsed}
         >
-          {isCollapsed ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
+          {collapsed ? <Icon icon='nav-arrow-right' /> : <Icon icon='nav-arrow-down' />}
         </button>
       </div>
-      {!isCollapsed && (
+      {!collapsed && (
         <div className={styles.animationList}>
           {element.animations.map((animation) => (
             <div 

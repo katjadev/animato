@@ -5,7 +5,7 @@ import ElementTreeItem from '../ElementTreeItem'
 
 jest.mock('@animato/context/EditorContext/EditorContextProvider', () => ({
   useEditorState: jest.fn(() => ({
-    state: { collapsedElements: [] },
+    state: { collapsedElements: [], selectedElementIds: [] },
     actions: {},
   })),
 }))
@@ -34,11 +34,11 @@ describe('ElementTreeItem', () => {
     expect(titleElement).toBeInTheDocument()
   })
 
-  test('should call selectElement when mouse enters the element', () => {
-    const mockSelectElement = jest.fn()
+  test('should call hoverElement when mouse enters the element', () => {
+    const mockHoverElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [] },
-      actions: { selectElement: mockSelectElement },
+      state: { collapsedElements: [], selectedElementIds: [] },
+      actions: { hoverElement: mockHoverElement },
     })
 
     const { getByText } = render(
@@ -48,14 +48,14 @@ describe('ElementTreeItem', () => {
     const titleElement = getByText('Element Title')
     fireEvent.mouseEnter(titleElement)
 
-    expect(mockSelectElement).toHaveBeenCalledWith({ id: TEST_ID })
+    expect(mockHoverElement).toHaveBeenCalledWith({ id: TEST_ID })
   })
 
-  test('should call selectElement when mouse leaves the element', () => {
-    const mockSelectElement = jest.fn()
+  test('should call hoverElement when mouse leaves the element', () => {
+    const mockHoverElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [] },
-      actions: { selectElement: mockSelectElement },
+      state: { collapsedElements: [], selectedElementIds: [] },
+      actions: { hoverElement: mockHoverElement },
     })
 
     const { getByText } = render(
@@ -65,14 +65,14 @@ describe('ElementTreeItem', () => {
     const titleElement = getByText('Element Title')
     fireEvent.mouseLeave(titleElement)
 
-    expect(mockSelectElement).toHaveBeenCalledWith({ id: null })
+    expect(mockHoverElement).toHaveBeenCalledWith({ id: null })
   })
 
-  test('should call selectElement when the element is focused', () => {
-    const mockSelectElement = jest.fn()
+  test('should call hoverElement when the element is focused', () => {
+    const mockHoverElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [] },
-      actions: { selectElement: mockSelectElement },
+      state: { collapsedElements: [], selectedElementIds: [] },
+      actions: { hoverElement: mockHoverElement },
     })
 
     const { getByText } = render(
@@ -82,14 +82,14 @@ describe('ElementTreeItem', () => {
     const titleElement = getByText('Element Title')
     fireEvent.focus(titleElement)
 
-    expect(mockSelectElement).toHaveBeenCalledWith({ id: TEST_ID })
+    expect(mockHoverElement).toHaveBeenCalledWith({ id: TEST_ID })
   })
 
-  test('should call selectElement when the element loses focus', () => {
-    const mockSelectElement = jest.fn()
+  test('should call hoverElement when the element loses focus', () => {
+    const mockHoverElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [] },
-      actions: { selectElement: mockSelectElement },
+      state: { collapsedElements: [], selectedElementIds: [] },
+      actions: { hoverElement: mockHoverElement },
     })
 
     const { getByText } = render(
@@ -99,13 +99,13 @@ describe('ElementTreeItem', () => {
     const titleElement = getByText('Element Title')
     fireEvent.blur(titleElement)
 
-    expect(mockSelectElement).toHaveBeenCalledWith({ id: null })
+    expect(mockHoverElement).toHaveBeenCalledWith({ id: null })
   })
 
   test('should call collapseElement when collapse button is clicked', () => {
     const mockCollapseElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [] },
+      state: { collapsedElements: [], selectedElementIds: [] },
       actions: { collapseElement: mockCollapseElement },
     })
 
@@ -129,7 +129,7 @@ describe('ElementTreeItem', () => {
   test('should call expandElement when expand button is clicked', () => {
     const mockExpandElement = jest.fn()
     useEditorState.mockReturnValue({
-      state: { collapsedElements: [TEST_ID] },
+      state: { collapsedElements: [TEST_ID], selectedElementIds: [] },
       actions: { expandElement: mockExpandElement },
     })
 

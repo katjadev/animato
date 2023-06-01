@@ -21,7 +21,7 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
 }) => {
   const animationListHeight = animations.reduce((prev, element) => prev + element.animations.length + 1, 0)
   const { 
-    state: { selectedElementId, timelineWidth }, 
+    state: { timelineWidth }, 
     actions,
   } = useEditorState()
   const { rootRef, scrollPosition } = useScrollObserver({ onChange: actions.setScrollPosition })
@@ -40,7 +40,6 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
               <AnimationElement
                 key={element.id} 
                 element={element}
-                selected={element.id === selectedElementId}
                 translations={translations}
               />
             ))}
@@ -60,7 +59,6 @@ const AnimationArea: FC<AnimationAreaProps> = memo(({
               <AnimationKeyframes 
                 key={element.id}
                 element={element}
-                selected={element.id === selectedElementId}
               />
             ))}
           </div>
