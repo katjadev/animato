@@ -56,7 +56,8 @@ export default async function Project({ params }: { params: { id: string } }) {
           restart: t('project.restart'),
           play: t('project.play'),
           pause: t('project.pause'),
-          repeat: t('project.repeat')
+          repeat: t('project.repeat'),
+          properties: t('project.properties'),
         }}
       />
     </main>

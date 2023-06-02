@@ -20,6 +20,10 @@
   grid-row-end: main;
 }
 
+.player.narrow {
+  grid-column-end: right-column;
+}
+
 .controls {
   grid-column-start: left-column-collapsed;
   grid-column-end: main;
@@ -46,4 +50,12 @@
   grid-row-start: footer;
   grid-row-end: end;
   border-top: 1px solid var(--border-base);
+}
+
+.properties {
+  grid-column-start: right-column;
+  grid-column-end: end;
+  grid-row-start: main;
+  grid-row-end: main;
+  border-left: 1px solid var(--border-base);
 }

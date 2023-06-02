@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  grid-template-columns: [left-column-collapsed] 2rem [left-column] 13rem [main] minmax(0, 1fr) [right-column-collapsed] 2rem [end];
+  grid-template-columns: [left-column-collapsed] 2rem [left-column] 13rem [main] minmax(0, 1fr) [right-column] 13rem [right-column-collapsed] 2rem [end];
   grid-template-rows: [header] 3rem [main] auto [sub-footer] 3rem [footer] 8rem [end];
   width: 100vw;
   height: 100vh;

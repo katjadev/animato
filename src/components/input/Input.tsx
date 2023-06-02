@@ -8,6 +8,7 @@ interface InputProps {
   value: string;
   label?: string;
   error?: string;
+  className?: string;
   'aria-label'?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
@@ -19,13 +20,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   value,
   label,
   error,
+  className,
   'aria-label': ariaLabel,
   onChange,
 }, ref) => {
   const errorId = useId()
   
   return (
-    <>
+    <div className={className || ''}>
       {label && (
         <label 
           className={styles.label} 
@@ -54,7 +56,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
           {error}
         </output>
       )}
-    </>
+    </div>
   )
 })
 

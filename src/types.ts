@@ -55,4 +55,8 @@ export type ElementTreeNode = {
   title: string;
   tagName: string;
   children: ElementTreeNode[];
+  width?: string;
+  height?: string;
+  x?: string;
+  y?: string;
 }

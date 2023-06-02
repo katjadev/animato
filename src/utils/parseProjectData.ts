@@ -6,7 +6,12 @@ import {
   Text
 } from 'domhandler'
 import { v4 as uuidv4 } from 'uuid'
-import { ALLOWED_ANIMATIONS, ALLOWED_SVG_ELEMENTS } from '@animato/constants'
+import { 
+  ALLOWED_ANIMATIONS, 
+  ALLOWED_SVG_ELEMENTS, 
+  ELEMENT_ATTRUBUTES, 
+  STYLING_ATTRIBUTES,
+} from '@animato/constants'
 import { 
   Animation,
   AnimationGroup,
@@ -76,12 +81,24 @@ const buildElementTree = (currentElement: Element): ElementTreeNode[] => {
     .filter((element) =>  ALLOWED_SVG_ELEMENTS.includes((element as Element).name))
     .map((element) => element as Element)
 
-  return children.map((element) => ({
-    id: element.attribs.id || uuidv4(),
-    title: element.attribs['data-title'] || element.name,
-    tagName: element.name,
-    children: buildElementTree(element),
-  }))
+  return children.map((element: Element) => {
+    const attributes: {[key: string]: string} = {}
+    const attributeNames: string[] = [...ELEMENT_ATTRUBUTES, ...STYLING_ATTRIBUTES]
+
+    for (let name of attributeNames) {
+      if (element.attribs[name]) {
+        attributes[name] = element.attribs[name]
+      }
+    }
+
+    return {
+      id: element.attribs.id || uuidv4(),
+      title: element.attribs['data-title'] || element.name,
+      tagName: element.name,
+      ...attributes,
+      children: buildElementTree(element),
+    }
+  })
 }
 
 const treeToArray = (node: Element, result: Element[] = []): Element[] => {

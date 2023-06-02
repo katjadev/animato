@@ -55,12 +55,8 @@ const ElementTreeItem: FC<ElementTreeItemProps> = ({
     event.stopPropagation()
     editorActions.expandElement({ id: element.id })
   }
-  const select = () => {
-    if (selectedElementIds.includes(element.id)) {
-      editorActions.deselectElement({ id: element.id })
-    } else {
-      editorActions.selectElement({ id: element.id })
-    }
+  const select = (event: React.MouseEvent<HTMLDivElement>) => {
+    editorActions.toggleElement({ id: element.id, multiple: event.metaKey })
   }
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

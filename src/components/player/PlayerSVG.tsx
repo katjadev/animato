@@ -5,6 +5,7 @@ import styles from './Player.module.css'
 type EventListeners = { 
   onEnter: (ev: Event) => any; 
   onLeave: (ev: Event) => any;
+  onClick: (ev: Event) => any;
 }
 
 export type PlayerRef = {
@@ -50,20 +51,24 @@ const PlayerSVG = memo(forwardRef<PlayerRef, PlayerSVGProps>(({ content, classNa
         const elements = svg?.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
         return elements ? Array.from(elements) : null
       },
-      addEventListeners({ onEnter, onLeave }: EventListeners) {
+      addEventListeners({ onEnter, onLeave, onClick }: EventListeners) {
         const svg = innerRef.current?.querySelector('svg')
-        const elements = svg?.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
+        const selector = ALLOWED_SVG_ELEMENTS.filter(tagName => tagName !== 'g').join(', ')
+        const elements = svg?.querySelectorAll(selector)
         elements?.forEach((element) => {
           element.addEventListener('mouseenter', onEnter)
           element.addEventListener('mouseleave', onLeave)
+          element.addEventListener('click', onClick)
         })
       },
-      removeEventListeners({ onEnter, onLeave }: EventListeners) {
+      removeEventListeners({ onEnter, onLeave, onClick }: EventListeners) {
         const svg = innerRef.current?.querySelector('svg')
-        const elements = svg?.querySelectorAll(ALLOWED_SVG_ELEMENTS.join(', '))
+        const selector = ALLOWED_SVG_ELEMENTS.filter(tagName => tagName !== 'g').join(', ')
+        const elements = svg?.querySelectorAll(selector)
         elements?.forEach((element) => {
           element.removeEventListener('mouseenter', onEnter)
           element.removeEventListener('mouseleave', onLeave)
+          element.removeEventListener('click', onClick)
         })
       }
     }

@@ -17,11 +17,18 @@ const Player: FC<PlayerProps> = ({ className }) => {
   const { state: { duration, data } } = useProjectState()
   const playerRef = useRef<PlayerRef>(null)
   const timeoutRef = useRef<number>(0)
-  const { state, actions } = useEditorState()
-  const { isPlaying, isRepeatMode, currentTime, hoveredElementId } = state
+  const { 
+    state: { 
+      isPlaying,
+      isRepeatMode,
+      currentTime,
+      hoveredElementId,
+      selectedElementIds,
+    }, 
+    actions,
+  } = useEditorState()
   const currentTimeRef = useRef(currentTime)
   const prevStrokeStyleRef = useRef<{[key: string]: StrokeStyle}>({})
-  const deferredHoveredElementId = useDeferredValue(hoveredElementId)
 
   const updateCurrentTime = () => {
     timeoutRef.current = window.setTimeout(updateCurrentTime, 100)
@@ -118,39 +125,52 @@ const Player: FC<PlayerProps> = ({ className }) => {
     }
   }
 
-  const handleMouseEnter = (event: Event) => {
+  const handleMouseEnter = useCallback((event: Event) => {
     const { target } = event
     const element = target as Element
     if (element) {
       actions.hoverElement({ id: element.getAttribute('id') })
     }
-  }
+  }, [actions.hoverElement])
 
-  const handleMouseLeave = (event: Event) => {
+  const handleMouseLeave = useCallback((event: Event) => {
     const { target } = event
     const element = target as Element
     if (element) {
       actions.hoverElement({ id: null })
     }
-  }
+  }, [actions.hoverElement])
+
+  const handleClick = useCallback((event: Event) => {
+    const { target } = event
+    const element = target as Element
+    element && actions.toggleElement({ id: element.id })
+  }, [actions.toggleElement])
 
   useEffect(() => {
     playerRef.current?.addEventListeners({
       onEnter: handleMouseEnter,
       onLeave: handleMouseLeave,
+      onClick: handleClick,
     })
 
     return () => {
       playerRef.current?.removeEventListeners({
         onEnter: handleMouseEnter,
         onLeave: handleMouseLeave,
+        onClick: handleClick,
       })
     }
-  }, [data])
+  }, [data, selectedElementIds])
 
   useEffect(() => {
-    const elements = playerRef.current?.getElements()
-    deferredHoveredElementId !== null && elements && elements.forEach(removeSelectedHighlight)
+    const hoveredElements = Object.keys(prevStrokeStyleRef.current)
+    if (hoveredElements.length > 0) {
+      hoveredElements.forEach((id) => {
+        const element = playerRef.current?.getElementById(id)
+        element && removeSelectedHighlight(element)
+      })
+    }
 
     if (hoveredElementId) {
       const element = playerRef.current?.getElementById(hoveredElementId)

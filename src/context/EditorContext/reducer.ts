@@ -58,16 +58,15 @@ export const editorReducer = (state: EditorState, action: Action) => {
         ...state,
         hoveredElementId: action.payload!.id,
       }
-    case actionTypes.SELECT_ELEMENT:
+    case actionTypes.TOGGLE_ELEMENT: {
+      const { id, multiple } = action.payload!
       return {
         ...state,
-        selectedElementIds: [...state.selectedElementIds, action.payload!.id],
+        selectedElementIds: state.selectedElementIds.includes(id) 
+          ? state.selectedElementIds.filter(item => item !== id)
+          : multiple ? [...state.selectedElementIds, id] : [id],
       }
-    case actionTypes.DESELECT_ELEMENT:
-      return {
-        ...state,
-        selectedElementIds: state.selectedElementIds.filter(id => id !== action.payload!.id),
-      }
+    }
     case actionTypes.SET_CURRENT_TIME:
       return {
         ...state,

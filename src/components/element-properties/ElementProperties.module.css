@@ -1,0 +1,46 @@
+.properties {
+  overflow: auto;
+}
+
+.title {
+  font-size: 0.8rem;
+  padding: 0;
+  margin: 0;
+  padding: 1rem;
+}
+
+.subtitle {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  padding-block: 0.3rem;
+  padding-inline: 1rem;
+  margin: 0;
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--background-secondary);
+}
+
+.collapseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem 1rem;
+}
+
+.field {
+  width: calc(50% - 0.5rem);
+}
